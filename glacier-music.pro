@@ -1,12 +1,15 @@
 TEMPLATE = app
 TARGET = glacier-music
 
-QT += qml quick sql
+QT += qml quick sql multimedia
+
+LIBS += -ltag
 
 SOURCES += main.cpp \
     src/collection.cpp \
     src/dbadapter.cpp \
-    src/rescancollection.cpp
+    src/rescancollection.cpp \
+    src/audiofile.cpp
 
 target.path = /usr/bin
 
@@ -31,4 +34,5 @@ DISTFILES += \
 HEADERS += \
     src/collection.h \
     src/dbadapter.h \
-    src/rescancollection.h
+    src/rescancollection.h \
+    src/audiofile.h

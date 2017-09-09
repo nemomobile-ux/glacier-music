@@ -1,4 +1,7 @@
+#include <QAudioFormat>
+
 #include "rescancollection.h"
+#include "audiofile.h"
 
 RescanCollection::RescanCollection(QObject *parent) : QObject(parent)
 {
@@ -35,7 +38,15 @@ void RescanCollection::scan()
 
     for(int i=0; i<aviableFiles.count();i++)
     {
+
         QString file = aviableFiles[i];
+        AudioFile *aFile = new AudioFile(file);
+        if(!aFile->isValid)
+        {
+            qDebug() << "File " << file << " not found";
+            continue;
+        }
+
         QString str = QString("SELECT path FROM files WHERE `path`='%1'").arg(file);
         bool ok = query.exec(str);
         if(!ok)
