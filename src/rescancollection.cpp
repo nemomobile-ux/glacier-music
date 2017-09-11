@@ -25,7 +25,7 @@ void RescanCollection::scan()
     for(int i=0; i<scanDir.count(); i++)
     {
         QDirIterator it(scanDir[i],allowedExtensions, QDir::Files, QDirIterator::Subdirectories);
-        while (it.hasNext())
+        for (;it.hasNext(); it.next())
         {
             aviableFiles << it.next();
         }
@@ -43,7 +43,6 @@ void RescanCollection::scan()
         AudioFile *aFile = new AudioFile(file);
         if(!aFile->isValid)
         {
-            qDebug() << "File " << file << " not found";
             continue;
         }
 
