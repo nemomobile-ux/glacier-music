@@ -29,7 +29,8 @@ DISTFILES += \
     glacier-music.desktop \
     qml/glacier-music.qml \
     qml/pages/PlayerPage.qml \
-    qml/pages/SettingsPage.qml
+    qml/pages/SettingsPage.qml \
+    qml/components/CoverArea.qml
 
 HEADERS += \
     src/collection.h \
