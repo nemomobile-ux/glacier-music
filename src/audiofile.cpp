@@ -48,11 +48,12 @@ void AudioFile::loadTags()
     TagLib::uint t_year = tagFile->tag()->year();
     TagLib::uint t_length  = tagFile->audioProperties()->length();
 
-    artist = QString::fromStdString(t_artist.to8Bit(true));
-    album = QString::fromStdString(t_album.to8Bit(true));
-    title = QString::fromStdString(t_title.to8Bit(true));
-    comment = QString::fromStdString(t_comment.to8Bit(true));
-    genre = QString::fromStdString(t_genre.to8Bit(true));
+    artist = QString::fromStdWString(t_artist.toCWString());
+    album = QString::fromStdWString(t_album.toCWString());
+    title = QString::fromStdWString(t_title.toCWString());
+    comment = QString::fromStdWString(t_comment.toCWString());
+    genre = QString::fromStdWString(t_genre.toCWString());
+
     track = t_track;
     year = t_year;
     length = t_length;
@@ -66,6 +67,8 @@ void AudioFile::loadTags()
     {
         title = "Unknow Track";
     }
+
+    qDebug() << artist << " - " << title;
 }
 
 bool AudioFile::sync()

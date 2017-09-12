@@ -12,10 +12,10 @@ License:    LGPL
 URL:        https://github.com/nemomobile-ux/glacier-music
 Source0:    %{name}-%{version}.tar.bz2
 Requires:   qt5-qtquickcontrols-nemo
-Requires:   taglib
+Requires:   taglib >= 1.11.1
 Requires:   nemo-qml-plugin-settings
 
-BuildRequires:  pkgconfig(taglib)
+BuildRequires:  pkgconfig(taglib) >= 1.11.1
 BuildRequires:  pkgconfig(Qt5Core)
 BuildRequires:  pkgconfig(Qt5Qml)
 BuildRequires:  pkgconfig(Qt5Quick)
