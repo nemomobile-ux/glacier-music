@@ -161,33 +161,7 @@ Page {
                 width: parent.width
                 height: parent.height
                 model: nextTrackModel
-                delegate: Item{
-                    width: parent.width
-                    height: Theme.itemHeightHuge
-
-                    Image{
-                        id: coverImage
-                        source: cover
-                        width: parent.height
-                        height: parent.height
-                    }
-
-                    Label{
-                        text: artist+" - "+track
-                        width: parent.width-cover.width
-                        font{
-                            bold: true
-                            pixelSize: Theme.fontSizeExtraLarge
-                        }
-                        anchors{
-                            left: coverImage.right
-                            leftMargin: coverImage.height/2
-                        }
-
-                        verticalAlignment: Text.AlignVCenter
-                    }
-                }
-
+                delegate: PlaylistItem{}
             }
         }
     }

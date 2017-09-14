@@ -30,7 +30,8 @@ DISTFILES += \
     qml/glacier-music.qml \
     qml/pages/PlayerPage.qml \
     qml/pages/SettingsPage.qml \
-    qml/components/CoverArea.qml
+    qml/components/CoverArea.qml \
+    qml/components/PlaylistItem.qml
 
 HEADERS += \
     src/collection.h \
