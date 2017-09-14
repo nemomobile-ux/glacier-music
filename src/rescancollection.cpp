@@ -1,11 +1,11 @@
 #include <QAudioFormat>
 
 #include "rescancollection.h"
-#include "audiofile.h"
+#include "track.h"
 
 RescanCollection::RescanCollection(QObject *parent) : QObject(parent)
 {
-    dba = new dbAdapter();
+
 }
 
 void RescanCollection::scan()
@@ -19,9 +19,6 @@ void RescanCollection::scan()
     QStringList scanDir = aviableDirs();
     QStringList aviableFiles;
 
-    QSqlDatabase db = dba->instance().db;
-    QSqlQuery query(db);
-
     for(int i=0; i<scanDir.count(); i++)
     {
         QDirIterator it(scanDir[i],allowedExtensions, QDir::Files, QDirIterator::Subdirectories);
@@ -34,61 +31,15 @@ void RescanCollection::scan()
     double m_aviableFiles = aviableFiles.count();
     double m_scannedFiles = 0;
 
-    query.exec("UPDATE files SET `updated` = '0'");
-
     for(int i=0; i<aviableFiles.count();i++)
     {
 
         QString file = aviableFiles[i];
-        AudioFile *aFile = new AudioFile(file);
-        if(!aFile->isValid)
-        {
-            continue;
-        }
-
-        QString str = QString("SELECT path FROM files WHERE `path`='%1'").arg(file);
-        bool ok = query.exec(str);
-        if(!ok)
-        {
-            qDebug() << query.lastQuery() << query.lastError().text();
-        }
-
-        if(query.next())
-        {
-            //File in collection
-            QString str = QString("UPDATE files SET `updated` = 1 WHERE `path`='%1'").arg(file);
-            bool ok = query.exec(str);
-            if(!ok)
-            {
-                qDebug() << query.lastQuery() << query.lastError().text();
-            }
-        }
-        else
-        {
-            //New file
-            qDebug() << "New file" << file;
-            QString str = QString("INSERT INTO files (path) VALUES ('%1')").arg(file);
-            bool ok = query.exec(str);
-            if(!ok)
-            {
-                qDebug() << query.lastQuery() << query.lastError().text();
-            }
-            else
-            {
-                emit newFile(file);
-            }
-        }
+        Track *track = new Track(file);
         m_scannedFiles++;
 
         double prc = m_scannedFiles/m_aviableFiles*100;
         emit scanProcess(QVariant(prc));
-    }
-
-    QString str = QString("DELETE FROM files WHERE `updated` = '0'");
-    bool ok = query.exec(str);
-    if(!ok)
-    {
-        qDebug() << query.lastQuery() << query.lastError().text();
     }
 }
 

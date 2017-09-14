@@ -9,7 +9,9 @@ SOURCES += main.cpp \
     src/collection.cpp \
     src/dbadapter.cpp \
     src/rescancollection.cpp \
-    src/audiofile.cpp
+    src/audiofile.cpp \
+    src/artist.cpp \
+    src/track.cpp
 
 target.path = /usr/bin
 
@@ -37,4 +39,7 @@ HEADERS += \
     src/collection.h \
     src/dbadapter.h \
     src/rescancollection.h \
-    src/audiofile.h
+    src/audiofile.h \
+    src/item.h \
+    src/artist.h \
+    src/track.h
