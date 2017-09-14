@@ -22,7 +22,11 @@ AudioFile::AudioFile(QString audiofile, QObject *parent) : QObject(parent)
         if(mediaFile->open(QIODevice::ReadWrite))
         {
             isValid = true;
-            tagFile = new TagLib::FileRef(QFileInfo(mediaFile->fileName()).absoluteFilePath().toUtf8());
+            tagFile = new TagLib::FileRef(audiofile.toUtf8());
+            if(tagFile->isNull())
+            {
+                return;
+            }
             loadTags();
         }
         else
@@ -67,8 +71,6 @@ void AudioFile::loadTags()
     {
         title = "Unknow Track";
     }
-
-    qDebug() << artist << " - " << title;
 }
 
 bool AudioFile::sync()
