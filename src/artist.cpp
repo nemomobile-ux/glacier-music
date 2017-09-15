@@ -9,7 +9,7 @@ Artist::Artist(QObject *parent) : Item(parent)
 
 QHash<int, Artist*> Artist::m_cache;
 
-Artist* Artist::toId(int artistId)
+Artist* Artist::toId(const int artistId)
 {
     if(m_cache.contains(artistId))
     {
@@ -25,6 +25,7 @@ Artist* Artist::toId(int artistId)
     if(!ok)
     {
         qDebug() << query.lastQuery() << query.lastError().text();
+        return nullptr;
     }
     if(query.next())
     {
@@ -32,18 +33,18 @@ Artist* Artist::toId(int artistId)
         artist->id = artistId;
         artist->m_name = query.value(0).toString();
         m_cache.insert(artistId,artist);
+
         return artist;
     }
     m_cache.insert(artistId,0);
-    return 0;
+    return nullptr;
 }
 
-int Artist::idFromName(QString name)
+int Artist::idFromName(const QString name)
 {
     int id = 0;
     QSqlDatabase db = dbAdapter::instance().db;
     QSqlQuery query(db);
-    //QString str = QString("SELECT id FROM artist WHERE `name`='%1'").arg(name);
 
     query.prepare("SELECT id FROM artist WHERE name=:name");
     query.bindValue(":name",name);
@@ -58,16 +59,17 @@ int Artist::idFromName(QString name)
     if(query.next())
     {
         id = query.value(0).toInt();
+        return id;
     }
 
-    return id;
+    return 0;
 }
 
 int Artist::insert()
 {
     if(m_name.length() == 0)
     {
-        return 0;
+        return -1;
     }
 
     QSqlDatabase db = dbAdapter::instance().db;
@@ -84,7 +86,7 @@ int Artist::insert()
     return query.lastInsertId().toInt();
 }
 
-bool Artist::setName(QString name)
+bool Artist::setName(const QString name)
 {
     QSqlDatabase db = dbAdapter::instance().db;
     QSqlQuery query(db);

@@ -1,7 +1,6 @@
 #ifndef ARTIST_H
 #define ARTIST_H
 
-#include <QtCore>
 #include "item.h"
 
 class Artist : public Item
@@ -11,14 +10,14 @@ public:
     Artist(QObject *parent = 0);
 
 public slots:
-    static Artist* toId(int artistId);
-    QString getName() {return m_name;}
+    static Artist* toId(const int artistId);
+    const QString getName() {return m_name;}
     void remove();
     void update();
     QList<Track*> getTracks();
     int insert();
-    static int idFromName(QString name);
-    bool setName(QString name);
+    static int idFromName(const QString name);
+    bool setName(const QString name);
 
 private:
     QString m_name;

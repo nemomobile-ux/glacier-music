@@ -3,7 +3,7 @@
 #include "dbadapter.h"
 #include "audiofile.h"
 
-Track::Track(QString file)
+Track::Track(const QString file)
 {
     m_artist_id = 0;
     m_number = 0;
@@ -95,7 +95,7 @@ Track::Track(QString file)
     }
 }
 
-Track* Track::toId(int trackId)
+Track* Track::toId(const int trackId)
 {
     QSqlDatabase db = dbAdapter::instance().db;
     QSqlQuery query(db);
@@ -106,6 +106,7 @@ Track* Track::toId(int trackId)
     if(!ok)
     {
         qDebug() << query.lastQuery() << query.lastError().text();
+        return 0;
     }
 
     if(query.next())
@@ -180,7 +181,7 @@ void Track::update()
     }
 }
 
-void Track::setArtistName(QString name)
+void Track::setArtistName(const QString name)
 {
     Artist* artist = new Artist();
     int a_id = m_artist->idFromName(name);
@@ -194,7 +195,7 @@ void Track::setArtistName(QString name)
     setArtistId(a_id);
 }
 
-void Track::setArtistId(int id)
+void Track::setArtistId(const int id)
 {
     Artist* artist = new Artist();
     m_artist = artist->toId(id);

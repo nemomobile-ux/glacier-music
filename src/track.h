@@ -10,32 +10,32 @@ class Track : public Item
 {
     Q_OBJECT
 public:
-    Track(QString file);
+    Track(const QString file);
 
     Artist* getArtist() {return m_artist;}
     void setArtist(Artist *artist) {m_artist = artist;}
 
-public slots:
-    Q_INVOKABLE static Track* toId(int trackId);
-    Q_INVOKABLE QString getTitle() {return m_title;}
-    Q_INVOKABLE QString getAlbum() {return m_album;}
-    Q_INVOKABLE QString getGenre() {return m_genre;}
-    Q_INVOKABLE QString getComment() {return m_comment;}
+    Q_INVOKABLE static Track* toId(const int trackId);
+    Q_INVOKABLE const QString getTitle() {return m_title;}
+    Q_INVOKABLE const QString getAlbum() {return m_album;}
+    Q_INVOKABLE const QString getGenre() {return m_genre;}
+    Q_INVOKABLE const QString getComment() {return m_comment;}
 
+public slots:
     int getArtistId() {return m_artist_id;}
     int getNumber() {return m_number;}
     int getYear() {return m_year;}
     int getLength() {return m_length;}
 
-    void setTitle(QString title) {m_title = title;}
-    void setAlbum(QString album) {m_album = album;}
-    void setGenre(QString genre) {m_genre = genre;}
-    void setNum(int num) {m_number = num;}
-    void setYear(int year) {m_year = year;}
-    void setLength(int length) {m_length = length;}
-    void setComment(QString comment) {m_comment = comment;}
-    void setArtistId(int id);
-    void setArtistName(QString name);
+    void setTitle(const QString title) {m_title = title;}
+    void setAlbum(const QString album) {m_album = album;}
+    void setGenre(const QString genre) {m_genre = genre;}
+    void setNum(const int num) {m_number = num;}
+    void setYear(const int year) {m_year = year;}
+    void setLength(const int length) {m_length = length;}
+    void setComment(const QString comment) {m_comment = comment;}
+    void setArtistId(const int id);
+    void setArtistName(const QString name);
 
     int insert();
     void update();

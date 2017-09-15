@@ -36,6 +36,7 @@ void RescanCollection::scan()
 
         QString file = aviableFiles[i];
         Track *track = new Track(file);
+        Q_UNUSED(track);
         m_scannedFiles++;
 
         double prc = m_scannedFiles/m_aviableFiles*100;
