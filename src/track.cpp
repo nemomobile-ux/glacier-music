@@ -49,7 +49,7 @@ Track::Track(const QString file)
 
         QSqlDatabase db = dbAdapter::instance().db;
         QSqlQuery query(db);
-        query.prepare("SELECT id, artist_id,title,album,comment,genere,track,year FROM tracks WHERE filename=:fileName");
+        query.prepare("SELECT id, artist_id,title,album,comment,genre,track,year FROM tracks WHERE filename=:fileName");
         query.bindValue(":fileName",m_fileName);
 
         bool ok = query.exec();
@@ -64,8 +64,9 @@ Track::Track(const QString file)
             int artist_id = query.value(1).toInt();
             QString title = query.value(2).toString();
             QString album = query.value(3).toString();
-            QString genre = query.value(4).toString();
-            QString comment = query.value(5).toString();
+            QString comment = query.value(4).toString();
+            QString genre = query.value(5).toString();
+
             int number = query.value(6).toInt();
             int year = query.value(7).toInt();
 
@@ -82,7 +83,6 @@ Track::Track(const QString file)
         }
         else
         {
-            qDebug() << "INSERT";
             m_id = insert();
         }
 
@@ -90,8 +90,6 @@ Track::Track(const QString file)
         {
             return;
         }
-
-        //qDebug() << m_id << ": " << m_artist << "-" << m_title;
     }
 }
 
@@ -124,7 +122,8 @@ int Track::insert()
     QSqlDatabase db = dbAdapter::instance().db;
     QSqlQuery query(db);
 
-    query.prepare("INSERT INTO tracks (`artist_id`, `filename`, `title`, `album`, `comment`, `genre`, `track`, `year`, `length`) VALUES (:artistid, :filename, :title, :album, :comment, :genre, :track, :year, :length)");
+    query.prepare("INSERT INTO tracks (`artist_id`, `filename`, `title`, `album`, `comment`, `genre`, `track`, `year`, `length`) \
+                                 VALUES (:artistid, :filename, :title, :album, :comment, :genre, :track, :year, :length)");
     query.bindValue(":artistid",m_artist_id);
     query.bindValue(":filename",m_fileName);
     query.bindValue(":title",m_title);
@@ -151,10 +150,10 @@ void Track::update()
     query.prepare("UPDATE tracks SET artist_id=:AID,title=:Title,track=:Track,album=:Album,comment=:Comment,genre=:Genre,year=:Year WHERE id=:rid");
     query.bindValue(":AID",m_artist_id);
     query.bindValue(":Title",m_title);
+    query.bindValue(":Track",m_number);
     query.bindValue(":Album",m_album);
     query.bindValue(":Comment",m_comment);
     query.bindValue(":Genre",m_genre);
-    query.bindValue(":Track",m_number);
     query.bindValue(":Year",m_year);
     query.bindValue(":rid",m_id);
 
