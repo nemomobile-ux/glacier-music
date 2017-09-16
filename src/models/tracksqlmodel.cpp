@@ -11,6 +11,7 @@ TrackSqlModel::TrackSqlModel(QObject *parent) : QSqlQueryModel(parent)
     hash.insert(Qt::UserRole+6,QByteArray("tarck"));
     hash.insert(Qt::UserRole+7,QByteArray("year"));
     hash.insert(Qt::UserRole+8,QByteArray("artist_name"));
+    hash.insert(Qt::UserRole+9,QByteArray("fileName"));
     refresh();
 }
 
@@ -22,6 +23,7 @@ const char* TrackSqlModel::SQL_SELECT = "SELECT tracks.id as track_id, \
                                                 tracks.genre, \
                                                 tracks.track, \
                                                 tracks.year, \
+                                                tarcks.fileName \
                                                 artist.name as artist_name \
                                         FROM tracks \
                                         INNER JOIN artist ON artist.id = tracks.artist_id \
@@ -58,6 +60,7 @@ void TrackSqlModel::setArtist(const int artist_id)
                                 tracks.genre, \
                                 tracks.track, \
                                 tracks.year, \
+                                tarcks.fileName \
                                 artist.name as artist_name \
                             FROM tracks \
                             INNER JOIN artist ON artist.id = tracks.artist_id \
@@ -75,6 +78,7 @@ void TrackSqlModel::cleanQuery()
                             tracks.genre, \
                             tracks.track, \
                             tracks.year, \
+                            tarcks.fileName \
                             artist.name as artist_name \
                     FROM tracks \
                     INNER JOIN artist ON artist.id = tracks.artist_id \
