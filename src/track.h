@@ -23,6 +23,7 @@ public:
 
 public slots:
     int getArtistId() {return m_artist_id;}
+    QString getArtistName(){return m_artist_title;}
     int getNumber() {return m_number;}
     int getYear() {return m_year;}
     int getLength() {return m_length;}

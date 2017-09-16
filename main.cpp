@@ -31,6 +31,7 @@
 #include "src/collection.h"
 #include "src/models/artistsqlmodel.h"
 #include "src/models/tracksqlmodel.h"
+#include "src/models/playlistmodel.h"
 
 int main(int argc, char *argv[])
 {
@@ -43,6 +44,7 @@ int main(int argc, char *argv[])
     qmlRegisterType<Collection>("org.glacier.music.collection",1,0,"Collection");
     qmlRegisterType<ArtistSqlModel>("org.glacier.music.artistmodel",1,0,"ArtistModel");
     qmlRegisterType<TrackSqlModel>("org.glacier.music.trackmodel",1,0,"TrackModel");
+    qmlRegisterType<PlayListModel>("org.glacier.music.playlistmodel",1,0,"PlaylistModel");
 
     QQmlApplicationEngine* engine = new QQmlApplicationEngine(QUrl("/usr/share/glacier-music/qml/glacier-music.qml"));
     QObject *topLevel = engine->rootObjects().value(0);

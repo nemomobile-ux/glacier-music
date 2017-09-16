@@ -13,7 +13,8 @@ SOURCES += main.cpp \
     src/artist.cpp \
     src/track.cpp \
     src/models/artistsqlmodel.cpp \
-    src/models/tracksqlmodel.cpp
+    src/models/tracksqlmodel.cpp \
+    src/models/playlistmodel.cpp
 
 target.path = /usr/bin
 
@@ -49,4 +50,5 @@ HEADERS += \
     src/artist.h \
     src/track.h \
     src/models/artistsqlmodel.h \
-    src/models/tracksqlmodel.h
+    src/models/tracksqlmodel.h \
+    src/models/playlistmodel.h

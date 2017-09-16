@@ -6,7 +6,6 @@ import QtQuick.Controls 1.0
 import QtQuick.Controls.Nemo 1.0
 import QtQuick.Controls.Styles.Nemo 1.0
 import QtQuick.Window 2.1
-import QtQuick.Layouts 1.0
 
 import "../components"
 
@@ -144,31 +143,13 @@ Page {
 
             color: "transparent"
 
-            ListModel{
-                id: nextTrackModel
-                ListElement{
-                    cover: "/usr/share/glacier-music/images/cover.jpg"
-                    artist: "Би-2"
-                    track: "Революция"
-                }
-                ListElement{
-                    cover: "/usr/share/glacier-music/images/cover.jpg"
-                    artist: "Би-2"
-                    track: "Песок"
-                }
-                ListElement{
-                    cover: "/usr/share/glacier-music/images/cover.jpg"
-                    artist: "Би-2"
-                    track: "Сердце на волоске"
-                }
-            }
-
             ListView{
                 id: nextTrack
                 width: parent.width
                 height: parent.height
                 model: nextTrackModel
-                delegate: PlaylistItem{}
+                delegate: PlaylistItem{
+                }
             }
         }
     }

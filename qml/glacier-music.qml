@@ -9,6 +9,7 @@ import QtQuick.Layouts 1.0
 import org.nemomobile.settings 1.0
 
 import org.glacier.music.collection 1.0
+import org.glacier.music.playlistmodel 1.0
 
 import "pages"
 
@@ -28,6 +29,10 @@ ApplicationWindow {
         id: collection
     }
 
+    PlaylistModel{
+        id: nextTrackModel
+    }
+
     Keys.onReleased: {
         if (event.key === Qt.Key_Back) {
             if (pageStack.depth > 1) {
@@ -44,6 +49,8 @@ ApplicationWindow {
         {
             pageStack.push(Qt.resolvedUrl("/usr/share/glacier-music/qml/pages/SettingsPage.qml"));
         }
+
+        nextTrackModel.formatAutoPlaylist()
     }
 
     Rectangle{

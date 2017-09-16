@@ -9,8 +9,8 @@ ListViewItemWithActions{
     width: parent.width
     height: Theme.itemHeightHuge
 
-    icon: cover
-    label: artist+" - "+track
+    icon: ""
+    label: artist+" - "+title
 
     actions: Rectangle {
         id: playListItemActions
