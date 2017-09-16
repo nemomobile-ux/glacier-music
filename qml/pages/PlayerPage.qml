@@ -44,7 +44,7 @@ Page {
 
             Label{
                 id: trackLabel
-                text: "Би-2 - Иномарки"
+                text: ""
                 anchors.fill: parent
                 font{
                     bold: true
@@ -94,6 +94,11 @@ Page {
                     verticalCenter: playPause.verticalCenter
                 }
 
+                MouseArea{
+                    anchors.fill: parent
+                    onClicked: nextTrack.currentIndex--
+                }
+
                 source: "/usr/share/themes/glacier/fontawesome/icons/backward.png"
             }
 
@@ -104,7 +109,23 @@ Page {
 
                 anchors.centerIn: parent;
 
-                source: "/usr/share/themes/glacier/fontawesome/icons/pause.png"
+                source: (rootAudio.playbackState == MediaPlayer.PlayingState) ?
+                            "/usr/share/themes/glacier/fontawesome/icons/pause.png" :
+                            "/usr/share/themes/glacier/fontawesome/icons/play.png"
+
+                MouseArea{
+                    anchors.fill: parent
+                    onClicked: {
+                        if(rootAudio.playbackState == MediaPlayer.PlayingState)
+                        {
+                            rootAudio.pause();
+                        }
+                        else
+                        {
+                            rootAudio.play()
+                        }
+                    }
+                }
             }
 
             Image{
@@ -119,6 +140,11 @@ Page {
                 }
 
                 source: "/usr/share/themes/glacier/fontawesome/icons/forward.png"
+
+                MouseArea{
+                    anchors.fill: parent
+                    onClicked: nextTrack.currentIndex++
+                }
             }
 
             Image{
@@ -148,15 +174,19 @@ Page {
                 width: parent.width
                 height: parent.height
                 model: nextTrackModel
-                delegate: PlaylistItem{
-                }
+                delegate: PlaylistItem{}
+
+                clip: true
 
                 onCurrentIndexChanged: {
                     console.log(nextTrackModel.get(currentIndex).fileName)
                     rootAudio.stop();
+                    trackLabel.text = nextTrackModel.get(currentIndex).artist+" - "+nextTrackModel.get(currentIndex).title
                     rootAudio.source = nextTrackModel.get(currentIndex).fileName
                     rootAudio.play();
                 }
+
+                highlightRangeMode: ListView.StrictlyEnforceRange
             }
         }
     }

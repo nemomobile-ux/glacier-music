@@ -50,6 +50,14 @@ ListViewItemWithActions{
         }
     }
 
+    Rectangle{
+        visible: (nextTrack.currentIndex == index)
+        width: parent.width
+        height: 1
+        color: Theme.accentColor
+        anchors.bottom: parent.bottom
+    }
+
     onClicked:{
         nextTrack.currentIndex = index
     }
