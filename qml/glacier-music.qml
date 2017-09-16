@@ -6,6 +6,8 @@ import QtQuick.Controls.Styles.Nemo 1.0
 import QtQuick.Window 2.1
 import QtQuick.Layouts 1.0
 
+import QtMultimedia 5.5
+
 import org.nemomobile.settings 1.0
 
 import org.glacier.music.collection 1.0
@@ -33,6 +35,10 @@ ApplicationWindow {
         id: nextTrackModel
     }
 
+    MediaPlayer{
+        id: rootAudio
+    }
+
     Keys.onReleased: {
         if (event.key === Qt.Key_Back) {
             if (pageStack.depth > 1) {
@@ -49,7 +55,7 @@ ApplicationWindow {
         {
             pageStack.push(Qt.resolvedUrl("/usr/share/glacier-music/qml/pages/SettingsPage.qml"));
         }
-
+        collection.rescanCollection()
         nextTrackModel.formatAutoPlaylist()
     }
 

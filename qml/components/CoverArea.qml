@@ -67,4 +67,11 @@ Rectangle{
             progressBar.width = rewindArea.width*current_poz
         }
     }
+
+    Connections {
+        target: rootAudio
+        onPositionChanged: {
+            progressBar.width = parent.width*(rootAudio.position/rootAudio.duration)
+        }
+    }
 }

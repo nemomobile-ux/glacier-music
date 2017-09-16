@@ -21,8 +21,6 @@ Collection::Collection(QObject *parent) : QObject(parent)
     dba = new dbAdapter();
 
     connect(dba,SIGNAL(baseCreate()),this,SLOT(rescanCollection()));
-
-    rescanCollection();
 }
 
 

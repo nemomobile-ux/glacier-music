@@ -150,6 +150,13 @@ Page {
                 model: nextTrackModel
                 delegate: PlaylistItem{
                 }
+
+                onCurrentIndexChanged: {
+                    console.log(nextTrackModel.get(currentIndex).fileName)
+                    rootAudio.stop();
+                    rootAudio.source = nextTrackModel.get(currentIndex).fileName
+                    rootAudio.play();
+                }
             }
         }
     }

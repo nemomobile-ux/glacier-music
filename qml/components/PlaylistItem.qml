@@ -49,4 +49,8 @@ ListViewItemWithActions{
             source: "/usr/share/themes/glacier/fontawesome/icons/times.png"
         }
     }
+
+    onClicked:{
+        nextTrack.currentIndex = index
+    }
 }

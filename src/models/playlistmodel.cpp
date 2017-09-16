@@ -12,7 +12,7 @@ PlayListModel::PlayListModel(QObject *parent) :
     hash.insert(Qt::UserRole ,QByteArray("trackId"));
     hash.insert(Qt::UserRole+1 ,QByteArray("artist"));
     hash.insert(Qt::UserRole+2 ,QByteArray("title"));
-    hash.insert(Qt::UserRole+3 ,QByteArray("length"));
+    hash.insert(Qt::UserRole+3 ,QByteArray("fileName"));
     hash.insert(Qt::UserRole+4 ,QByteArray("played"));
 }
 
@@ -28,7 +28,7 @@ void PlayListModel::addItem(int trackId, int count)
     item.trackId = trackId;
     item.artist = track->getArtistName();
     item.title = track->getTitle();
-    item.length = track->getLength();
+    item.fileName = track->getFileName();
 
     if(count == 0)
     {
@@ -37,7 +37,7 @@ void PlayListModel::addItem(int trackId, int count)
 
     insertRows(count,1,item);
 
-    qDebug() << "Add " << item.artist << "" << item.title;
+    qDebug() << "Add " << item.artist << "" << item.title << item.fileName;
 
 }
 
@@ -71,7 +71,7 @@ QVariant PlayListModel::data(const QModelIndex &index, int role) const
     }
     else if(role == Qt::UserRole+3)
     {
-        return item.length;
+        return item.fileName;
     }
     else if(role == Qt::UserRole+4)
     {
@@ -109,13 +109,23 @@ bool PlayListModel::removeRows(int position, int rows, const QModelIndex &index)
     return true;
 }
 
-int PlayListModel::get(int idx)
+QVariant PlayListModel::get(int idx)
 {
-    if(idx < playList.size())
+    if(idx >= playList.size())
     {
-        return playList[idx].trackId;
+        return QVariant();
     }
-    return 0;
+
+    QMap<QString, QVariant> itemData;
+    playListItem item = playList.at(idx);
+
+    itemData.insert("trackId",item.trackId);
+    itemData.insert("artist",item.artist);
+    itemData.insert("title",item.title);
+    itemData.insert("fileName",item.fileName);
+    itemData.insert("played",item.played);
+
+    return QVariant(itemData);
 }
 
 void PlayListModel::remove(int idx)
@@ -151,12 +161,12 @@ void PlayListModel::formatAutoPlaylist()
 
         //create played artist list
         query.prepare("SELECT tracks.artist_id \
-                        FROM tracks \
-                        INNER JOIN playlist ON tracks.id = playlist.song_id \
-                        WHERE ptime < :atime");
-        query.bindValue(":atime",QDateTime().toTime_t()-artistRepeat);
+                      FROM tracks \
+                      INNER JOIN playlist ON tracks.id = playlist.song_id \
+                WHERE ptime < :atime");
+                query.bindValue(":atime",QDateTime().toTime_t()-artistRepeat);
 
-        if(query.next())
+                if(query.next())
         {
             a_notin.append(",");
             a_notin.append(query.value(0).toString());
@@ -164,16 +174,16 @@ void PlayListModel::formatAutoPlaylist()
 
         //create songs list
         query.prepare("SELECT tracks.id,\
-                                playlist.time as ptime \
-                                FROM tracks \
-                        LEFT OUTER JOIN playlist ON tracks.id = playlist.song_id \
-                        WHERE ptime < :stime OR ptime IS NULL \
-                        AND tracks.id NOT IN (:s_notin) \
-                        AND artist_id NOT IN (:a_notin) \
-                        ORDER BY RANDOM()");
+                      playlist.time as ptime \
+                      FROM tracks \
+                      LEFT OUTER JOIN playlist ON tracks.id = playlist.song_id \
+                WHERE ptime < :stime OR ptime IS NULL \
+                AND tracks.id NOT IN (:s_notin) \
+                AND artist_id NOT IN (:a_notin) \
+                ORDER BY RANDOM()");
 
-        query.bindValue(":stime",QDateTime().toTime_t()-songRepeat);
-        query.bindValue(":s_notin",s_notin);
+                query.bindValue(":stime",QDateTime().toTime_t()-songRepeat);
+                query.bindValue(":s_notin",s_notin);
         query.bindValue(":a_notin",a_notin);
 
         bool ok = query.exec();
@@ -213,7 +223,9 @@ void PlayListModel::setPlayed(int idx, const QModelIndex &parent)
     dataChanged(index(idx),index(idx));
 
     //add to database
-    int track_id = get(idx);
+    QVariant track = get(idx);
+    int track_id = track.toHash().value("trackId").toInt();
+
     QSqlDatabase db = dbAdapter::instance().db;
     QSqlQuery query(db);
     query.prepare("INSERT INTO playlist (`song_id`, `time`) VALUES ( :trackid , :time)");

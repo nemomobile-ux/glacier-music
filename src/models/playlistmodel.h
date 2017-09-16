@@ -11,7 +11,7 @@ class PlayListModel: public QAbstractListModel
         int trackId;
         QString artist;
         QString title;
-        int length;
+        QString fileName;
         bool played;
     };
 
@@ -28,7 +28,7 @@ public slots:
     void formatAutoPlaylist();
     void addItem(const int trackId, int count = 0);
     void setPlayed(const int idx, const QModelIndex &index = QModelIndex());
-    int get(const int idx);
+    QVariant get(const int idx);
     void remove(const int idx);
 
 signals:
