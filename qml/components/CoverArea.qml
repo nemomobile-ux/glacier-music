@@ -65,6 +65,7 @@ Rectangle{
         onClicked: {
             var current_poz = (mouseX-x)/width
             progressBar.width = rewindArea.width*current_poz
+            rootAudio.seek(rootAudio.duration*current_poz)
         }
     }
 
