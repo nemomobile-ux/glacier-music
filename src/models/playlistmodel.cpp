@@ -224,7 +224,9 @@ void PlayListModel::setPlayed(int idx, const QModelIndex &parent)
 
     //add to database
     QVariant track = get(idx);
-    int track_id = track.toHash().value("trackId").toInt();
+    int track_id = track.toMap().find("trackId").value().toInt();
+
+    qDebug() << "Play trackID" << track_id;
 
     QSqlDatabase db = dbAdapter::instance().db;
     QSqlQuery query(db);

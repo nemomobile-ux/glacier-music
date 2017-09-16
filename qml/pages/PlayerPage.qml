@@ -184,6 +184,7 @@ Page {
                     trackLabel.text = nextTrackModel.get(currentIndex).artist+" - "+nextTrackModel.get(currentIndex).title
                     rootAudio.source = nextTrackModel.get(currentIndex).fileName
                     rootAudio.play();
+                    nextTrackModel.setPlayed(currentIndex)
                 }
 
                 highlightRangeMode: ListView.StrictlyEnforceRange
