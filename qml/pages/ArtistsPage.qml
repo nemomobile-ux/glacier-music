@@ -21,7 +21,8 @@ Page {
         width: parent.width
         height: parent.height
         delegate: ListViewItemWithActions{
-            label: name;
+            label: name
         }
+        crop: true
     }
 }
