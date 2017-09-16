@@ -74,6 +74,13 @@ Page {
                     verticalCenter: playPause.verticalCenter
                 }
 
+                MouseArea{
+                    anchors.fill: parent
+                    onClicked: {
+                        pageStack.push(Qt.resolvedUrl("/usr/share/glacier-music/qml/pages/LibraryPage.qml"));
+                    }
+                }
+
                 source: "/usr/share/themes/glacier/fontawesome/icons/align-justify.png"
             }
 

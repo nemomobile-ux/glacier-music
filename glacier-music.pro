@@ -11,7 +11,8 @@ SOURCES += main.cpp \
     src/rescancollection.cpp \
     src/audiofile.cpp \
     src/artist.cpp \
-    src/track.cpp
+    src/track.cpp \
+    src/models/artistsqlmodel.cpp
 
 target.path = /usr/bin
 
@@ -33,7 +34,9 @@ DISTFILES += \
     qml/pages/PlayerPage.qml \
     qml/pages/SettingsPage.qml \
     qml/components/CoverArea.qml \
-    qml/components/PlaylistItem.qml
+    qml/components/PlaylistItem.qml \
+    qml/pages/LibraryPage.qml \
+    qml/pages/ArtistsPage.qml
 
 HEADERS += \
     src/collection.h \
@@ -42,4 +45,5 @@ HEADERS += \
     src/audiofile.h \
     src/item.h \
     src/artist.h \
-    src/track.h
+    src/track.h \
+    src/models/artistsqlmodel.h

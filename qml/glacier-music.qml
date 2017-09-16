@@ -50,7 +50,7 @@ ApplicationWindow {
         id: rescanProgress
         width: parent.width
         height: Theme.itemHeightExtraSmall/10
-        color: "#0091e5"
+        color: Theme.accentColor
         visible: false;
         anchors.top: root.top
     }
