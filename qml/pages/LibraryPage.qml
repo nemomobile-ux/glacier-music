@@ -23,10 +23,11 @@ Page {
 
         Tab {
             title: "Artists"
-            ArtistsPage{visible: true}
+            ArtistsPage{}
         }
         Tab {
             title: "Tracks"
+            TracksPage{}
         }
 
         Component {

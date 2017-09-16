@@ -12,7 +12,8 @@ SOURCES += main.cpp \
     src/audiofile.cpp \
     src/artist.cpp \
     src/track.cpp \
-    src/models/artistsqlmodel.cpp
+    src/models/artistsqlmodel.cpp \
+    src/models/tracksqlmodel.cpp
 
 target.path = /usr/bin
 
@@ -36,7 +37,8 @@ DISTFILES += \
     qml/components/CoverArea.qml \
     qml/components/PlaylistItem.qml \
     qml/pages/LibraryPage.qml \
-    qml/pages/ArtistsPage.qml
+    qml/pages/ArtistsPage.qml \
+    qml/pages/TracksPage.qml
 
 HEADERS += \
     src/collection.h \
@@ -46,4 +48,5 @@ HEADERS += \
     src/item.h \
     src/artist.h \
     src/track.h \
-    src/models/artistsqlmodel.h
+    src/models/artistsqlmodel.h \
+    src/models/tracksqlmodel.h

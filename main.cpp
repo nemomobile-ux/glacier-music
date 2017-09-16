@@ -30,6 +30,7 @@
 
 #include "src/collection.h"
 #include "src/models/artistsqlmodel.h"
+#include "src/models/tracksqlmodel.h"
 
 int main(int argc, char *argv[])
 {
@@ -41,6 +42,7 @@ int main(int argc, char *argv[])
 
     qmlRegisterType<Collection>("org.glacier.music.collection",1,0,"Collection");
     qmlRegisterType<ArtistSqlModel>("org.glacier.music.artistmodel",1,0,"ArtistModel");
+    qmlRegisterType<TrackSqlModel>("org.glacier.music.trackmodel",1,0,"TrackModel");
 
     QQmlApplicationEngine* engine = new QQmlApplicationEngine(QUrl("/usr/share/glacier-music/qml/glacier-music.qml"));
     QObject *topLevel = engine->rootObjects().value(0);
