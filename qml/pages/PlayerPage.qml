@@ -190,4 +190,9 @@ Page {
             }
         }
     }
+
+    Connections{
+        target: rootAudio
+        onStopped: nextTrack.currentIndex++
+    }
 }
