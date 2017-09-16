@@ -46,13 +46,13 @@ QVariant TrackSqlModel::data(const QModelIndex &index, int role) const{
 
 void TrackSqlModel::refresh()
 {
-    this->setQuery(SQL_SELECT);
+    setQuery(SQL_SELECT);
 }
 
 
 void TrackSqlModel::setArtist(const int artist_id)
 {
-    SQL_SELECT = QString("SELECT tracks.id as track_id, \
+   setQuery(QString("SELECT tracks.id as track_id, \
                                 tracks.artist_id, \
                                 tracks.title, \
                                 tracks.album, \
@@ -64,13 +64,13 @@ void TrackSqlModel::setArtist(const int artist_id)
                                 artist.name as artist_name \
                             FROM tracks \
                             INNER JOIN artist ON artist.id = tracks.artist_id \
-                            WHERE artist_id = %1 ORDER BY artist_name ASC").arg(artist_id).toUtf8();
+                            WHERE artist_id = %1 ORDER BY artist_name ASC").arg(artist_id).toUtf8());
 }
 
 
 void TrackSqlModel::cleanQuery()
 {
-    SQL_SELECT = "SELECT tracks.id as track_id, \
+    this->setQuery("SELECT tracks.id as track_id, \
                             tracks.artist_id, \
                             tracks.title, \
                             tracks.album, \
@@ -82,5 +82,5 @@ void TrackSqlModel::cleanQuery()
                             artist.name as artist_name \
                     FROM tracks \
                     INNER JOIN artist ON artist.id = tracks.artist_id \
-                    ORDER BY artist_name ASC";
+                    ORDER BY artist_name ASC");
 }
