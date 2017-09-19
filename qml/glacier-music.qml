@@ -9,6 +9,7 @@ import QtQuick.Layouts 1.0
 import QtMultimedia 5.5
 
 import org.nemomobile.settings 1.0
+import org.nemomobile.mpris 1.0
 
 import org.glacier.music.collection 1.0
 import org.glacier.music.playlistmodel 1.0
@@ -80,6 +81,40 @@ ApplicationWindow {
             {
                 rescanProgress.visible = false;
             }
+        }
+    }
+
+    MprisPlayer {
+        id: mprisPlayer
+
+        property string artist: "Loading"
+        property string song: "tags..."
+
+        serviceName: "glacier-music"
+        identity: "Glacier Music"
+        supportedUriSchemes: ["file"]
+        supportedMimeTypes: ["audio/x-wav", "audio/x-vorbis+ogg", "audio/mpeg"]
+
+        canControl: true
+
+        canGoNext: true
+        canGoPrevious: true
+        canPause: rootAudio.playbackState == MediaPlayer.PlayingState
+        canPlay: rootAudio.playbackState != MediaPlayer.PlayingState
+        canSeek: false
+
+        playbackStatus: (rootAudio.playbackState == MediaPlayer.PlayingState) ? Mpris.Playing : Mpris.Paused
+
+        onArtistChanged: {
+            var metadata = mprisPlayer.metadata
+            metadata[Mpris.metadataToString(Mpris.Artist)] = [artist] // List of strings
+            mprisPlayer.metadata = metadata
+        }
+
+        onSongChanged: {
+            var metadata = mprisPlayer.metadata
+            metadata[Mpris.metadataToString(Mpris.Title)] = song // String
+            mprisPlayer.metadata = metadata
         }
     }
 }

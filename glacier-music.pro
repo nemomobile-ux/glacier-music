@@ -39,7 +39,8 @@ DISTFILES += \
     qml/components/PlaylistItem.qml \
     qml/pages/LibraryPage.qml \
     qml/pages/ArtistsPage.qml \
-    qml/pages/TracksPage.qml
+    qml/pages/TracksPage.qml \
+    qml/components/ControlsArea.qml
 
 HEADERS += \
     src/collection.h \

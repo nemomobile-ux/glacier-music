@@ -14,6 +14,7 @@ Source0:    %{name}-%{version}.tar.bz2
 Requires:   qt5-qtquickcontrols-nemo
 Requires:   taglib >= 1.11.1
 Requires:   nemo-qml-plugin-settings
+Requires:   mpris-qt5-qml-plugin
 
 BuildRequires:  pkgconfig(taglib) >= 1.11.1
 BuildRequires:  pkgconfig(Qt5Core)
