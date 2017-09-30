@@ -14,7 +14,7 @@ Rectangle{
         anchors{
             right: backBtn.left
             rightMargin: width
-            verticalCenter: playPause.verticalCenter
+            verticalCenter: playPauseBtn.verticalCenter
         }
 
         MouseArea{
@@ -29,13 +29,13 @@ Rectangle{
 
     Image{
         id: backBtn
-        width: playPause.width*0.6
+        width: playPauseBtn.width*0.6
         height: width
 
         anchors{
-            right: playPause.left
+            right: playPauseBtn.left
             rightMargin: width/2
-            verticalCenter: playPause.verticalCenter
+            verticalCenter: playPauseBtn.verticalCenter
         }
 
         MouseArea{
@@ -47,7 +47,7 @@ Rectangle{
     }
 
     Image{
-        id: playPause
+        id: playPauseBtn
         width: parent.height*0.6
         height: width
 
@@ -65,13 +65,13 @@ Rectangle{
 
     Image{
         id: forwBtn
-        width: playPause.width*0.6
+        width: playPauseBtn.width*0.6
         height: width
 
         anchors{
-            left: playPause.right
+            left: playPauseBtn.right
             leftMargin: width/2
-            verticalCenter: playPause.verticalCenter
+            verticalCenter: playPauseBtn.verticalCenter
         }
 
         source: "/usr/share/themes/glacier/fontawesome/icons/forward.png"
@@ -84,13 +84,13 @@ Rectangle{
 
     Image{
         id: soundBtn
-        width: playPause.width*0.6
+        width: playPauseBtn.width*0.6
         height: width
 
         anchors{
             left: forwBtn.right
             leftMargin: width
-            verticalCenter: playPause.verticalCenter
+            verticalCenter: playPauseBtn.verticalCenter
         }
 
         source: "/usr/share/themes/glacier/fontawesome/icons/volume-up.png"
