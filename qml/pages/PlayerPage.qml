@@ -10,7 +10,7 @@ import QtQuick.Window 2.1
 import "../components"
 
 Page {
-    id: cameraPage
+    id: playerPage
 
     headerTools: HeaderToolsLayout {
         id: tools
@@ -97,14 +97,24 @@ Page {
 
     Connections{
         target: rootAudio
-        onStopped: ++nextTrack.currentIndex
+        onStopped: playNext()
     }
 
     Connections{
         target: mprisPlayer
-        onNextRequested: ++nextTrack.currentIndex
+        onNextRequested: playNext()
         onPreviousRequested: --nextTrack.currentIndex
         onPlayRequested: rootAudio.play();
         onPauseRequested: rootAudio.pause();
+    }
+
+    function playNext()
+    {
+        console.log((nextTrack.currentIndex+1) + " | " + nextTrack.count)
+        if((nextTrack.currentIndex+1) >= nextTrack.count)
+        {
+            nextTrackModel.formatRandomPlaylist(1);
+        }
+        ++nextTrack.currentIndex
     }
 }

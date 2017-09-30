@@ -78,7 +78,7 @@ Rectangle{
 
         MouseArea{
             anchors.fill: parent
-            onClicked: nextTrack.currentIndex++
+            onClicked: playNext()
         }
     }
 
