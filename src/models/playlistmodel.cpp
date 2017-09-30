@@ -133,6 +133,29 @@ void PlayListModel::remove(int idx)
     removeRows(idx,1);
 }
 
+void PlayListModel::formatRandomPlaylist(const int tracksCount)
+{
+    qDebug() << "Format random playlist";
+
+    QSqlDatabase db = dbAdapter::instance().db;
+    QSqlQuery query(db);
+    query.prepare("SELECT id FROM tracks ORDER BY RANDOM() LIMIT :limit");
+    query.bindValue(":limit",tracksCount);
+    bool ok = query.exec();
+
+    if(!ok)
+    {
+        qDebug() << query.lastQuery() << query.lastError().text();
+    }
+    else
+    {
+        while(query.next())
+        {
+            addItem(query.value(0).toInt());
+        }
+    }
+}
+
 void PlayListModel::formatAutoPlaylist()
 {
     uint songRepeat = 60*60;
@@ -201,6 +224,11 @@ void PlayListModel::formatAutoPlaylist()
             errors++;
             i++;
         }
+    }
+
+    if(playList.count() < smartSong)
+    {
+        formatRandomPlaylist(playList.count()-smartSong);
     }
 }
 

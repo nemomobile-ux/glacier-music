@@ -26,6 +26,7 @@ public:
 
 public slots:
     void formatAutoPlaylist();
+    void formatRandomPlaylist(const int tracksCount);
     void addItem(const int trackId, int count = 0);
     void setPlayed(const int idx, const QModelIndex &index = QModelIndex());
     QVariant get(const int idx);
