@@ -14,7 +14,7 @@ public:
 signals:
     void answerNotCorrect();
     void downloadCover();
-    void coverReady();
+    void coverReady(QString fileName);
     void downloadCoverProgress(float process);
 
 public slots:
@@ -26,8 +26,6 @@ private slots:
     void coverNetworkData(QNetworkReply *reply);
     void onFinishedDownloadCover(QNetworkReply *reply);
     void onDownloadCoverProgress(qint64 bytesRead,qint64 bytesTotal);
-    void onReadyCoverRead();
-    void onReplyCoverFinished();
 
 private:
     QString m_covers_dir;
@@ -43,6 +41,8 @@ private:
     QMap<QString,QString> m_song;
 
     QFile *m_coverFile;
+
+    bool m_redirect;
 
     void downloadCoverImage(QString coverURL);
 };

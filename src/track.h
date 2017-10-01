@@ -19,6 +19,7 @@ public:
     Q_INVOKABLE const QString getTitle() {return m_title;}
     Q_INVOKABLE const QString getAlbum() {return m_album;}
     Q_INVOKABLE const QString getGenre() {return m_genre;}
+    Q_INVOKABLE const QString getCover() {return m_cover;}
     Q_INVOKABLE const QString getComment() {return m_comment;}
 
 public slots:
@@ -54,6 +55,7 @@ private:
     QString m_title;
     QString m_album;
     QString m_genre;
+    QString m_cover;
     int m_number;
     int m_year;
     QString m_comment;

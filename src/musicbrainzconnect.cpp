@@ -47,7 +47,7 @@ void MusicBrainzConnect::dataReady()
     m_song.insert("title",songObject["title"].toString());
     m_song.insert("id",songObject["id"].toString());
 
-//TODO: Add artist info parse
+    //TODO: Add artist info parse
     /*QJsonArray f_artistObject = songObject["artist-credit"].toArray();
     QJsonArray artistObject = f_artistObject[0].toArray();
     qDebug() << "----------";
@@ -68,7 +68,7 @@ void MusicBrainzConnect::dataReady()
     }
     else
     {
-        emit coverReady();
+        emit coverReady(m_song.value("release_id")+".jpg");
     }
 }
 
@@ -115,6 +115,7 @@ void MusicBrainzConnect::coverNetworkData(QNetworkReply * reply)
 
 void MusicBrainzConnect::downloadCoverImage(QString coverURL)
 {
+    qDebug() << "Start download " << coverURL;
     QString saveFilePath = m_covers_dir+"/"+m_song.value("release_id")+".jpg";
 
     QNetworkRequest request;
@@ -127,8 +128,6 @@ void MusicBrainzConnect::downloadCoverImage(QString coverURL)
 
     connect(m_cresponse,SIGNAL(downloadProgress(qint64,qint64)),this,SLOT(onDownloadCoverProgress(qint64,qint64)));
     connect(m_cmanager,SIGNAL(finished(QNetworkReply*)),this,SLOT(onFinishedDownloadCover(QNetworkReply*)));
-    connect(m_cresponse,SIGNAL(readyRead()),this,SLOT(onReadyCoverRead()));
-    connect(m_cresponse,SIGNAL(finished()),this,SLOT(onReplyCoverFinished()));
 }
 
 
@@ -142,29 +141,21 @@ void MusicBrainzConnect::onDownloadCoverProgress(qint64 bytesRead,qint64 bytesTo
 
 void MusicBrainzConnect::onFinishedDownloadCover(QNetworkReply * reply)
 {
-    if(reply->error())
+    if(reply->error() != QNetworkReply::NoError)
     {
-        qDebug() << m_cresponse->errorString();
+        qDebug() << reply->errorString();
     }
 
-    if(m_coverFile->isOpen())
+    if(reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() == 307 || reply->rawHeaderList().contains("Location"))
     {
-        m_coverFile->close();
-        m_coverFile->deleteLater();
+        QNetworkRequest req(reply->header(QNetworkRequest::LocationHeader).toString());
+        qDebug() << "Redirect: " << reply->header(QNetworkRequest::LocationHeader).toString();
+        m_cmanager->get(req);
+        return;
     }
-}
 
-void MusicBrainzConnect::onReadyCoverRead()
-{
-    m_coverFile->write(m_cresponse->readAll());
-}
-
-void MusicBrainzConnect::onReplyCoverFinished()
-{
-    if(m_coverFile->isOpen())
-    {
-        m_coverFile->close();
-        m_coverFile->deleteLater();
-    }
-    emit coverReady();
+    m_coverFile->write(reply->readAll());
+    m_coverFile->close();
+    m_coverFile->deleteLater();
+    emit coverReady(m_song.value("release_id")+".jpg");
 }

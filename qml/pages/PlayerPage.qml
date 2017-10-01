@@ -7,6 +7,8 @@ import QtQuick.Controls.Nemo 1.0
 import QtQuick.Controls.Styles.Nemo 1.0
 import QtQuick.Window 2.1
 
+import org.glacier.music.cover 1.0
+
 import "../components"
 
 Page {
@@ -78,7 +80,8 @@ Page {
                 clip: true
 
                 onCurrentIndexChanged: {
-                    console.log(nextTrackModel.get(currentIndex).fileName)
+                    coverArea.cover = (nextTrackModel.get(currentIndex).cover) ? nextTrackModel.get(currentIndex).cover : "/usr/share/glacier-music/images/cover.png"
+                    coverLoader.getCoverByTrackId(nextTrackModel.get(currentIndex).trackId)
                     rootAudio.stop();
                     trackLabel.text = nextTrackModel.get(currentIndex).artist+" - "+nextTrackModel.get(currentIndex).title
                     rootAudio.source = nextTrackModel.get(currentIndex).fileName
@@ -93,9 +96,20 @@ Page {
         }
     }
 
+    Cover{
+        id: coverLoader
+    }
+
     Connections{
         target: rootAudio
         onStopped: playNext()
+    }
+
+    Connections{
+        target: coverLoader
+        onCoverReady: {
+            coverArea.cover = coverFile;
+        }
     }
 
     Connections{
@@ -104,6 +118,17 @@ Page {
         onPreviousRequested: --nextTrack.currentIndex
         onPlayRequested: rootAudio.play();
         onPauseRequested: rootAudio.pause();
+    }
+
+
+    Connections{
+        target: collection
+        onUpdateRescanProgress: {
+            if(nextTrack.count < 10)
+            {
+                nextTrackModel.formatRandomPlaylist(1);
+            }
+        }
     }
 
     function playNext()

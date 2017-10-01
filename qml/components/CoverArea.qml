@@ -13,9 +13,10 @@ Rectangle{
     width: parent.width
     height: width
 
+    property alias cover: coverImage.source
+
     Image{
-        id: cover
-        source: "/usr/share/glacier-music/images/cover.png"
+        id: coverImage
         width: parent.width
         height: parent.height
     }

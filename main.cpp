@@ -29,6 +29,7 @@
 #include <QCoreApplication>
 
 #include "src/collection.h"
+#include "src/cover.h"
 #include "src/models/artistsqlmodel.h"
 #include "src/models/tracksqlmodel.h"
 #include "src/models/playlistmodel.h"
@@ -42,6 +43,8 @@ int main(int argc, char *argv[])
     app.setApplicationName("glacier-music");
 
     qmlRegisterType<Collection>("org.glacier.music.collection",1,0,"Collection");
+    qmlRegisterType<Cover>("org.glacier.music.cover",1,0,"Cover");
+
     qmlRegisterType<ArtistSqlModel>("org.glacier.music.artistmodel",1,0,"ArtistModel");
     qmlRegisterType<TrackSqlModel>("org.glacier.music.trackmodel",1,0,"TrackModel");
     qmlRegisterType<PlayListModel>("org.glacier.music.playlistmodel",1,0,"PlaylistModel");
@@ -54,5 +57,9 @@ int main(int argc, char *argv[])
 
     window->setTitle(QObject::tr("Music"));
     window->showFullScreen();
+
+/*    MusicBrainzConnect *mbc = new MusicBrainzConnect();
+    mbc->getData("Би-2","Серебро");*/
+
     return app.exec();
 }

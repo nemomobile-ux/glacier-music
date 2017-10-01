@@ -2,6 +2,7 @@
 #include "artist.h"
 #include "dbadapter.h"
 #include "audiofile.h"
+#include "musicbrainzconnect.h"
 
 Track::Track(const QString file)
 {
@@ -49,7 +50,16 @@ Track::Track(const QString file)
 
         QSqlDatabase db = dbAdapter::instance().db;
         QSqlQuery query(db);
-        query.prepare("SELECT id, artist_id,title,album,comment,genre,track,year FROM tracks WHERE filename=:fileName");
+        query.prepare("SELECT id, "
+                      "artist_id,"
+                      "title,"
+                      "album,"
+                      "comment,"
+                      "genre,"
+                      "cover,"
+                      "track,"
+                      "year "
+                      "FROM tracks WHERE filename=:fileName");
         query.bindValue(":fileName",m_fileName);
 
         bool ok = query.exec();
@@ -67,8 +77,8 @@ Track::Track(const QString file)
             QString comment = query.value(4).toString();
             QString genre = query.value(5).toString();
 
-            int number = query.value(6).toInt();
-            int year = query.value(7).toInt();
+            int number = query.value(7).toInt();
+            int year = query.value(8).toInt();
 
             if(artist_id != m_artist_id
                     || title != m_title
@@ -80,6 +90,7 @@ Track::Track(const QString file)
             {
                 update();
             }
+            m_cover = query.value(6).toString();
         }
         else
         {

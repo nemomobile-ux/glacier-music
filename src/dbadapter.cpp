@@ -48,6 +48,7 @@ void dbAdapter::initDB()
             `album` TEXT,\
             `comment` TEXT,\
             `genre` TEXT, \
+            `cover` TEXT, \
             `track` INTEGER,\
             `year` INTEGER,\
             `length` INTEGER)");
