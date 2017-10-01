@@ -41,7 +41,8 @@ DISTFILES += \
     qml/pages/LibraryPage.qml \
     qml/pages/ArtistsPage.qml \
     qml/pages/TracksPage.qml \
-    qml/components/ControlsArea.qml
+    qml/components/ControlsArea.qml \
+    images/cover.png
 
 HEADERS += \
     src/collection.h \

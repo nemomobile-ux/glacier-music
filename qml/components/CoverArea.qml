@@ -15,7 +15,7 @@ Rectangle{
 
     Image{
         id: cover
-        source: "/usr/share/glacier-music/images/cover.jpg"
+        source: "/usr/share/glacier-music/images/cover.png"
         width: parent.width
         height: parent.height
     }
