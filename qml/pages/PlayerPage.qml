@@ -89,8 +89,6 @@ Page {
                     mprisPlayer.artist = nextTrackModel.get(currentIndex).artist
                     mprisPlayer.song = nextTrackModel.get(currentIndex).title
                 }
-
-                highlightRangeMode: ListView.StrictlyEnforceRange
             }
         }
     }
