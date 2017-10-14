@@ -1,16 +1,14 @@
 #include "musicbrainzconnect.h"
+#include "downloader.h"
+
 #include <QDir>
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
-#include <QNetworkRequest>
 #include <QStandardPaths>
 
 MusicBrainzConnect::MusicBrainzConnect(QObject *parent) : QObject(parent)
 {
-    m_manager = new QNetworkAccessManager();
-    m_imanager = new QNetworkAccessManager();
-    m_cmanager = new QNetworkAccessManager();
     m_covers_dir = QStandardPaths::writableLocation(QStandardPaths::CacheLocation)+"/covers";
     QDir covers(m_covers_dir);
     if(!covers.exists())
@@ -21,19 +19,14 @@ MusicBrainzConnect::MusicBrainzConnect(QObject *parent) : QObject(parent)
 
 void MusicBrainzConnect::getData(const QString artist, const QString title)
 {
-    QUrl url("https://musicbrainz.org/ws/2/recording?query="+title+"%20artist:"+artist+"&fmt=json");
-    QNetworkRequest request(url);
-    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
-    request.setRawHeader("User-Agent","Glacier music player");
-    m_response = m_manager->get(request);
-
-    connect(m_response,SIGNAL(finished()),this,SLOT(dataReady()));
+    Downloader *mbDownloader = new Downloader("https://musicbrainz.org/ws/2/recording?query="+title+"%20artist:"+artist+"&fmt=json");
+    connect(mbDownloader,SIGNAL(stringReady(QByteArray)),this,SLOT(dataReady(QByteArray)));
+    mbDownloader->loadData();
 }
 
-void MusicBrainzConnect::dataReady()
+void MusicBrainzConnect::dataReady(QByteArray answer)
 {
-    QString answer = m_response->readAll();
-    QJsonDocument data_doc = QJsonDocument::fromJson(answer.toUtf8());
+    QJsonDocument data_doc = QJsonDocument::fromJson(answer);
     QJsonObject data_obj = data_doc.object();
     QJsonArray recordingsArray = data_obj["recordings"].toArray();
 
@@ -74,35 +67,22 @@ void MusicBrainzConnect::dataReady()
 
 void MusicBrainzConnect::loadCover(QString releaseId)
 {
-    qDebug() << "Load cover form "<< QString("http://archive.org/download/mbid-"+releaseId+"/index.json");
-
-    QUrl url(QString("http://coverartarchive.org/release/"+releaseId));
-    QNetworkRequest request(url);
-    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
-    request.setRawHeader("User-Agent","Glacier music player");
-    m_iresponse = m_imanager->get(request);
-
-    connect(m_imanager,SIGNAL(finished(QNetworkReply*)),this, SLOT(coverNetworkData(QNetworkReply*)));
-}
-
-
-void MusicBrainzConnect::coverNetworkData(QNetworkReply * reply)
-{
-    if(reply->error() != QNetworkReply::NoError)
+    if(releaseId.length() == 0)
     {
-        qDebug() << reply->errorString();
-    }
-
-    if(reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() == 307 || reply->rawHeaderList().contains("Location"))
-    {
-        QNetworkRequest req(reply->header(QNetworkRequest::LocationHeader).toString());
-        m_imanager->get(req);
         return;
     }
 
-    QString answer = reply->readAll();
+    qDebug() << "Load cover form "<< QString("http://coverartarchive.org/release/"+releaseId);
 
-    QJsonDocument cover_doc = QJsonDocument::fromJson(answer.toUtf8());
+    Downloader *cbDownloader = new Downloader("http://coverartarchive.org/release/"+releaseId);
+    connect(cbDownloader,SIGNAL(stringReady(QByteArray)),this,SLOT(coverNetworkData(QByteArray)));
+    cbDownloader->loadData();
+}
+
+
+void MusicBrainzConnect::coverNetworkData(QByteArray answer)
+{
+    QJsonDocument cover_doc = QJsonDocument::fromJson(answer);
     QJsonObject cover_obj = cover_doc.object();
     QJsonArray coversArray = cover_obj["images"].toArray();
     QJsonObject cover = coversArray.first().toObject();
@@ -118,43 +98,21 @@ void MusicBrainzConnect::downloadCoverImage(QString coverURL)
     qDebug() << "Start download " << coverURL;
     QString saveFilePath = m_covers_dir+"/"+m_song.value("release_id")+".jpg";
 
-    QNetworkRequest request;
-    request.setUrl(QUrl(coverURL));
-    m_cresponse = m_cmanager->get(request);
+    Downloader *imageDownloader = new Downloader(coverURL);
+    connect(imageDownloader,SIGNAL(stringReady(QByteArray)),this,SLOT(onFinishedDownloadCover(QByteArray)));
+    connect(imageDownloader,SIGNAL(downloadProgress(float)),this,SIGNAL(downloadCoverProgress(float)));
+    imageDownloader->loadData();
 
     m_coverFile = new QFile;
     m_coverFile->setFileName(saveFilePath);
     m_coverFile->open(QIODevice::WriteOnly);
-
-    connect(m_cresponse,SIGNAL(downloadProgress(qint64,qint64)),this,SLOT(onDownloadCoverProgress(qint64,qint64)));
-    connect(m_cmanager,SIGNAL(finished(QNetworkReply*)),this,SLOT(onFinishedDownloadCover(QNetworkReply*)));
 }
 
 
-void MusicBrainzConnect::onDownloadCoverProgress(qint64 bytesRead,qint64 bytesTotal)
+
+void MusicBrainzConnect::onFinishedDownloadCover(QByteArray answer)
 {
-    float progress;
-    progress = bytesRead/bytesTotal*100;
-    emit downloadCoverProgress(progress);
-}
-
-
-void MusicBrainzConnect::onFinishedDownloadCover(QNetworkReply * reply)
-{
-    if(reply->error() != QNetworkReply::NoError)
-    {
-        qDebug() << reply->errorString();
-    }
-
-    if(reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() == 307 || reply->rawHeaderList().contains("Location"))
-    {
-        QNetworkRequest req(reply->header(QNetworkRequest::LocationHeader).toString());
-        qDebug() << "Redirect: " << reply->header(QNetworkRequest::LocationHeader).toString();
-        m_cmanager->get(req);
-        return;
-    }
-
-    m_coverFile->write(reply->readAll());
+    m_coverFile->write(answer);
     m_coverFile->close();
     m_coverFile->deleteLater();
     emit coverReady(m_song.value("release_id")+".jpg");

@@ -16,7 +16,8 @@ SOURCES += main.cpp \
     src/models/tracksqlmodel.cpp \
     src/models/playlistmodel.cpp \
     src/musicbrainzconnect.cpp \
-    src/cover.cpp
+    src/cover.cpp \
+    src/downloader.cpp
 
 target.path = /usr/bin
 
@@ -57,4 +58,5 @@ HEADERS += \
     src/models/tracksqlmodel.h \
     src/models/playlistmodel.h \
     src/musicbrainzconnect.h \
-    src/cover.h
+    src/cover.h \
+    src/downloader.h
