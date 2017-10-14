@@ -25,6 +25,8 @@ public:
     bool removeRows(int position, int rows, const QModelIndex &index = QModelIndex());
 
 public slots:
+    void clearPlaylist();
+    void loadPlaylistFromDB();
     void formatAutoPlaylist();
     void formatRandomPlaylist(const int tracksCount);
     void addItem(const int trackId, int count = 0);

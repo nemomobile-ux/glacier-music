@@ -37,6 +37,13 @@ void PlayListModel::addItem(int trackId, int count)
 
     insertRows(count,1,item);
 
+
+    QSqlDatabase db = dbAdapter::instance().db;
+    QSqlQuery query(db);
+    query.prepare("INSERT INTO playlist (`song_id`, `time`) VALUES ( :trackid , 0)");
+    query.bindValue(":trackid",trackId);
+    query.exec();
+
     qDebug() << "Add " << item.artist << "" << item.title << item.fileName;
 
 }
@@ -131,6 +138,42 @@ QVariant PlayListModel::get(int idx)
 void PlayListModel::remove(int idx)
 {
     removeRows(idx,1);
+}
+
+void PlayListModel::clearPlaylist()
+{
+    qDebug() << "Clear playlist";
+    playList.clear();
+
+    QSqlDatabase db = dbAdapter::instance().db;
+    QSqlQuery query(db);
+    query.prepare("DELETE FROM playlist WHERE time = 0");
+    bool ok = query.exec();
+
+    if(!ok)
+    {
+        qDebug() << query.lastQuery() << query.lastError().text();
+    }
+}
+
+void PlayListModel::loadPlaylistFromDB()
+{
+    QSqlDatabase db = dbAdapter::instance().db;
+    QSqlQuery query(db);
+    query.prepare("SELECT song_id FROM playlist WHERE time = 0 LIMIT 5");
+    bool ok = query.exec();
+
+    if(!ok)
+    {
+        qDebug() << query.lastQuery() << query.lastError().text();
+    }
+    else
+    {
+        while(query.next())
+        {
+            addItem(query.value(0).toInt());
+        }
+    }
 }
 
 void PlayListModel::formatRandomPlaylist(const int tracksCount)

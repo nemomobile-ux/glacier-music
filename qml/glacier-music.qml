@@ -57,7 +57,7 @@ ApplicationWindow {
             pageStack.push(Qt.resolvedUrl("/usr/share/glacier-music/qml/pages/SettingsPage.qml"));
         }
         collection.rescanCollection()
-        nextTrackModel.formatAutoPlaylist()
+        nextTrackModel.loadPlaylistFromDB()
     }
 
     Rectangle{

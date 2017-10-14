@@ -58,8 +58,5 @@ int main(int argc, char *argv[])
     window->setTitle(QObject::tr("Music"));
     window->showFullScreen();
 
-/*    MusicBrainzConnect *mbc = new MusicBrainzConnect();
-    mbc->getData("Би-2","Серебро");*/
-
     return app.exec();
 }
