@@ -60,3 +60,6 @@ HEADERS += \
     src/musicbrainzconnect.h \
     src/cover.h \
     src/downloader.h
+
+CONFIG += link_pkgconfig
+PKGCONFIG += taglib
