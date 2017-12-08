@@ -13,7 +13,7 @@ Rectangle{
 
         anchors{
             right: backBtn.left
-            rightMargin: width
+            rightMargin: width/2
             verticalCenter: playPauseBtn.verticalCenter
         }
 
