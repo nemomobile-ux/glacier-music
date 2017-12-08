@@ -60,7 +60,6 @@ Page {
         ControlsArea{
             id: controsArea
             width: parent.width
-            height: trackLabelArea.height*2
         }
 
         Rectangle{

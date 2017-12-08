@@ -7,17 +7,18 @@ import QtQuick.Controls.Styles.Nemo 1.0
 
 Rectangle{
     id: controsArea
+    height: parent.width/9*1.1
 
     color: "transparent"
 
     Image{
         id: playlistBtn
-        width: playPause.width*0.6
+        width: playPauseBtn.width*0.6
         height: width
 
         anchors{
             right: backBtn.left
-            rightMargin: width/2
+            rightMargin: width
             verticalCenter: playPauseBtn.verticalCenter
         }
 
@@ -52,8 +53,8 @@ Rectangle{
 
     Image{
         id: playPauseBtn
-        width: parent.height*0.6
-        height: width
+        width: height
+        height: parent.width/9
 
         anchors.centerIn: parent;
 
