@@ -38,6 +38,14 @@ ApplicationWindow {
 
     MediaPlayer{
         id: rootAudio
+        onVolumeChanged: {
+            settings.setValue("volume",volume);
+            settings.sync();
+        }
+
+        Component.onCompleted: {
+            volume = settings.value("volume",1)
+        }
     }
 
     Keys.onReleased: {

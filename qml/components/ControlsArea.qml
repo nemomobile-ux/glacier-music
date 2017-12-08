@@ -1,6 +1,10 @@
 import QtQuick 2.0
 import QtMultimedia 5.5
 
+import QtQuick.Controls 1.0 //needed for the Stack attached property
+import QtQuick.Controls.Nemo 1.0
+import QtQuick.Controls.Styles.Nemo 1.0
+
 Rectangle{
     id: controsArea
 
@@ -94,6 +98,54 @@ Rectangle{
         }
 
         source: "/usr/share/themes/glacier/fontawesome/icons/volume-up.png"
+
+        MouseArea{
+            anchors.fill: parent
+            onClicked: {
+                volumeArea.visible = true
+                removeVolumeTimer.start()
+            }
+        }
+    }
+
+    Rectangle{
+        id: volumeArea
+        width: parent.width
+        height: parent.height
+
+        color: Theme.backgroundColor
+
+        visible: false
+
+        MouseArea{
+            anchors.fill: parent
+            onClicked: volumeArea.visible = false
+        }
+
+        Slider{
+            id: volumeSlider
+
+            width: parent.width*0.8
+            anchors.centerIn: parent
+
+            minimumValue: 0
+            maximumValue: 1
+            stepSize: 0.05
+            value: rootAudio.volume
+
+            onValueChanged:{
+                removeVolumeTimer.restart()
+                rootAudio.volume = value
+            }
+        }
+    }
+
+    Timer{
+        id: removeVolumeTimer
+        interval: 5000
+        onTriggered: {
+            volumeArea.visible = false
+        }
     }
 
     Connections{
