@@ -14,6 +14,7 @@ Rectangle{
     height: width
 
     property alias cover: coverImage.source
+    color: "transparent"
 
     Image{
         id: coverImage
@@ -23,7 +24,7 @@ Rectangle{
 
     Rectangle{
         id: progressBar
-        width: parent.width*0.4
+        width: 0
         height: Theme.itemHeightExtraSmall/4
         color: "#0091e5"
         anchors{
