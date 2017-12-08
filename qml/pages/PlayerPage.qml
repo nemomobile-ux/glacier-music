@@ -52,6 +52,7 @@ Page {
                     bold: true
                     pixelSize: Theme.fontSizeExtraLarge
                 }
+                scale: paintedWidth > width ? (width / paintedWidth) : 1
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
             }
@@ -82,7 +83,7 @@ Page {
                     coverArea.cover = (nextTrackModel.get(currentIndex).cover) ? nextTrackModel.get(currentIndex).cover : "/usr/share/glacier-music/images/cover.png"
                     coverLoader.getCoverByTrackId(nextTrackModel.get(currentIndex).trackId)
                     rootAudio.stop();
-                    trackLabel.text = nextTrackModel.get(currentIndex).artist+" - "+nextTrackModel.get(currentIndex).title
+                    trackLabel.text = nextTrackModel.get(currentIndex).artist+"\n"+nextTrackModel.get(currentIndex).title
                     rootAudio.source = nextTrackModel.get(currentIndex).fileName
 
                     rootAudio.play();
