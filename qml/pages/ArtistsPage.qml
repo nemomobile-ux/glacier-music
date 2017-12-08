@@ -23,6 +23,5 @@ Page {
         delegate: ListViewItemWithActions{
             label: name
         }
-        crop: true
     }
 }
