@@ -17,13 +17,12 @@ Page {
     }
 
     Column {
+        id: fileSortingRow
         width: parent.width
         anchors{
             top: parent.top
             topMargin: 40
         }
-
-
 
         ListModel{
             id: fileOrganizeModel
@@ -49,7 +48,36 @@ Page {
                 }
             }
             onCurrentIndexChanged:{
-                settings.setValue("iso",fileOrganizeModel.get(fileOrganize.currentIndex).name);
+                settings.setValue("sorting",fileOrganizeModel.get(fileOrganize.currentIndex).name);
+            }
+        }
+    }
+
+    Column{
+        id: alwaysFromTheBeginningRow
+        width: parent.width
+        anchors{
+            top: fileSortingRow.bottom
+            margins: 40
+        }
+
+        CheckBox {
+            text:  qsTr("Always play from the beginning")
+            anchors {
+                left: parent.left
+                leftMargin: height
+            }
+            checked: settings.value("alwaysFromTheBeginning",1) == 1
+            onClicked: {
+                if(checked)
+                {
+                    settings.setValue("alwaysFromTheBeginning",1)
+                }
+                else
+                {
+                    settings.setValue("alwaysFromTheBeginning",0)
+                }
+                console.warn(settings.value("alwaysFromTheBeginning",1))
             }
         }
     }

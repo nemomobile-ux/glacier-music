@@ -43,6 +43,10 @@ ApplicationWindow {
             settings.sync();
         }
 
+        onPositionChanged: {
+            settings.setValue("seek",position);
+        }
+
         Component.onCompleted: {
             volume = settings.value("volume",1)
         }
