@@ -56,7 +56,14 @@ int main(int argc, char *argv[])
     engine->rootContext()->setContextProperty("__window", window);
 
     window->setTitle(QObject::tr("Music"));
-    window->showFullScreen();
+    if (QCoreApplication::arguments().contains("--window")) {
+        window->show();
+        window->setIcon(QIcon("/usr/share/glacier-music/images/icon-app-music.png"));
+    }
+    else
+    {
+        window->showFullScreen();
+    }
 
     return app.exec();
 }
