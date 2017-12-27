@@ -28,6 +28,8 @@
 #include <QScreen>
 #include <QCoreApplication>
 
+#include <glacierapp.h>
+
 #include "src/collection.h"
 #include "src/cover.h"
 #include "src/models/artistsqlmodel.h"
@@ -38,9 +40,8 @@ int main(int argc, char *argv[])
 {
     setenv("QT_QUICK_CONTROLS_STYLE", "Nemo", 1);
 
-    QGuiApplication app(argc, argv);
-    app.setOrganizationName("NemoMobile");
-    app.setApplicationName("glacier-music");
+    QGuiApplication *app = GlacierApp::app(argc, argv);
+    app->setOrganizationName("NemoMobile");
 
     qmlRegisterType<Collection>("org.glacier.music.collection",1,0,"Collection");
     qmlRegisterType<Cover>("org.glacier.music.cover",1,0,"Cover");
@@ -49,21 +50,9 @@ int main(int argc, char *argv[])
     qmlRegisterType<TrackSqlModel>("org.glacier.music.trackmodel",1,0,"TrackModel");
     qmlRegisterType<PlayListModel>("org.glacier.music.playlistmodel",1,0,"PlaylistModel");
 
-    QQmlApplicationEngine* engine = new QQmlApplicationEngine(QUrl("/usr/share/glacier-music/qml/glacier-music.qml"));
-    QObject *topLevel = engine->rootObjects().value(0);
-    QQuickWindow *window = qobject_cast<QQuickWindow *>(topLevel);
-
-    engine->rootContext()->setContextProperty("__window", window);
-
+    QQuickWindow *window = GlacierApp::showWindow();
     window->setTitle(QObject::tr("Music"));
-    if (QCoreApplication::arguments().contains("--window")) {
-        window->show();
-        window->setIcon(QIcon("/usr/share/glacier-music/images/icon-app-music.png"));
-    }
-    else
-    {
-        window->showFullScreen();
-    }
+    window->setIcon(QIcon("/usr/share/glacier-music/images/icon-app-music.png"));
 
-    return app.exec();
+    return app->exec();
 }

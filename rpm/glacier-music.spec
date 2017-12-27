@@ -7,7 +7,7 @@ Name:       glacier-music
 Summary:    Glacier music player
 Version:    0.1
 Release:    1
-Group:      Qt/Qt
+Group:      Application/Media
 License:    LGPL
 URL:        https://github.com/nemomobile-ux/glacier-music
 Source0:    %{name}-%{version}.tar.bz2
@@ -15,12 +15,14 @@ Requires:   qt5-qtquickcontrols-nemo
 Requires:   taglib >= 1.11.1
 Requires:   nemo-qml-plugin-settings
 Requires:   mpris-qt5-qml-plugin
+Requires:   libglacierapp
 
 BuildRequires:  pkgconfig(taglib) >= 1.11.1
 BuildRequires:  pkgconfig(Qt5Core)
 BuildRequires:  pkgconfig(Qt5Qml)
 BuildRequires:  pkgconfig(Qt5Quick)
 BuildRequires:  pkgconfig(Qt5Multimedia)
+BuildRequires:  pkgconfig(glacierapp)
 BuildRequires:  desktop-file-utils
 
 %description

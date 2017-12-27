@@ -3,7 +3,7 @@ TARGET = glacier-music
 
 QT += qml quick sql multimedia
 
-LIBS += -ltag
+LIBS += -ltag -lglacierapp
 
 SOURCES += main.cpp \
     src/collection.cpp \
@@ -62,4 +62,4 @@ HEADERS += \
     src/downloader.h
 
 CONFIG += link_pkgconfig
-PKGCONFIG += taglib
+PKGCONFIG += taglib glacierapp
