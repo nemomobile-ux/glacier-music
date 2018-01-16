@@ -13,6 +13,7 @@ class PlayListModel: public QAbstractListModel
         QString title;
         QString fileName;
         bool played;
+        QString cover;
     };
 
 public:

@@ -3,14 +3,18 @@ import QtQuick 2.6
 import QtQuick.Controls 1.0
 import QtQuick.Controls.Nemo 1.0
 import QtQuick.Controls.Styles.Nemo 1.0
-import QtQuick.Window 2.1
-import QtQuick.Layouts 1.0
 
 import org.glacier.music.trackmodel 1.0
 
 Page {
     id: artistPage
     property int artistId: 0
+
+    headerTools: HeaderToolsLayout {
+        id: tools
+        title: qsTr("Tracks")
+        showBackButton: true;
+    }
 
     TrackModel{
         id: trackModel
@@ -30,7 +34,7 @@ Page {
     Component.onCompleted: {
         if(artistId != 0)
         {
-            artistModel.setArtist(artistId);
+            trackModel.setArtist(artistId);
         }
     }
 }

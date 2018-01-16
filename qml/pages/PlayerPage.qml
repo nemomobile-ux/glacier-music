@@ -5,7 +5,6 @@ import QtGraphicalEffects 1.0
 import QtQuick.Controls 1.0
 import QtQuick.Controls.Nemo 1.0
 import QtQuick.Controls.Styles.Nemo 1.0
-import QtQuick.Window 2.1
 
 import org.glacier.music.cover 1.0
 
@@ -19,7 +18,7 @@ Page {
         title: qsTr("Music")
         tools: [
             ToolButton {
-                iconSource: "/usr/share/themes/glacier/fontawesome/icons/gear.png"
+                iconSource: "image://theme/gear"
                 onClicked: {
                     pageStack.push(Qt.resolvedUrl("/usr/share/glacier-music/qml/pages/SettingsPage.qml"));
                 }
@@ -27,11 +26,10 @@ Page {
         ]
     }
 
-    Column{
-        width: parent.width
-        anchors{
-            top: parent.top
-        }
+    Flickable{
+        id: mainFlickable
+        anchors.fill: parent
+        contentHeight: coverArea.height+trackLabelArea.height+controsArea.height+nextTrack.height
 
         CoverArea{
             id: coverArea
@@ -41,7 +39,7 @@ Page {
             id: trackLabelArea
             width: parent.width
             height: Theme.fontSizeLarge*2+Theme.itemSpacingLarge*2
-
+            anchors.top: coverArea.bottom
             color: "transparent"
 
             Label{
@@ -61,37 +59,33 @@ Page {
         ControlsArea{
             id: controsArea
             width: parent.width
+            anchors.top: trackLabelArea.bottom
         }
 
-        Rectangle{
-            id: nextArea
+
+
+        ListView{
+            id: nextTrack
             width: parent.width
-            height: root.height-tools.height-coverArea.height-trackLabelArea.height-controsArea.height
+            height: contentHeight
+            model: nextTrackModel
+            delegate: PlaylistItem{}
+            anchors.top: controsArea.bottom
+            clip: true
 
-            color: "transparent"
+            onCurrentIndexChanged: {
+                coverArea.cover = "/usr/share/glacier-music/images/cover.png";
+                coverArea.cover = (nextTrackModel.get(currentIndex).cover) ? nextTrackModel.get(currentIndex).cover : "/usr/share/glacier-music/images/cover.png"
+                coverLoader.getCoverByTrackId(nextTrackModel.get(currentIndex).trackId)
+                rootAudio.stop();
+                trackLabel.text = nextTrackModel.get(currentIndex).artist+"\n"+nextTrackModel.get(currentIndex).title
+                rootAudio.source = nextTrackModel.get(currentIndex).fileName
 
-            ListView{
-                id: nextTrack
-                width: parent.width
-                height: parent.height
-                model: nextTrackModel
-                delegate: PlaylistItem{}
+                rootAudio.play();
+                nextTrackModel.setPlayed(currentIndex)
 
-                clip: true
-
-                onCurrentIndexChanged: {
-                    coverArea.cover = (nextTrackModel.get(currentIndex).cover) ? nextTrackModel.get(currentIndex).cover : "/usr/share/glacier-music/images/cover.png"
-                    coverLoader.getCoverByTrackId(nextTrackModel.get(currentIndex).trackId)
-                    rootAudio.stop();
-                    trackLabel.text = nextTrackModel.get(currentIndex).artist+"\n"+nextTrackModel.get(currentIndex).title
-                    rootAudio.source = nextTrackModel.get(currentIndex).fileName
-
-                    rootAudio.play();
-                    nextTrackModel.setPlayed(currentIndex)
-
-                    mprisPlayer.artist = nextTrackModel.get(currentIndex).artist
-                    mprisPlayer.song = nextTrackModel.get(currentIndex).title
-                }
+                mprisPlayer.artist = nextTrackModel.get(currentIndex).artist
+                mprisPlayer.song = nextTrackModel.get(currentIndex).title
             }
         }
     }
@@ -124,7 +118,7 @@ Page {
     Connections{
         target: collection
         onUpdateRescanProgress: {
-            if(nextTrack.count < 10)
+            if(nextTrack.count < 5)
             {
                 nextTrackModel.formatRandomPlaylist(1);
             }

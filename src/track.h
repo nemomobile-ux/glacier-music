@@ -39,6 +39,7 @@ public slots:
     void setComment(const QString comment) {m_comment = comment;}
     void setArtistId(const int id);
     void setArtistName(const QString name);
+    void setCover(const QString coverFile);
 
     int insert();
     void update();
@@ -49,8 +50,9 @@ signals:
     void trackFileNotFound();
 
 private:
-    int m_id;
+    int getTrackIdFromFileName(const QString fileName);
 
+    int m_id;
     int m_artist_id;
     QString m_title;
     QString m_album;

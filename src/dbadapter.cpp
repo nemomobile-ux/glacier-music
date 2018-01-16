@@ -18,6 +18,7 @@ dbAdapter::dbAdapter(QObject *parent) : QObject(parent)
         qDebug() << db.lastError().text();
     }
 
+    qDebug() << "Load DB from " << QStandardPaths::writableLocation(QStandardPaths::CacheLocation)+"/db.sql";
 
 
     if(QFile(QStandardPaths::writableLocation(QStandardPaths::CacheLocation)+"/db.sql").size() == 0)
@@ -41,6 +42,7 @@ dbAdapter& dbAdapter::instance(){
 void dbAdapter::initDB()
 {
     db.exec("CREATE TABLE `artist` (`id` INTEGER PRIMARY KEY AUTOINCREMENT,`name` TEXT )");
+    db.exec("INSERT INTO `artist` (`id`, `name`) VALUES ('0','Unknow Artist')");
     db.exec("CREATE TABLE `tracks` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, \
             `artist_id` INTEGER NOT NULL, \
             `filename` TEXT NOT NULL,\
@@ -57,5 +59,6 @@ void dbAdapter::initDB()
             `time`	INTEGER NOT NULL)");
     db.exec("CREATE UNIQUE INDEX artist_idx ON artist(name)");
     db.exec("CREATE UNIQUE INDEX song_idx ON songs(artist_id,title,album,track,year)");
+    db.exec("CREATE UNIQUE INDEX plst_idx ON playlist(song_id,time)");
     emit baseCreate();
 }

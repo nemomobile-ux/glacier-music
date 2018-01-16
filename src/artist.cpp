@@ -74,7 +74,7 @@ int Artist::insert()
 
     QSqlDatabase db = dbAdapter::instance().db;
     QSqlQuery query(db);
-    //QString str = QString("INSERT INTO artist (name) VALUES ('%1')").arg(m_name);
+
     query.prepare("INSERT INTO artist (name) VALUES (:name)");
     query.bindValue(":name",m_name);
     bool ok = query.exec();
@@ -89,11 +89,17 @@ int Artist::insert()
 
 bool Artist::setName(const QString name)
 {
+    if(name.length() == 0)
+    {
+        return false;
+    }
+
     QSqlDatabase db = dbAdapter::instance().db;
     QSqlQuery query(db);
-    QString str = QString("SELECT id FROM artist WHERE `name`='%1'").arg(name);
+    query.prepare("SELECT id FROM artist WHERE name=:name");
+    query.bindValue(":name",name);
 
-    bool ok = query.exec(str);
+    bool ok = query.exec();
     if(!ok)
     {
         qDebug() << query.lastQuery() << query.lastError().text();

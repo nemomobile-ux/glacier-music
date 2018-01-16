@@ -13,6 +13,7 @@ public:
 signals:
     void newFile(QString path);
     void scanProcess(QVariant prc);
+    void noMusicFiles();
 
 public slots:
     void scan();

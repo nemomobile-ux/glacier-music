@@ -14,6 +14,8 @@ import org.nemomobile.mpris 1.0
 import org.glacier.music.collection 1.0
 import org.glacier.music.playlistmodel 1.0
 
+import Nemo.Dialogs 1.0
+
 import "pages"
 
 ApplicationWindow {
@@ -52,15 +54,6 @@ ApplicationWindow {
         }
     }
 
-    Keys.onReleased: {
-        if (event.key === Qt.Key_Back) {
-            if (pageStack.depth > 1) {
-                pageStack.pop();
-                event.accepted = true;
-            } else { Qt.quit(); }
-        }
-    }
-
     initialPage: PlayerPage{}
 
     Component.onCompleted: {
@@ -93,6 +86,9 @@ ApplicationWindow {
             {
                 rescanProgress.visible = false;
             }
+        }
+        onNoMusicFiles: {
+            noMusicDialog.visible = true
         }
     }
 
@@ -127,6 +123,23 @@ ApplicationWindow {
             var metadata = mprisPlayer.metadata
             metadata[Mpris.metadataToString(Mpris.Title)] = song // String
             mprisPlayer.metadata = metadata
+        }
+    }
+
+    QueryDialog {
+        id: noMusicDialog
+        visible: false
+        inline: false
+
+        icon: "image://theme/exclamation-triangle"
+
+        cancelText: qsTr("Cancel")
+        acceptText: qsTr("Ok")
+        headingText: qsTr("No music files fonud")
+        subLabelText: qsTr("Please add music files into Music or Download directory. Or connect card with music")
+
+        onSelected: {
+            Qt.quit()
         }
     }
 }

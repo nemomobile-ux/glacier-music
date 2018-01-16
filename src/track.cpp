@@ -19,6 +19,7 @@ Track::Track(const QString file)
     }
     else
     {
+        qDebug() << "Add file: " << file;
         m_fileName = file;
         AudioFile *trackFile = new AudioFile(m_fileName);
 
@@ -158,12 +159,13 @@ void Track::update()
 {
     QSqlDatabase db = dbAdapter::instance().db;
     QSqlQuery query(db);
-    query.prepare("UPDATE tracks SET artist_id=:AID,title=:Title,track=:Track,album=:Album,comment=:Comment,genre=:Genre,year=:Year WHERE id=:rid");
+    query.prepare("UPDATE tracks SET artist_id=:AID,title=:Title,track=:Track,album=:Album,comment=:Comment,genre=:Genre,cover=:Cover,year=:Year WHERE id=:rid");
     query.bindValue(":AID",m_artist_id);
     query.bindValue(":Title",m_title);
     query.bindValue(":Track",m_number);
     query.bindValue(":Album",m_album);
     query.bindValue(":Comment",m_comment);
+    query.bindValue(":Cover",m_cover);
     query.bindValue(":Genre",m_genre);
     query.bindValue(":Year",m_year);
     query.bindValue(":rid",m_id);
@@ -205,6 +207,15 @@ void Track::setArtistName(const QString name)
     setArtistId(a_id);
 }
 
+void Track::setCover(const QString coverFile)
+{
+    if(coverFile != m_cover)
+    {
+        m_cover = coverFile;
+        update();
+    }
+}
+
 void Track::setArtistId(const int id)
 {
     Artist* artist = new Artist();
@@ -240,4 +251,28 @@ void Track::remove()
             m_artist->remove();
         }
     }
+}
+/*
+Return trackId if file in DB or 0 if file is new
+*/
+int Track::getTrackIdFromFileName(QString fileName)
+{
+    QSqlDatabase db = dbAdapter::instance().db;
+    QSqlQuery query(db);
+    query.prepare("SELECT id FROM tracks WHERE filename=:filename");
+    query.bindValue(":filename",fileName);
+
+    bool ok = query.exec();
+    if(!ok)
+    {
+        qDebug() << query.lastQuery() << query.lastError().text();
+        return 0;
+    }
+
+    if(query.next())
+    {
+        int trackId = query.value(0).toInt();
+        return trackId;
+    }
+    return 0;
 }

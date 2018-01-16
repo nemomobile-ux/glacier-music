@@ -21,21 +21,29 @@ void RescanCollection::scan()
 
     for(int i=0; i<scanDir.count(); i++)
     {
+        qDebug() << "Scanning " << scanDir[i];
+
         QDirIterator it(scanDir[i],allowedExtensions, QDir::Files, QDirIterator::Subdirectories);
-        for (;it.hasNext(); it.next())
+        while (it.hasNext())
         {
-            aviableFiles << it.next();
+            QString file = it.next();
+            qDebug() << "Found " << file;
+            aviableFiles << file;
         }
     }
+
 
     double m_aviableFiles = aviableFiles.count();
     double m_scannedFiles = 0;
 
+    if(m_aviableFiles == 0)
+    {
+        emit noMusicFiles();
+    }
+
     for(int i=0; i<aviableFiles.count();i++)
     {
-
-        QString file = aviableFiles[i];
-        Track *track = new Track(file);
+        Track *track = new Track(aviableFiles[i]);
         Q_UNUSED(track);
         m_scannedFiles++;
 

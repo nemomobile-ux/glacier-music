@@ -1,5 +1,4 @@
 #include "cover.h"
-#include "track.h"
 #include "musicbrainzconnect.h"
 
 
@@ -10,15 +9,15 @@ Cover::Cover(QObject *parent) : QObject(parent)
 
 void Cover::getCoverByTrackId(int trackId)
 {
-    Track *track = Track::toId(trackId);
-    if(!track)
+    m_track = Track::toId(trackId);
+    if(!m_track)
     {
         return;
     }
 
-    QString artist = track->getArtistName();
-    QString title = track->getTitle();
-    QString cover = track->getCover();
+    QString artist = m_track->getArtistName();
+    QString title = m_track->getTitle();
+    QString cover = m_track->getCover();
 
     if(cover.isEmpty())
     {
@@ -34,5 +33,6 @@ void Cover::getCoverByTrackId(int trackId)
 
 void Cover::m_coverReady(QString coverFile)
 {
+    m_track->setCover(m_coverDir+"/"+coverFile);
     emit coverReady(m_coverDir+"/"+coverFile);
 }

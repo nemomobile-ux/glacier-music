@@ -2,6 +2,7 @@
 #define COVER_H
 
 #include <QObject>
+#include "track.h"
 
 class Cover : public QObject
 {
@@ -20,6 +21,7 @@ private slots:
 
 private:
     QString m_coverDir;
+    Track *m_track;
 };
 
 #endif // COVER_H

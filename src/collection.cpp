@@ -36,6 +36,7 @@ void Collection::rescanCollection()
     QThread *rescanThread = new QThread;
     connect(rescanThread,SIGNAL(started()),rCollection, SLOT(scan()));
     connect(rCollection,SIGNAL(scanProcess(QVariant)),this,SLOT(m_rescanCollectionProgress(QVariant)));
+    connect(rCollection,SIGNAL(noMusicFiles()),this,SIGNAL(noMusicFiles()));
     rCollection->moveToThread(rescanThread);
     rescanThread->start();
 }

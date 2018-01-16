@@ -9,7 +9,7 @@ ListViewItemWithActions{
     width: parent.width
     height: Theme.itemHeightHuge
 
-    icon: ""
+    icon: cover
     label: artist+" - "+title
 
     actions: Rectangle {
@@ -31,7 +31,7 @@ ListViewItemWithActions{
                 topMargin: parent.height*0.2
             }
 
-            source: "/usr/share/themes/glacier/fontawesome/icons/edit.png"
+            source: "image://theme/edit"
         }
 
         Image{
@@ -46,7 +46,7 @@ ListViewItemWithActions{
                 topMargin: parent.height*0.2
             }
 
-            source: "/usr/share/themes/glacier/fontawesome/icons/times.png"
+            source: "image://theme/times"
         }
     }
 

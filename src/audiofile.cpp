@@ -31,7 +31,7 @@ AudioFile::AudioFile(QString audiofile, QObject *parent) : QObject(parent)
         }
         else
         {
-            qDebug() << "FNRW:" << audiofile;
+            qDebug() << "Cant open file in r/w mode:" << audiofile;
             isValid = false;
         }
     }

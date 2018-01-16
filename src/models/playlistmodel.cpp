@@ -14,6 +14,7 @@ PlayListModel::PlayListModel(QObject *parent) :
     hash.insert(Qt::UserRole+2 ,QByteArray("title"));
     hash.insert(Qt::UserRole+3 ,QByteArray("fileName"));
     hash.insert(Qt::UserRole+4 ,QByteArray("played"));
+    hash.insert(Qt::UserRole+5 ,QByteArray("cover"));
 }
 
 void PlayListModel::addItem(int trackId, int count)
@@ -29,6 +30,7 @@ void PlayListModel::addItem(int trackId, int count)
     item.artist = track->getArtistName();
     item.title = track->getTitle();
     item.fileName = track->getFileName();
+    item.cover = track->getCover();
 
     if(count == 0)
     {
@@ -84,6 +86,10 @@ QVariant PlayListModel::data(const QModelIndex &index, int role) const
     {
         return item.played;
     }
+    else if(role == Qt::UserRole+5)
+    {
+        return item.cover;
+    }
     return QVariant();
 }
 
@@ -131,6 +137,7 @@ QVariant PlayListModel::get(int idx)
     itemData.insert("title",item.title);
     itemData.insert("fileName",item.fileName);
     itemData.insert("played",item.played);
+    itemData.insert("cover",item.cover);
 
     return QVariant(itemData);
 }
@@ -171,7 +178,22 @@ void PlayListModel::loadPlaylistFromDB()
     {
         while(query.next())
         {
-            addItem(query.value(0).toInt());
+            int trackId = query.value(0).toInt();
+
+            Track *track = Track::toId(trackId);
+            if(!track)
+            {
+                return;
+            }
+
+            playListItem item;
+            item.trackId = trackId;
+            item.artist = track->getArtistName();
+            item.title = track->getTitle();
+            item.fileName = track->getFileName();
+            item.cover = track->getCover();
+
+            insertRows(playList.size(),1,item);
         }
     }
 }
@@ -301,9 +323,9 @@ void PlayListModel::setPlayed(int idx, const QModelIndex &parent)
 
     QSqlDatabase db = dbAdapter::instance().db;
     QSqlQuery query(db);
-    query.prepare("INSERT INTO playlist (`song_id`, `time`) VALUES ( :trackid , :time)");
+    query.prepare("UPDATE playlist SET `time` = :time WHERE song_id=:trackid AND time = 0");
     query.bindValue(":trackid",track_id);
-    query.bindValue(":time", QDateTime().toTime_t());
+    query.bindValue(":time", QDateTime::currentMSecsSinceEpoch());
 
     bool ok = query.exec();
     if(!ok)

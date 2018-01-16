@@ -5,8 +5,6 @@ import QtGraphicalEffects 1.0
 import QtQuick.Controls 1.0
 import QtQuick.Controls.Nemo 1.0
 import QtQuick.Controls.Styles.Nemo 1.0
-import QtQuick.Window 2.1
-import QtQuick.Layouts 1.0
 
 Rectangle{
     id: coverArea
@@ -26,7 +24,7 @@ Rectangle{
         id: progressBar
         width: 0
         height: Theme.itemHeightExtraSmall/4
-        color: "#0091e5"
+        color: Theme.accentColor
         anchors{
             left: parent.left
             bottom: parent.bottom
@@ -48,7 +46,7 @@ Rectangle{
                 end: Qt.point(parent.width, parent.height)
                 gradient: Gradient {
                     GradientStop { position: 0.0; color: "transparent" }
-                    GradientStop { position: 1.0; color: "#0091e5" }
+                    GradientStop { position: 1.0; color: Theme.accentColor }
                 }
             }
         }

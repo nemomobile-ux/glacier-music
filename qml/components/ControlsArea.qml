@@ -1,4 +1,4 @@
-import QtQuick 2.0
+import QtQuick 2.6
 import QtMultimedia 5.5
 
 import QtQuick.Controls 1.0 //needed for the Stack attached property
@@ -29,7 +29,7 @@ Rectangle{
             }
         }
 
-        source: "/usr/share/themes/glacier/fontawesome/icons/align-justify.png"
+        source: "image://theme/align-justify"
     }
 
     Image{
@@ -48,7 +48,7 @@ Rectangle{
             onClicked: nextTrack.currentIndex--
         }
 
-        source: "/usr/share/themes/glacier/fontawesome/icons/backward.png"
+        source: "image://theme/backward"
     }
 
     Image{
@@ -59,8 +59,8 @@ Rectangle{
         anchors.centerIn: parent;
 
         source: (rootAudio.playbackState == MediaPlayer.PlayingState) ?
-                    "/usr/share/themes/glacier/fontawesome/icons/pause.png" :
-                    "/usr/share/themes/glacier/fontawesome/icons/play.png"
+                    "image://theme/pause" :
+                    "image://theme/play"
 
         MouseArea{
             anchors.fill: parent
@@ -79,7 +79,7 @@ Rectangle{
             verticalCenter: playPauseBtn.verticalCenter
         }
 
-        source: "/usr/share/themes/glacier/fontawesome/icons/forward.png"
+        source: "image://theme/forward"
 
         MouseArea{
             anchors.fill: parent
@@ -98,7 +98,7 @@ Rectangle{
             verticalCenter: playPauseBtn.verticalCenter
         }
 
-        source: "/usr/share/themes/glacier/fontawesome/icons/volume-up.png"
+        source: "image://theme/volume-up"
 
         MouseArea{
             anchors.fill: parent
