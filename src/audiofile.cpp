@@ -7,34 +7,32 @@
 #include <QIODevice>
 #include <QDebug>
 
-AudioFile::AudioFile(QString audiofile, QObject *parent) : QObject(parent)
+AudioFile::AudioFile(QString audiofile, QObject *parent) : QObject(parent),
+fileuri(audiofile)
 {
-    mediaFile = new QFile(audiofile);
+    mediaFile = new QFile(fileuri);
     isValid = false;
     if(!mediaFile->exists())
     {
         isValid = false;
-        qDebug() << "FNF:" << audiofile;
+        qDebug() << "FNF:" << fileuri;
         emit fileNotFound();
     }
     else
     {
-        if(mediaFile->open(QIODevice::ReadWrite))
+        if(mediaFile->open(QIODevice::ReadOnly))
         {
             isValid = true;
-            tagFile = new TagLib::FileRef(audiofile.toUtf8());
-            if(tagFile->isNull())
-            {
-                return;
-            }
             loadTags();
         }
         else
         {
-            qDebug() << "Cant open file in r/w mode:" << audiofile;
+            qDebug() << "Cant open file:" << fileuri;
             isValid = false;
         }
     }
+
+    mediaFile->close();
 }
 
 void AudioFile::loadTags()
@@ -43,6 +41,14 @@ void AudioFile::loadTags()
     {
         return;
     }
+
+    QScopedPointer<TagLib::FileRef> tagFile(new TagLib::FileRef(fileuri.toUtf8()));
+
+    if(tagFile->isNull())
+    {
+        return;
+    }
+
     TagLib::String t_artist = tagFile->tag()->artist();
     TagLib::String t_title = tagFile->tag()->title();
     TagLib::String t_album = tagFile->tag()->album();
@@ -64,12 +70,12 @@ void AudioFile::loadTags()
 
     if(artist.length() < 1)
     {
-        artist = "Unknow Artist";
+        artist = "Unknown Artist";
     }
 
     if(title.length() < 1)
     {
-        title = "Unknow Track";
+        title = "Unknown Track";
     }
 }
 
@@ -79,6 +85,14 @@ bool AudioFile::sync()
     {
         return false;
     }
+
+    QScopedPointer<TagLib::FileRef> tagFile(new TagLib::FileRef(fileuri.toUtf8()));
+
+    if(tagFile->isNull())
+    {
+        return false;
+    }
+
     tagFile->tag()->setAlbum(album.toStdWString());
     tagFile->tag()->setArtist(artist.toStdWString());
     tagFile->tag()->setComment(comment.toStdWString());
