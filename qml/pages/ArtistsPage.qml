@@ -13,7 +13,7 @@ Item{
         id: artistModel
     }
 
-    signal viewTracks(int artist_id)
+    signal viewTracks(int artist_id, string artist_name)
 
     ListView{
         id: artistListView
@@ -26,7 +26,7 @@ Item{
             iconVisible: false
 
             onClicked: {
-                viewTracks(artist_id)
+                viewTracks(artist_id, name)
             }
         }
         clip: true

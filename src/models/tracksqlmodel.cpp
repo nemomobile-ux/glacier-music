@@ -10,7 +10,7 @@ TrackSqlModel::TrackSqlModel(QObject *parent) : QSqlQueryModel(parent)
     hash.insert(Qt::UserRole+3,QByteArray("album"));
     hash.insert(Qt::UserRole+4,QByteArray("comment"));
     hash.insert(Qt::UserRole+5,QByteArray("genre"));
-    hash.insert(Qt::UserRole+6,QByteArray("tarck"));
+    hash.insert(Qt::UserRole+6,QByteArray("track"));
     hash.insert(Qt::UserRole+7,QByteArray("year"));
     hash.insert(Qt::UserRole+8,QByteArray("filename"));
     hash.insert(Qt::UserRole+9,QByteArray("artist_name"));
@@ -75,7 +75,6 @@ void TrackSqlModel::setArtist(const int artist_id)
                                  INNER JOIN artist ON artist.id = tracks.artist_id \
                         WHERE artist_id = %1 ORDER BY artist_name ASC").arg(artist_id).toUtf8());
 }
-
 
 void TrackSqlModel::cleanQuery()
 {
