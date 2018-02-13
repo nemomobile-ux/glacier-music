@@ -12,6 +12,8 @@ public:
     explicit AudioFile(QString audiofile, QObject *parent = 0);
     ~AudioFile();
 
+    QString fileuri;
+
     QString artist;
     QString title;
     QString album;
@@ -26,7 +28,6 @@ public:
 
 private:
     QFile *mediaFile;
-    TagLib::FileRef *tagFile;
     void loadTags();
 
 signals:

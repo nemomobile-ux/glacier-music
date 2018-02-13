@@ -23,13 +23,13 @@ Page {
             title: "Artists"
             ArtistsPage{
                 onViewTracks: {
-                    pageStack.push(Qt.resolvedUrl("/usr/share/glacier-music/qml/pages/TracksPage.qml"), {artistId: artist_id});
+                    pageStack.push(Qt.resolvedUrl("/usr/share/glacier-music/qml/pages/TracksPage.qml"), {artistId: artist_id, artistName: artist_name});
                 }
             }
         }
         Tab {
             title: "Tracks"
-            //TracksPage{}
+            TracksPage{}
         }
     }
 }
