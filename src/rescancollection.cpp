@@ -40,15 +40,16 @@ void RescanCollection::scan()
     {
         emit noMusicFiles();
     }
+    else{
+        foreach (const QString &fileUrl, aviableFiles) {
+            Track *track = new Track(fileUrl);
+            Q_UNUSED(track);
+            qDebug() << fileUrl;
+            m_scannedFiles++;
 
-    for(int i=0; i<aviableFiles.count();i++)
-    {
-        Track *track = new Track(aviableFiles[i]);
-        Q_UNUSED(track);
-        m_scannedFiles++;
-
-        double prc = m_scannedFiles/m_aviableFiles*100;
-        emit scanProcess(QVariant(prc));
+            double prc = m_scannedFiles/m_aviableFiles*100;
+            emit scanProcess(QVariant(prc));
+        }
     }
 }
 
