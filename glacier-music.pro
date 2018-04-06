@@ -41,6 +41,7 @@ DISTFILES += \
     qml/components/CoverArea.qml \
     qml/components/PlaylistItem.qml \
     qml/pages/LibraryPage.qml \
+    qml/pages/PlayListPage.qml \
     qml/pages/ArtistsPage.qml \
     qml/pages/TracksPage.qml \
     qml/components/ControlsArea.qml \

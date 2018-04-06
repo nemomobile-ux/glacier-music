@@ -13,6 +13,7 @@ import org.nemomobile.mpris 1.0
 
 import org.glacier.music.collection 1.0
 import org.glacier.music.playlistmodel 1.0
+import org.glacier.music.cover 1.0
 
 import Nemo.Dialogs 1.0
 
@@ -36,6 +37,14 @@ ApplicationWindow {
 
     PlaylistModel{
         id: nextTrackModel
+        Component.onCompleted: {
+            loadPlaylistFromDB();
+            nextTrackModel.currentIndex = 0
+        }
+    }
+
+    Cover{
+        id: coverLoader
     }
 
     MediaPlayer{
@@ -46,7 +55,13 @@ ApplicationWindow {
         }
 
         onPositionChanged: {
-            settings.setValue("seek",position);
+            if(rootAudio.playbackState == MediaPlayer.PlayingState){
+                settings.setValue("seek",position);
+            }
+        }
+
+        onPlaybackStateChanged: {
+            settings.setValue("playbackState",rootAudio.playbackState);
         }
 
         Component.onCompleted: {

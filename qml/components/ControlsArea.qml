@@ -25,7 +25,7 @@ Rectangle{
         MouseArea{
             anchors.fill: parent
             onClicked: {
-                pageStack.push(Qt.resolvedUrl("/usr/share/glacier-music/qml/pages/LibraryPage.qml"));
+                pageStack.push(Qt.resolvedUrl("/usr/share/glacier-music/qml/pages/PlayListPage.qml"));
             }
         }
 
@@ -45,7 +45,7 @@ Rectangle{
 
         MouseArea{
             anchors.fill: parent
-            onClicked: nextTrack.currentIndex--
+            onClicked: playPrev()
         }
 
         source: "image://theme/backward"
@@ -146,22 +146,6 @@ Rectangle{
         interval: 5000
         onTriggered: {
             volumeArea.visible = false
-        }
-    }
-
-    Connections{
-        target: mprisPlayer
-        onPlayPauseRequested: playPause();
-    }
-
-    function playPause(){
-        if(rootAudio.playbackState == MediaPlayer.PlayingState)
-        {
-            rootAudio.pause();
-        }
-        else
-        {
-            rootAudio.play()
         }
     }
 }

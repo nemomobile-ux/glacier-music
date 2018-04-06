@@ -13,11 +13,13 @@ Rectangle{
 
     property alias cover: coverImage.source
     color: "transparent"
+    clip: true
 
     Image{
         id: coverImage
         width: parent.width
         height: parent.height
+        source: "/usr/share/glacier-music/images/cover.png"
     }
 
     Rectangle{
@@ -72,7 +74,31 @@ Rectangle{
     Connections {
         target: rootAudio
         onPositionChanged: {
-            progressBar.width = parent.width*(rootAudio.position/rootAudio.duration)
+            progressBar.width = coverArea.width*(rootAudio.position/rootAudio.duration)
+        }
+    }
+
+    Connections {
+        target: nextTrackModel
+        onCurrentIndexChanged: {
+            if(nextTrackModel.get(currentIndex).cover != "")
+            {
+                coverArea.cover = nextTrackModel.get(currentIndex).cover;
+            }
+            else
+            {
+                coverArea.cover = "/usr/share/glacier-music/images/cover.png";
+                coverLoader.getCoverByTrackId(nextTrackModel.get(currentIndex).trackId)
+            }
+        }
+    }
+
+    Connections{
+        target: coverLoader
+        onCoverReady: coverArea.cover = coverFile
+        onCoverLoading: {
+            /*FIXME add loader*/
+            coverArea.cover = "/usr/share/glacier-music/images/cover.png";
         }
     }
 }
