@@ -15,6 +15,8 @@ PlayListModel::PlayListModel(QObject *parent) :
     hash.insert(Qt::UserRole+3 ,QByteArray("fileName"));
     hash.insert(Qt::UserRole+4 ,QByteArray("played"));
     hash.insert(Qt::UserRole+5 ,QByteArray("cover"));
+
+    m_currentIndex = -1;
 }
 
 void PlayListModel::addItem(int trackId, int count)
@@ -167,8 +169,26 @@ void PlayListModel::loadPlaylistFromDB()
 {
     QSqlDatabase db = dbAdapter::instance().db;
     QSqlQuery query(db);
-    query.prepare("SELECT song_id FROM playlist WHERE time = 0 LIMIT 5");
-    bool ok = query.exec();
+    bool ok = false;
+
+/*Load preview unfinifed playing song*/
+    query.prepare("SELECT song_id FROM playlist WHERE time > 0 ORDER BY id DESC LIMIT 1");
+    ok = query.exec();
+    if(!ok)
+    {
+        qDebug() << query.lastQuery() << query.lastError().text();
+    }
+    else
+    {
+        while(query.next())
+        {
+            addItem(query.value(0).toInt());
+        }
+    }
+
+/*Load next songs */
+    query.prepare("SELECT song_id FROM playlist WHERE time = 0");
+    ok = query.exec();
 
     if(!ok)
     {
@@ -178,22 +198,7 @@ void PlayListModel::loadPlaylistFromDB()
     {
         while(query.next())
         {
-            int trackId = query.value(0).toInt();
-
-            Track *track = Track::toId(trackId);
-            if(!track)
-            {
-                return;
-            }
-
-            playListItem item;
-            item.trackId = trackId;
-            item.artist = track->getArtistName();
-            item.title = track->getTitle();
-            item.fileName = track->getFileName();
-            item.cover = track->getCover();
-
-            insertRows(playList.size(),1,item);
+            addItem(query.value(0).toInt());
         }
     }
 }
@@ -333,3 +338,14 @@ void PlayListModel::setPlayed(int idx, const QModelIndex &parent)
         qDebug() << query.lastQuery() << query.lastError().text();
     }
 }
+
+
+void PlayListModel::setCurrentIndex(int currentIndex)
+{
+    if(currentIndex >= 0 && currentIndex < playList.count() && currentIndex != m_currentIndex)
+    {
+        m_currentIndex = currentIndex;
+        emit currentIndexChanged(m_currentIndex);
+    }
+}
+
