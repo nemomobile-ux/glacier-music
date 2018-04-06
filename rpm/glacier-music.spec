@@ -5,7 +5,7 @@
 
 Name:       glacier-music
 Summary:    Glacier music player
-Version:    0.1
+Version:    0.2
 Release:    1
 Group:      Application/Media
 License:    LGPL
