@@ -24,6 +24,7 @@ void Cover::getCoverByTrackId(int trackId)
         MusicBrainzConnect *mbConnect = new MusicBrainzConnect();
         mbConnect->getData(artist,title);
         connect(mbConnect,SIGNAL(coverReady(QString)),this,SLOT(m_coverReady(QString)));
+        connect(mbConnect,SIGNAL(downloadCover()),this,SIGNAL(coverLoaing()));
     }
     else
     {

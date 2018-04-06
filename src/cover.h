@@ -12,6 +12,7 @@ public:
 
 signals:
     void coverReady(QString coverFile);
+    void coverLoaing();
 
 public slots:
     void getCoverByTrackId(int trackId);
