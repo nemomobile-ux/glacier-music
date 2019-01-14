@@ -35,29 +35,15 @@ Page {
 
             onClicked: nextTrackModel.addItem(track_id, 0)
 
-            actions: Rectangle {
-                id: trackItemActions
-                width: trackItem.height
-                height: trackItem.height
+            actions: [
+                ActionButton{
+                    id: trackItemActions
+                    iconSource: "image://theme/edit"
 
-                color: "transparent"
-
-                Image{
-                    id: editButton
-                    width: parent.height*0.6
-                    height: width
-
-                    anchors{
-                        left: parent.left
-                        leftMargin: parent.height*0.2
-                        top: parent.top
-                        topMargin: parent.height*0.2
-                    }
-
-                    source: "image://theme/edit"
                 }
-            }
+            ]
         }
+
         clip: true
     }
 

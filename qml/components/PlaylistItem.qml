@@ -14,43 +14,21 @@ ListViewItemWithActions{
     description: artist
     showNext: false
 
-    actions: Rectangle {
-        id: playListItemActions
-        width: playListItem.height*2
-        height: playListItem.height
-
-        color: "transparent"
-
-        Image{
+    actions: [
+        ActionButton{
             id: editButton
-            width: parent.height*0.6
-            height: width
-
-            anchors{
-                left: parent.left
-                leftMargin: parent.height*0.2
-                top: parent.top
-                topMargin: parent.height*0.2
+            iconSource: "image://theme/edit"
+            onClicked: {
+                console.log(trackId)
+                pageStack.push(Qt.resolvedUrl("/usr/share/glacier-music/qml/pages/EditTrackPage.qml"),{trackId:trackId});
             }
-
-            source: "image://theme/edit"
-        }
-
-        Image{
+        },
+        ActionButton{
             id: removeButton
-            width: parent.height*0.6
-            height: width
-
-            anchors{
-                left: editButton.right
-                leftMargin: parent.height*0.4
-                top: parent.top
-                topMargin: parent.height*0.2
-            }
-
-            source: "image://theme/times"
+            iconSource: "image://theme/times"
+            onClicked: nextTrackModel.remove(index)
         }
-    }
+    ]
 
     Rectangle{
         visible: (nextTrack.currentIndex == index)
