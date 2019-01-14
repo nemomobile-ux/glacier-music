@@ -16,6 +16,7 @@ Requires:   taglib >= 1.11.1
 Requires:   nemo-qml-plugin-settings
 Requires:   mpris-qt5-qml-plugin
 Requires:   libglacierapp
+Requires:   mapplauncherd-booster-nemomobile
 
 BuildRequires:  pkgconfig(taglib) >= 1.11.1
 BuildRequires:  pkgconfig(Qt5Core)

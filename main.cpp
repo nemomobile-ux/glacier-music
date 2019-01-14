@@ -36,7 +36,7 @@
 #include "src/models/tracksqlmodel.h"
 #include "src/models/playlistmodel.h"
 
-int main(int argc, char *argv[])
+Q_DECL_EXPORT int main(int argc, char *argv[])
 {
     setenv("QT_QUICK_CONTROLS_STYLE", "Nemo", 1);
 
