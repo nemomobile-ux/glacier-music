@@ -19,9 +19,12 @@ MusicBrainzConnect::MusicBrainzConnect(QObject *parent) : QObject(parent)
 
 void MusicBrainzConnect::getData(const QString artist, const QString title)
 {
-    Downloader *mbDownloader = new Downloader("https://musicbrainz.org/ws/2/recording?query="+title+"%20artist:"+artist+"&fmt=json");
-    connect(mbDownloader,SIGNAL(stringReady(QByteArray)),this,SLOT(dataReady(QByteArray)));
-    mbDownloader->loadData();
+    if(title.length() > 0 && artist.length() > 0)
+    {
+        Downloader *mbDownloader = new Downloader("https://musicbrainz.org/ws/2/recording?query="+title+"%20artist:"+artist+"&fmt=json");
+        connect(mbDownloader,SIGNAL(stringReady(QByteArray)),this,SLOT(dataReady(QByteArray)));
+        mbDownloader->loadData();
+    }
 }
 
 void MusicBrainzConnect::dataReady(QByteArray answer)
