@@ -4,7 +4,7 @@
 
 Artist::Artist(QObject *parent) : Item(parent)
 {
-
+    m_id = 0;
 }
 
 QHash<int, Artist*> Artist::m_cache;
@@ -30,7 +30,7 @@ Artist* Artist::toId(const int artistId)
     if(query.next())
     {
         Artist* artist = new Artist();
-        artist->id = artistId;
+        artist->m_id = artistId;
         artist->m_name = query.value(0).toString();
         m_cache.insert(artistId,artist);
 
@@ -108,7 +108,7 @@ bool Artist::setName(const QString name)
 
     if(query.next())
     {
-        id = query.value(0).toInt();
+        m_id = query.value(0).toInt();
         return false;
     }
     else
@@ -129,7 +129,7 @@ void Artist::update()
     QSqlQuery query(db);
     query.prepare("UPDATE artist SET name=:name WHERE id=:id");
     query.bindValue(":name",m_name);
-    query.bindValue(":id",id);
+    query.bindValue(":id",m_id);
 
     bool ok = query.exec();
     if(!ok)
@@ -142,7 +142,7 @@ void Artist::update()
         QList<Track*> tracks = this->getTracks();
         for (int i = 0;i<tracks.count();i++)
         {
-            tracks[i]->setArtistId(id);
+            tracks[i]->setArtistId(m_id);
             tracks[i]->update();
         }
     }
@@ -151,10 +151,17 @@ void Artist::update()
 QList<Track*> Artist::getTracks()
 {
     QList<Track*> tracks;
+    qDebug() << "Artist IS " << m_id;
+    if(m_id == 0)
+    {
+        qDebug() << "Artist not found";
+        return tracks;
+    }
+
     QSqlDatabase db = dbAdapter::instance().db;
     QSqlQuery query(db);
     query.prepare("SELECT id FROM tracks WHERE artist_id = :id");
-    query.bindValue(":id",id);
+    query.bindValue(":id",m_id);
 
     bool ok = query.exec();
     if(!ok)
@@ -177,7 +184,7 @@ void Artist::remove()
     QSqlDatabase db = dbAdapter::instance().db;
     QSqlQuery query(db);
     query.prepare("DELETE FROM artist WHERE id=:id");
-    query.bindValue(":id",this->id);
+    query.bindValue(":id",this->m_id);
 
     bool ok = query.exec();
 

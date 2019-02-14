@@ -22,7 +22,7 @@ public slots:
 private:
     QString m_name;
     QString m_oldname;
-    int id;
+    int m_id;
 
     static QString getHash(const QString&);
     static QHash<int, Artist*> m_cache;
