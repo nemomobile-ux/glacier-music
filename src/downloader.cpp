@@ -51,7 +51,14 @@ void Downloader::dataReady(QNetworkReply *reply)
 
 void Downloader::onDownloadProgress(qint64 bytesRead,qint64 bytesTotal)
 {
-    float progress;
-    progress = bytesRead/bytesTotal*100;
-    emit downloadProgress(progress);
+    if(bytesTotal > 0)
+    {
+        float progress;
+        progress = bytesRead/bytesTotal*100;
+        emit downloadProgress(progress);
+    }
+    else
+    {
+        emit downloadProgress(100);
+    }
 }
