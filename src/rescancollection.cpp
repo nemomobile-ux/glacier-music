@@ -1,23 +1,50 @@
 #include <QAudioFormat>
 
 #include "rescancollection.h"
+#include "dbadapter.h"
 #include "track.h"
 
 RescanCollection::RescanCollection(QObject *parent) : QObject(parent)
 {
-
+    dba = new dbAdapter();
 }
 
 void RescanCollection::scan()
 {
     qDebug() << "Start rescan collection";
+/*in first - check removed files in db*/
+    QSqlDatabase db = dbAdapter::instance().db;
+    QSqlQuery query(db);
+    query.prepare("SELECT id, filename FROM tracks");
+    bool ok = query.exec();
+    if(!ok)
+    {
+        qDebug() << query.lastQuery() << query.lastError().text();
+    }
 
-    //Yes i know about flac, cue and etc...i add it later. Or you can create pr
+    QStringList filesInDb;
+
+    while (query.next())
+    {
+        QString fileName = query.value(1).toString();
+        Track *track = new Track(fileName);
+        if(track->getId() != 0)
+        {
+            filesInDb << fileName;
+        }
+        else
+        {
+            qDebug() << "File not found " << fileName;
+        }
+    }
+
+/*in second - check new files not in db*/
+//Yes i know about flac, cue and etc...i add it later. Or you can create pr
     QStringList allowedExtensions;
     allowedExtensions << "*.mp3" << "*.ogg";
 
     QStringList scanDir = aviableDirs();
-    QStringList aviableFiles;
+    QStringList newFiles;
 
     for(int i=0; i<scanDir.count(); i++)
     {
@@ -27,21 +54,25 @@ void RescanCollection::scan()
         while (it.hasNext())
         {
             QString file = it.next();
-            qDebug() << "Found " << file;
-            aviableFiles << file;
+            if(!filesInDb.contains(file)) {
+                qDebug() << "Found new file" << file;
+                newFiles << file;
+            }
         }
     }
 
 
-    double m_aviableFiles = aviableFiles.count();
+    double m_aviableFiles = newFiles.count();
     double m_scannedFiles = 0;
 
-    if(m_aviableFiles == 0)
+    if(m_aviableFiles == 0 && filesInDb.count() == 0)
     {
         emit noMusicFiles();
     }
-    else{
-        foreach (const QString &fileUrl, aviableFiles) {
+    else
+    {
+        foreach (const QString &fileUrl, newFiles)
+        {
             Track *track = new Track(fileUrl);
             Q_UNUSED(track);
             qDebug() << fileUrl;
