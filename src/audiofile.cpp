@@ -2,6 +2,11 @@
 
 #include <taglib/fileref.h>
 #include <taglib/tag.h>
+#include <taglib/mpegfile.h>
+#include <taglib/id3v2tag.h>
+#include <taglib/id3v2frame.h>
+#include <taglib/id3v2header.h>
+#include <taglib/attachedpictureframe.h>
 
 #include <QFileInfo>
 #include <QIODevice>
@@ -103,6 +108,24 @@ bool AudioFile::sync()
     return tagFile->save();
 }
 
+QImage AudioFile::coverImg()
+{
+    TagLib::MPEG::File file(fileuri.toUtf8());
+
+    TagLib::ID3v2::Tag *m_tag = file.ID3v2Tag(true);
+    TagLib::ID3v2::FrameList frameList = m_tag->frameList("APIC");
+    if(frameList.isEmpty())
+    {
+        qDebug() << "Cover image from file empty";
+        return QImage();
+    }
+
+    TagLib::ID3v2::AttachedPictureFrame *coverImg = static_cast<TagLib::ID3v2::AttachedPictureFrame *>(frameList.front());
+    QImage coverQImg;
+    coverQImg.loadFromData((const uchar *) coverImg->picture().data(), coverImg->picture().size());
+
+    return coverQImg;
+}
 
 AudioFile::~AudioFile()
 {

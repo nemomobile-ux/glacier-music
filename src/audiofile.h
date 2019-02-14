@@ -3,7 +3,9 @@
 
 #include <QObject>
 #include <QFile>
+#include <QImage>
 #include <taglib/fileref.h>
+#include <taglib/id3v2tag.h>
 
 class AudioFile : public QObject
 {
@@ -22,6 +24,8 @@ public:
     uint track;
     uint year;
     uint length;
+
+    QImage coverImg();
 
     bool sync();
     bool isValid;
