@@ -45,7 +45,12 @@ DISTFILES += \
     qml/pages/ArtistsPage.qml \
     qml/pages/TracksPage.qml \
     qml/components/ControlsArea.qml \
-    images/cover.png
+    images/cover.png \
+    qml/pages/EditTrackPage.qml \
+    qml/pages/MainPage.qml \
+    qml/components/BackgroungItem.qml \
+    qml/components/Player.qml \
+    qml/components/ProgressBarIndicator.qml
 
 HEADERS += \
     src/collection.h \

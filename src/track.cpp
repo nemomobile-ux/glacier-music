@@ -9,11 +9,13 @@ Track::Track(const QString file)
     m_artist_id = 0;
     m_number = 0;
     m_year = 0;
+    m_fileName = file;
 
     QFile trackFile(file);
     if(!trackFile.exists())
     {
         emit trackFileNotFound();
+        remove();
         qDebug() << "File " << file << " not found";
         return;
     }
@@ -31,14 +33,20 @@ Track::Track(const QString file)
         }
 
         Artist *newArtist = new Artist();
-        newArtist->setName(trackFile->artist);
-        if(newArtist->getId() == 0)
+        int artistId = 0;
+        qDebug() << "Artist is " << trackFile->artist;
+        if(newArtist->idFromName(trackFile->artist) == 0)
         {
-            newArtist->insert();
+            newArtist->setName(trackFile->artist);
+            artistId = newArtist->insert();
+        }
+        else
+        {
+            artistId = newArtist->idFromName(trackFile->artist);
         }
 
-        m_artist = newArtist;
-        m_artist_id = m_artist->idFromName(trackFile->artist);
+        m_artist = newArtist->toId(artistId);
+        m_artist_id = artistId;
         m_artist_title = trackFile->artist;
         m_title = trackFile->title;
         m_album = trackFile->album;
@@ -71,6 +79,8 @@ Track::Track(const QString file)
         /*If file exists and in database check IDv3 tags and database tags*/
         if(query.next())
         {
+            qDebug() << "File found in DB";
+
             m_id = query.value(0).toInt();
             int artist_id = query.value(1).toInt();
             QString title = query.value(2).toString();
@@ -95,11 +105,13 @@ Track::Track(const QString file)
         }
         else
         {
+            qDebug() << "File not found in DB";
             m_id = insert();
         }
 
-        if(!m_id)
+        if(m_id == -1)
         {
+            qDebug() << "Insert new file FAIL!!!";
             return;
         }
     }
@@ -227,11 +239,15 @@ void Track::setArtistId(const int id)
 
 void Track::remove()
 {
+    if(m_id == 0)
+    {
+        m_id = getTrackIdFromFileName(m_fileName);
+    }
     QSqlDatabase db = dbAdapter::instance().db;
     QSqlQuery query(db);
+/*Delete from collection*/
     query.prepare("DELETE FROM tracks WHERE id=:id");
-    query.bindValue(":id",id);
-
+    query.bindValue(":id",m_id);
     bool ok = query.exec();
 
     if(!ok)
@@ -246,10 +262,17 @@ void Track::remove()
             file->remove();
         }
 
-        if(m_artist->getTracks().length() == 0)
+        if(m_artist)
         {
-            m_artist->remove();
+//FIXME: Crashed here
+            /*if(m_artist->getTracks().length() == 0)
+            {
+                m_artist->remove();
+            }*/
         }
+        query.prepare("DELETE FROM playlist WHERE song_id=:id");
+        query.bindValue(":id",m_id);
+        query.exec();
     }
 }
 /*

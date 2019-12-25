@@ -53,7 +53,7 @@ int Artist::idFromName(const QString name)
     if(!ok)
     {
         qDebug() << query.lastQuery() << query.lastError().text();
-        return -1;
+        return 0;
     }
 
     if(query.next())

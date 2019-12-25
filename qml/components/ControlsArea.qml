@@ -7,9 +7,13 @@ import QtQuick.Controls.Styles.Nemo 1.0
 
 Rectangle{
     id: controsArea
-    height: parent.width/9*1.1
 
     color: "transparent"
+
+    signal playPauseClicked()
+    signal playlistClicked()
+    signal backCliked()
+    signal forwardClicled()
 
     Image{
         id: playlistBtn
@@ -17,7 +21,7 @@ Rectangle{
         height: width
 
         anchors{
-            right: backBtn.left
+            right: parent.right
             rightMargin: width
             verticalCenter: playPauseBtn.verticalCenter
         }
@@ -25,47 +29,10 @@ Rectangle{
         MouseArea{
             anchors.fill: parent
             onClicked: {
-                pageStack.push(Qt.resolvedUrl("/usr/share/glacier-music/qml/pages/PlayListPage.qml"));
+                playlistClicked()
             }
         }
-
         source: "image://theme/align-justify"
-    }
-
-    Image{
-        id: backBtn
-        width: playPauseBtn.width*0.6
-        height: width
-
-        anchors{
-            right: playPauseBtn.left
-            rightMargin: width/2
-            verticalCenter: playPauseBtn.verticalCenter
-        }
-
-        MouseArea{
-            anchors.fill: parent
-            onClicked: playPrev()
-        }
-
-        source: "image://theme/backward"
-    }
-
-    Image{
-        id: playPauseBtn
-        width: height
-        height: parent.width/9
-
-        anchors.centerIn: parent;
-
-        source: (rootAudio.playbackState == MediaPlayer.PlayingState) ?
-                    "image://theme/pause" :
-                    "image://theme/play"
-
-        MouseArea{
-            anchors.fill: parent
-            onClicked: playPause();
-        }
     }
 
     Image{
@@ -74,8 +41,8 @@ Rectangle{
         height: width
 
         anchors{
-            left: playPauseBtn.right
-            leftMargin: width/2
+            right: playlistBtn.left
+            rightMargin: width/2
             verticalCenter: playPauseBtn.verticalCenter
         }
 
@@ -83,69 +50,51 @@ Rectangle{
 
         MouseArea{
             anchors.fill: parent
-            onClicked: playNext()
+            onClicked: forwardClicled()// playNext()
         }
     }
 
     Image{
-        id: soundBtn
-        width: playPauseBtn.width*0.6
-        height: width
+        id: playPauseBtn
+        width: height
+        height: parent.width/9
 
         anchors{
-            left: forwBtn.right
-            leftMargin: width
-            verticalCenter: playPauseBtn.verticalCenter
+            right: forwBtn.left
+            rightMargin: width/2
+            verticalCenter: parent.verticalCenter
         }
 
-        source: "image://theme/volume-up"
+        source: player.isPlayed ?
+                    "image://theme/pause" :
+                    "image://theme/play"
 
         MouseArea{
             anchors.fill: parent
             onClicked: {
-                volumeArea.visible = true
-                removeVolumeTimer.start()
+               playPauseClicked();
             }
         }
     }
 
-    Rectangle{
-        id: volumeArea
-        width: parent.width
-        height: parent.height
+    Image{
+        id: backBtn
+        width: playPauseBtn.width*0.6
+        height: width
 
-        color: Theme.backgroundColor
+        visible: nextTrackModel.currentIndex !== 0
 
-        visible: false
+        anchors{
+            right: playPauseBtn.left
+            rightMargin: playPauseBtn.width/2
+            verticalCenter: playPauseBtn.verticalCenter
+        }
 
         MouseArea{
             anchors.fill: parent
-            onClicked: volumeArea.visible = false
+            onClicked: backCliked()// playPrev()
         }
 
-        Slider{
-            id: volumeSlider
-
-            width: parent.width*0.8
-            anchors.centerIn: parent
-
-            minimumValue: 0
-            maximumValue: 1
-            stepSize: 0.05
-            value: rootAudio.volume
-
-            onValueChanged:{
-                removeVolumeTimer.restart()
-                rootAudio.volume = value
-            }
-        }
-    }
-
-    Timer{
-        id: removeVolumeTimer
-        interval: 5000
-        onTriggered: {
-            volumeArea.visible = false
-        }
+        source: "image://theme/backward"
     }
 }

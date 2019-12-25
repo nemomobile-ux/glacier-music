@@ -62,6 +62,15 @@ ApplicationWindow {
 
         onPlaybackStateChanged: {
             settings.setValue("playbackState",rootAudio.playbackState);
+/*Auto play next song*/
+            if(rootAudio.playbackState != MediaPlayer.PlayingState && settings.value("isPlayed",0) == 1) {
+                if(nextTrackModel.currentIndex >= nextTrackModel.rowCount()-1)
+                {
+                    nextTrackModel.formatRandomPlaylist(1);
+                }
+                ++nextTrackModel.currentIndex
+                rootAudio.play()
+            }
         }
 
         Component.onCompleted: {
@@ -69,7 +78,24 @@ ApplicationWindow {
         }
     }
 
-    initialPage: PlayerPage{}
+    Connections{
+        target: nextTrackModel
+        onCurrentIndexChanged: {
+            rootAudio.source = nextTrackModel.get(nextTrackModel.currentIndex).fileName
+            /*Set seek of firs playing dong and play only if old state is playing*/
+            if(nextTrackModel.currentIndex == 0 && settings.value("currentTrack") == nextTrackModel.get(currentIndex).trackId)
+            {
+                if(settings.value("playbackState") == 1)
+                {
+                    rootAudio.seek(settings.value("seek"));
+                    rootAudio.play();
+                }
+            }
+            settings.setValue("currentTrack",nextTrackModel.get(currentIndex).trackId)
+        }
+    }
+
+    initialPage: MainPage{}
 
     Component.onCompleted: {
         if(collection.isFirstRun())
@@ -148,13 +174,14 @@ ApplicationWindow {
 
         icon: "image://theme/exclamation-triangle"
 
-        cancelText: qsTr("Cancel")
+        cancelText: qsTr("Select directory")
         acceptText: qsTr("Ok")
         headingText: qsTr("No music files fonud")
-        subLabelText: qsTr("Please add music files into Music or Download directory. Or connect card with music")
+        subLabelText: qsTr("Please add music files into Music or Download directory. Or connect card with music. If you music collections in another folder select it.")
 
         onSelected: {
             Qt.quit()
         }
     }
 }
+

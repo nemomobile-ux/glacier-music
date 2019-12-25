@@ -96,9 +96,9 @@ Rectangle{
     Connections{
         target: coverLoader
         onCoverReady: coverArea.cover = coverFile
-        onCoverLoading: {
-            /*FIXME add loader*/
+        /*onCoverLoading: {
+            //FIXME add loader
             coverArea.cover = "/usr/share/glacier-music/images/cover.png";
-        }
+        }*/
     }
 }

@@ -24,17 +24,6 @@ Page {
         ]
     }
 
-    CoverArea{
-        id: coverArea
-        width: height
-        height: Math.min(parent.height-trackLabelArea.height-controsArea.height-Theme.itemSpacingHuge*4, parent.width-Theme.itemSpacingHuge)
-        anchors{
-            top: parent.top
-            topMargin: Theme.itemSpacingHuge
-            horizontalCenter: parent.horizontalCenter
-        }
-    }
-
     Rectangle{
         id: trackLabelArea
         width: parent.width-Theme.itemSpacingHuge*2
@@ -69,6 +58,13 @@ Page {
         anchors{
             bottom: parent.bottom
             bottomMargin: Theme.itemSpacingHuge
+        }
+    }
+
+    Connections{
+        target: controsArea
+        onPlayPauseClicked: {
+            console.log("PLAYPAUSE")
         }
     }
 
