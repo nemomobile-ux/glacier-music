@@ -17,6 +17,7 @@ Requires:   nemo-qml-plugin-settings
 Requires:   mpris-qt5-qml-plugin
 Requires:   libglacierapp
 Requires:   mapplauncherd-booster-nemomobile
+Requires:   qt5-qtmultimedia-plugin-mediaservice-gstmediaplayer
 
 BuildRequires:  pkgconfig(taglib) >= 1.11.1
 BuildRequires:  pkgconfig(Qt5Core)
