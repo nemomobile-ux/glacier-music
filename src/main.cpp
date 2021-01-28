@@ -30,11 +30,11 @@
 
 #include <glacierapp.h>
 
-#include "src/collection.h"
-#include "src/cover.h"
-#include "src/models/artistsqlmodel.h"
-#include "src/models/tracksqlmodel.h"
-#include "src/models/playlistmodel.h"
+#include "collection.h"
+#include "cover.h"
+#include "models/artistsqlmodel.h"
+#include "models/tracksqlmodel.h"
+#include "models/playlistmodel.h"
 
 Q_DECL_EXPORT int main(int argc, char *argv[])
 {

@@ -19,6 +19,7 @@ Requires:   libglacierapp
 Requires:   mapplauncherd-booster-nemomobile
 Requires:   qt5-qtmultimedia-plugin-mediaservice-gstmediaplayer
 
+BuildRequires:  cmake
 BuildRequires:  pkgconfig(taglib) >= 1.11.1
 BuildRequires:  pkgconfig(Qt5Core)
 BuildRequires:  pkgconfig(Qt5Qml)
@@ -34,17 +35,19 @@ Music application for nemo mobile
 %setup -q -n %{name}-%{version}
 
 %build
-%qtc_qmake5  VERSION=%{version}
-
-make %{?_smp_mflags}
+mkdir build
+cd build
+cmake \
+	-DCMAKE_BUILD_TYPE=Release \
+	-DCMAKE_INSTALL_PREFIX=%{_prefix} \	
+	-DCMAKE_VERBOSE_MAKEFILE=ON \
+	..
+cmake --build .
 
 %install
+cd build
 rm -rf %{buildroot}
-%qmake5_install
-
-desktop-file-install --delete-original       \
-  --dir %{buildroot}%{_datadir}/applications             \
-   %{buildroot}%{_datadir}/applications/*.desktop
+DESTDIR=%{buildroot} cmake --build . --target install
 
 %files
 %defattr(-,root,root,-)
