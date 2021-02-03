@@ -13,7 +13,7 @@ void RescanCollection::scan()
 {
     qDebug() << "Start rescan collection";
 /*in first - check removed files in db*/
-    QSqlDatabase db = dbAdapter::instance().db;
+    QSqlDatabase db = dbAdapter::instance().getDatabase();
     QSqlQuery query(db);
     query.prepare("SELECT id, filename FROM tracks");
     bool ok = query.exec();

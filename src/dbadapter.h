@@ -13,9 +13,8 @@ public:
     ~dbAdapter();
 
     static dbAdapter& instance();
-    QSqlDatabase db;
-
     QSqlQueryModel *getTable(QString table);
+    QSqlDatabase getDatabase();
 
 signals:
     void baseCreate();
@@ -26,6 +25,7 @@ private:
     QSqlQuery query;
     QMutex lock;
     void initDB();
+    QSqlDatabase m_db;
 };
 
 #endif // DBADAPTER_H

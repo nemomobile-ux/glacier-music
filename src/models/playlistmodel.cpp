@@ -42,7 +42,7 @@ void PlayListModel::addItem(int trackId, int count)
     insertRows(count,1,item);
 
 
-    QSqlDatabase db = dbAdapter::instance().db;
+    QSqlDatabase db = dbAdapter::instance().getDatabase();
     QSqlQuery query(db);
     query.prepare("INSERT INTO playlist (`song_id`, `time`) VALUES ( :trackid , 0)");
     query.bindValue(":trackid",trackId);
@@ -154,7 +154,7 @@ void PlayListModel::clearPlaylist()
     qDebug() << "Clear playlist";
     playList.clear();
 
-    QSqlDatabase db = dbAdapter::instance().db;
+    QSqlDatabase db = dbAdapter::instance().getDatabase();
     QSqlQuery query(db);
     query.prepare("DELETE FROM playlist WHERE time = 0");
     bool ok = query.exec();
@@ -167,7 +167,7 @@ void PlayListModel::clearPlaylist()
 
 void PlayListModel::loadPlaylistFromDB()
 {
-    QSqlDatabase db = dbAdapter::instance().db;
+    QSqlDatabase db = dbAdapter::instance().getDatabase();
     QSqlQuery query(db);
     bool ok = false;
 
@@ -207,7 +207,7 @@ void PlayListModel::formatRandomPlaylist(const int tracksCount)
 {
     qDebug() << "Format random playlist";
 
-    QSqlDatabase db = dbAdapter::instance().db;
+    QSqlDatabase db = dbAdapter::instance().getDatabase();
     QSqlQuery query(db);
     query.prepare("SELECT id FROM tracks ORDER BY RANDOM() LIMIT :limit");
     query.bindValue(":limit",tracksCount);
@@ -249,7 +249,7 @@ void PlayListModel::formatAutoPlaylist()
             s_notin.append(","+item.trackId);
         }
 
-        QSqlDatabase db = dbAdapter::instance().db;
+        QSqlDatabase db = dbAdapter::instance().getDatabase();
         QSqlQuery query(db);
 
         //create played artist list
@@ -326,7 +326,7 @@ void PlayListModel::setPlayed(int idx, const QModelIndex &parent)
 
     qDebug() << "Play trackID" << track_id;
 
-    QSqlDatabase db = dbAdapter::instance().db;
+    QSqlDatabase db = dbAdapter::instance().getDatabase();
     QSqlQuery query(db);
     query.prepare("UPDATE playlist SET `time` = :time WHERE song_id=:trackid AND time = 0");
     query.bindValue(":trackid",track_id);

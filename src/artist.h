@@ -2,6 +2,7 @@
 #define ARTIST_H
 
 #include "item.h"
+#include "dbadapter.h"
 
 class Artist : public Item
 {

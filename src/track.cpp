@@ -49,7 +49,7 @@ Track::Track(const QString file)
 
         m_length = trackFile->length;
 
-        QSqlDatabase db = dbAdapter::instance().db;
+        QSqlDatabase db = dbAdapter::instance().getDatabase();
         QSqlQuery query(db);
         query.prepare("SELECT id, "
                       "artist_id,"
@@ -107,7 +107,7 @@ Track::Track(const QString file)
 
 Track* Track::toId(const int trackId)
 {
-    QSqlDatabase db = dbAdapter::instance().db;
+    QSqlDatabase db = dbAdapter::instance().getDatabase();
     QSqlQuery query(db);
     query.prepare("SELECT filename FROM tracks WHERE id=:id");
     query.bindValue(":id",trackId);
@@ -131,7 +131,7 @@ Track* Track::toId(const int trackId)
 
 int Track::insert()
 {
-    QSqlDatabase db = dbAdapter::instance().db;
+    QSqlDatabase db = dbAdapter::instance().getDatabase();
     QSqlQuery query(db);
 
     query.prepare("INSERT INTO tracks (`artist_id`, `filename`, `title`, `album`, `comment`, `genre`, `track`, `year`, `length`) \
@@ -157,7 +157,7 @@ int Track::insert()
 
 void Track::update()
 {
-    QSqlDatabase db = dbAdapter::instance().db;
+    QSqlDatabase db = dbAdapter::instance().getDatabase();
     QSqlQuery query(db);
     query.prepare("UPDATE tracks SET artist_id=:AID,title=:Title,track=:Track,album=:Album,comment=:Comment,genre=:Genre,cover=:Cover,year=:Year WHERE id=:rid");
     query.bindValue(":AID",m_artist_id);
@@ -227,7 +227,7 @@ void Track::setArtistId(const int id)
 
 void Track::remove()
 {
-    QSqlDatabase db = dbAdapter::instance().db;
+    QSqlDatabase db = dbAdapter::instance().getDatabase();
     QSqlQuery query(db);
     query.prepare("DELETE FROM tracks WHERE id=:id");
     query.bindValue(":id",id);
@@ -257,7 +257,7 @@ Return trackId if file in DB or 0 if file is new
 */
 int Track::getTrackIdFromFileName(QString fileName)
 {
-    QSqlDatabase db = dbAdapter::instance().db;
+    QSqlDatabase db = dbAdapter::instance().getDatabase();
     QSqlQuery query(db);
     query.prepare("SELECT id FROM tracks WHERE filename=:filename");
     query.bindValue(":filename",fileName);

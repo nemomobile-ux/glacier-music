@@ -1,6 +1,5 @@
 #include "artist.h"
 #include "track.h"
-#include "dbadapter.h"
 
 Artist::Artist(QObject *parent) : Item(parent)
 {
@@ -16,7 +15,7 @@ Artist* Artist::toId(const int artistId)
         return m_cache.value(artistId);
     }
 
-    QSqlDatabase db = dbAdapter::instance().db;
+    QSqlDatabase db = dbAdapter::instance().getDatabase();
     QSqlQuery query(db);
     query.prepare("SELECT name FROM artist WHERE id=:id");
     query.bindValue(":id",artistId);
@@ -43,7 +42,7 @@ Artist* Artist::toId(const int artistId)
 int Artist::idFromName(const QString name)
 {
     int id = 0;
-    QSqlDatabase db = dbAdapter::instance().db;
+    QSqlDatabase db = dbAdapter::instance().getDatabase();
     QSqlQuery query(db);
 
     query.prepare("SELECT id FROM artist WHERE name=:name");
@@ -72,7 +71,7 @@ int Artist::insert()
         return -1;
     }
 
-    QSqlDatabase db = dbAdapter::instance().db;
+    QSqlDatabase db = dbAdapter::instance().getDatabase();
     QSqlQuery query(db);
 
     query.prepare("INSERT INTO artist (name) VALUES (:name)");
@@ -94,7 +93,7 @@ bool Artist::setName(const QString name)
         return false;
     }
 
-    QSqlDatabase db = dbAdapter::instance().db;
+    QSqlDatabase db = dbAdapter::instance().getDatabase();
     QSqlQuery query(db);
     query.prepare("SELECT id FROM artist WHERE name=:name");
     query.bindValue(":name",name);
@@ -125,7 +124,7 @@ bool Artist::setName(const QString name)
 
 void Artist::update()
 {
-    QSqlDatabase db = dbAdapter::instance().db;
+    QSqlDatabase db = dbAdapter::instance().getDatabase();
     QSqlQuery query(db);
     query.prepare("UPDATE artist SET name=:name WHERE id=:id");
     query.bindValue(":name",m_name);
@@ -158,7 +157,7 @@ QList<Track*> Artist::getTracks()
         return tracks;
     }
 
-    QSqlDatabase db = dbAdapter::instance().db;
+    QSqlDatabase db = dbAdapter::instance().getDatabase();
     QSqlQuery query(db);
     query.prepare("SELECT id FROM tracks WHERE artist_id = :id");
     query.bindValue(":id",m_id);
@@ -181,7 +180,7 @@ QList<Track*> Artist::getTracks()
 
 void Artist::remove()
 {
-    QSqlDatabase db = dbAdapter::instance().db;
+    QSqlDatabase db = dbAdapter::instance().getDatabase();
     QSqlQuery query(db);
     query.prepare("DELETE FROM artist WHERE id=:id");
     query.bindValue(":id",this->m_id);
