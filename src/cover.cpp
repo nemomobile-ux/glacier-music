@@ -53,7 +53,7 @@ void Cover::getCoverByTrackId(int trackId)
     }
     else
     {
-        m_coverReady(m_coverDir+"/"+cover);
+        m_coverReady(cover);
     }
 }
 

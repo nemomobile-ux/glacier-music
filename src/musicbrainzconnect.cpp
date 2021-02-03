@@ -64,7 +64,7 @@ void MusicBrainzConnect::dataReady(QByteArray answer)
     }
     else
     {
-        emit coverReady(m_song.value("release_id")+".jpg");
+        emit coverReady(m_covers_dir+"/"+m_song.value("release_id")+".jpg");
     }
 }
 
@@ -115,8 +115,13 @@ void MusicBrainzConnect::downloadCoverImage(QString coverURL)
 
 void MusicBrainzConnect::onFinishedDownloadCover(QByteArray answer)
 {
-    m_coverFile->write(answer);
-    m_coverFile->close();
-    m_coverFile->deleteLater();
-    emit coverReady(m_song.value("release_id")+".jpg");
+    if(answer.size() > 0) {
+        m_coverFile->write(answer);
+        m_coverFile->close();
+        m_coverFile->deleteLater();
+        emit coverReady(m_covers_dir+"/"+m_song.value("release_id")+".jpg");
+    } else {
+        qDebug() << Q_FUNC_INFO << "Got empty answer";
+    }
+
 }
