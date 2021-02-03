@@ -17,24 +17,23 @@ void RescanCollection::scan()
     QSqlQuery query(db);
     query.prepare("SELECT id, filename FROM tracks");
     bool ok = query.exec();
-    if(!ok)
-    {
+    if(!ok) {
         qDebug() << query.lastQuery() << query.lastError().text();
     }
 
     QStringList filesInDb;
 
+/*Check on removed files*/
     while (query.next())
     {
         QString fileName = query.value(1).toString();
-        Track *track = new Track(fileName);
-        if(track->getId() != 0)
-        {
+        QFile tFile(fileName);
+        if(!tFile.exists()) {
+            qDebug() << "!!! File not found " << fileName;
+            QSqlQuery rquery(db);
+            rquery.exec("DELETE FROM tracks WHERE filename='"+fileName+"'");
+        } else {
             filesInDb << fileName;
-        }
-        else
-        {
-            qDebug() << "File not found " << fileName;
         }
     }
 
@@ -75,7 +74,6 @@ void RescanCollection::scan()
         {
             Track *track = new Track(fileUrl);
             Q_UNUSED(track);
-            qDebug() << fileUrl;
             m_scannedFiles++;
 
             double prc = m_scannedFiles/m_aviableFiles*100;
