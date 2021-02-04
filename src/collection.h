@@ -27,11 +27,8 @@ private slots:
 
 private:
     bool m_firstRun;
-    QDir m_cacheLocation;
-
-    dbAdapter* dba;
-
     QStringList aviableDirs();
+    QThread *m_rescanThread;
 };
 
 #endif // COLLECTION_H

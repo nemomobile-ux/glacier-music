@@ -6,7 +6,6 @@
 
 RescanCollection::RescanCollection(QObject *parent) : QObject(parent)
 {
-    dba = new dbAdapter();
 }
 
 void RescanCollection::scan()

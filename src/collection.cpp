@@ -10,35 +10,34 @@
 Collection::Collection(QObject *parent) : QObject(parent)
 {
     m_firstRun = false;
-    m_cacheLocation = QDir(QStandardPaths::writableLocation(QStandardPaths::CacheLocation));
+    QDir cacheLocation = QDir(QStandardPaths::writableLocation(QStandardPaths::CacheLocation));
+    QFile dbFile(QStandardPaths::writableLocation(QStandardPaths::CacheLocation)+"/db.sql");
 
-    if(!m_cacheLocation.exists())
-    {
+    if(!cacheLocation.exists() || !dbFile.exists()) {
         m_firstRun = true;
-        m_cacheLocation.mkpath(m_cacheLocation.absolutePath()+"/images/");
+        cacheLocation.mkpath(cacheLocation.absolutePath()+"/images/");
     }
 
-    dba = new dbAdapter();
-
+    dbAdapter* dba = new dbAdapter();
     connect(dba,SIGNAL(baseCreate()),this,SLOT(rescanCollection()));
 }
 
 
 Collection::~Collection()
 {
-    //    thread->quit();
+    m_rescanThread->quit();
 }
 
 void Collection::rescanCollection()
 {
     RescanCollection *rCollection = new RescanCollection();
 
-    QThread *rescanThread = new QThread;
-    connect(rescanThread,SIGNAL(started()),rCollection, SLOT(scan()));
+    m_rescanThread = new QThread;
+    connect(m_rescanThread,SIGNAL(started()),rCollection, SLOT(scan()));
     connect(rCollection,SIGNAL(scanProcess(QVariant)),this,SLOT(m_rescanCollectionProgress(QVariant)));
     connect(rCollection,SIGNAL(noMusicFiles()),this,SIGNAL(noMusicFiles()));
-    rCollection->moveToThread(rescanThread);
-    rescanThread->start();
+    rCollection->moveToThread(m_rescanThread);
+    m_rescanThread->start();
 }
 
 
