@@ -34,24 +34,28 @@ Page {
 
         CoverArea{
             id: coverArea
-            width: height
-            height: trackInfo.height-trackLabelArea.height
+            width: isUiPortrait ? height : Theme.itemHeightExtraLarge
+            height: isUiPortrait ? trackInfo.height-trackLabelArea.height : Theme.itemHeightExtraLarge
             anchors{
-                top: parent.top
-                topMargin: Theme.itemSpacingSmall
-                horizontalCenter: parent.horizontalCenter
+                top: isUiPortrait ? parent.top : trackLabelArea.top
+                topMargin: isUiPortrait ? Theme.itemSpacingSmall : undefined
+                horizontalCenter: isUiPortrait ? parent.horizontalCenter : undefined
+                right: isUiPortrait ? undefined : trackLabelArea.left
+                rightMargin: isUiPortrait ? undefined : Theme.itemSpacingSmall
             }
         }
 
         Item{
             id: trackLabelArea
-            width: parent.width-Theme.itemSpacingSmall*2
+            width: isUiPortrait ? parent.width-Theme.itemSpacingSmall*2 : parent.width-Theme.itemSpacingSmall*2-coverArea.width
             height: Theme.itemHeightExtraLarge
 
             anchors{
-                top: coverArea.bottom
-                left: parent.left
-                leftMargin: Theme.itemSpacingSmall
+                top: isUiPortrait ? coverArea.bottom : undefined
+                left:  isUiPortrait ? parent.left : undefined
+                right: isUiPortrait ? undefined : parent.right
+                leftMargin: isUiPortrait ? Theme.itemSpacingSmall : undefined
+                rightMargin: isUiPortrait ? undefined : Theme.itemSpacingSmall
             }
 
             Label{
