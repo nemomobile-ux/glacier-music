@@ -24,42 +24,70 @@ Page {
         ]
     }
 
-    CoverArea{
-        id: coverArea
-        width: height
-        height: Math.min(parent.height-trackLabelArea.height-controsArea.height-Theme.itemSpacingHuge*4, parent.width-Theme.itemSpacingHuge)
-        anchors{
-            top: parent.top
-            topMargin: Theme.itemSpacingHuge
-            horizontalCenter: parent.horizontalCenter
+    Rectangle {
+        id: trackInfo
+        width: parent.width
+        height: parent.height-progressItem.height-controsArea.height
+
+        color: "transparent"
+        clip: true
+
+        CoverArea{
+            id: coverArea
+            width: height
+            height: trackInfo.height-trackLabelArea.height
+            anchors{
+                top: parent.top
+                topMargin: Theme.itemSpacingSmall
+                horizontalCenter: parent.horizontalCenter
+            }
+        }
+
+        Item{
+            id: trackLabelArea
+            width: parent.width-Theme.itemSpacingSmall*2
+            height: Theme.itemHeightExtraLarge
+
+            anchors{
+                top: coverArea.bottom
+                left: parent.left
+                leftMargin: Theme.itemSpacingSmall
+            }
+
+            Label{
+                id: trackName
+                text: "Unknow track"
+                anchors{
+                    top: parent.top
+                    left: parent.left
+                }
+
+                font{
+                    bold: true
+                    pixelSize: Theme.fontSizeSmall
+                }
+            }
+
+            Label{
+                id: artistsName
+                text: "Unknow artist"
+                anchors{
+                    top: trackName.bottom
+                    left: parent.left
+                }
+                font{
+                    pixelSize: Theme.fontSizeTiny
+                }
+                color: Theme.accentColor
+            }
         }
     }
 
-    Rectangle{
-        id: trackLabelArea
-        width: parent.width-Theme.itemSpacingHuge*2
-        height: Theme.fontSizeLarge*2+Theme.itemSpacingLarge*2
-
+    ProgressItem{
+        id: progressItem
+        width: parent.width
         anchors{
             bottom: controsArea.top
-            bottomMargin: Theme.itemSpacingHuge
-            left: parent.left
-            leftMargin: Theme.itemSpacingHuge
-        }
-
-        color: "transparent"
-
-        Label{
-            id: trackLabel
-            text: ""
-            anchors.fill: parent
-            font{
-                bold: true
-                pixelSize: Theme.fontSizeExtraLarge
-            }
-            scale: paintedWidth > width ? (width / paintedWidth) : 1
-            verticalAlignment: Text.AlignVCenter
-            horizontalAlignment: Text.AlignHCenter
         }
     }
 
@@ -68,7 +96,7 @@ Page {
         width: parent.width
         anchors{
             bottom: parent.bottom
-            bottomMargin: Theme.itemSpacingHuge
+            bottomMargin: Theme.itemSpacingSmall
         }
     }
 
@@ -81,7 +109,8 @@ Page {
         target: nextTrackModel
         onCurrentIndexChanged: {
             rootAudio.stop();
-            trackLabel.text = nextTrackModel.get(currentIndex).artist+"\n"+nextTrackModel.get(currentIndex).title
+
+            trackName.text = nextTrackModel.get(currentIndex).title
             rootAudio.source = nextTrackModel.get(currentIndex).fileName
 
 /*Set seek of firs playing dong and play only if old state is playing*/

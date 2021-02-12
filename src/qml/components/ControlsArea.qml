@@ -7,7 +7,7 @@ import QtQuick.Controls.Styles.Nemo 1.0
 
 Rectangle{
     id: controsArea
-    height: parent.width/9*1.1
+    height: Theme.itemHeightHuge
 
     color: "transparent"
 
