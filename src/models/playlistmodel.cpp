@@ -11,10 +11,11 @@ PlayListModel::PlayListModel(QObject *parent) :
 {
     hash.insert(Qt::UserRole ,QByteArray("trackId"));
     hash.insert(Qt::UserRole+1 ,QByteArray("artist"));
-    hash.insert(Qt::UserRole+2 ,QByteArray("title"));
-    hash.insert(Qt::UserRole+3 ,QByteArray("fileName"));
-    hash.insert(Qt::UserRole+4 ,QByteArray("played"));
-    hash.insert(Qt::UserRole+5 ,QByteArray("cover"));
+    hash.insert(Qt::UserRole+2 ,QByteArray("artist_id"));
+    hash.insert(Qt::UserRole+3 ,QByteArray("title"));
+    hash.insert(Qt::UserRole+4 ,QByteArray("fileName"));
+    hash.insert(Qt::UserRole+5 ,QByteArray("played"));
+    hash.insert(Qt::UserRole+6 ,QByteArray("cover"));
 
     m_currentIndex = -1;
 }
@@ -30,6 +31,7 @@ void PlayListModel::addItem(int trackId, int count)
     playListItem item;
     item.trackId = trackId;
     item.artist = track->getArtistName();
+    item.artist_id = track->getArtistId();
     item.title = track->getTitle();
     item.fileName = track->getFileName();
     item.cover = track->getCover();
@@ -78,17 +80,21 @@ QVariant PlayListModel::data(const QModelIndex &index, int role) const
     }
     else if(role == Qt::UserRole+2)
     {
-        return item.title;
+        return item.artist_id;
     }
     else if(role == Qt::UserRole+3)
     {
-        return item.fileName;
+        return item.title;
     }
     else if(role == Qt::UserRole+4)
     {
-        return item.played;
+        return item.fileName;
     }
     else if(role == Qt::UserRole+5)
+    {
+        return item.played;
+    }
+    else if(role == Qt::UserRole+6)
     {
         return item.cover;
     }
@@ -136,6 +142,7 @@ QVariant PlayListModel::get(int idx)
 
     itemData.insert("trackId",item.trackId);
     itemData.insert("artist",item.artist);
+    itemData.insert("artist_id",item.artist_id);
     itemData.insert("title",item.title);
     itemData.insert("fileName",item.fileName);
     itemData.insert("played",item.played);

@@ -12,6 +12,7 @@ class PlayListModel: public QAbstractListModel
     struct playListItem{
         int trackId;
         QString artist;
+        int artist_id;
         QString title;
         QString fileName;
         bool played;
