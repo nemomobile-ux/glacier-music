@@ -1,4 +1,5 @@
 #include "tracksqlmodel.h"
+#include "../dbadapter.h"
 
 #include <QDebug>
 
@@ -50,7 +51,8 @@ QVariant TrackSqlModel::data(const QModelIndex &index, int role) const
 
 void TrackSqlModel::refresh()
 {
-    setQuery(SQL_SELECT);
+    QSqlDatabase db = dbAdapter::instance().getDatabase();
+    setQuery(SQL_SELECT, db);
 }
 
 
@@ -61,6 +63,7 @@ void TrackSqlModel::setArtist(const int artist_id)
         cleanQuery();
         return;
     }
+    QSqlDatabase db = dbAdapter::instance().getDatabase();
     setQuery(QString("SELECT tracks.id as track_id, \
                                  tracks.artist_id, \
                                  tracks.title, \
@@ -73,11 +76,12 @@ void TrackSqlModel::setArtist(const int artist_id)
                                  artist.name as artist_name \
                                  FROM tracks \
                                  INNER JOIN artist ON artist.id = tracks.artist_id \
-                        WHERE artist_id = %1 ORDER BY artist_name ASC").arg(artist_id).toUtf8());
+                        WHERE artist_id = %1 ORDER BY artist_name ASC").arg(artist_id).toUtf8(), db);
 }
 
 void TrackSqlModel::cleanQuery()
 {
+    QSqlDatabase db = dbAdapter::instance().getDatabase();
     this->setQuery("SELECT tracks.id as track_id, \
                                tracks.artist_id, \
                                tracks.title, \
@@ -90,5 +94,5 @@ void TrackSqlModel::cleanQuery()
                                artist.name as artist_name \
                                FROM tracks \
                                INNER JOIN artist ON artist.id = tracks.artist_id \
-                        ORDER BY artist_name ASC");
+                        ORDER BY artist_name ASC", db);
 }

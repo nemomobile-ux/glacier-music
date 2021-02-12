@@ -1,4 +1,5 @@
 #include "artistsqlmodel.h"
+#include "../dbadapter.h"
 
 #include <QSqlQueryModel>
 
@@ -28,15 +29,18 @@ QVariant ArtistSqlModel::data(const QModelIndex &index, int role) const{
 
 void ArtistSqlModel::searchQuery(const QString name)
 {
-    setQuery(QString("SELECT id as artist_id, name FROM artist WHERE `name` LIKE '%%1%' ORDER BY name ASC").arg(name).toUtf8());
+    QSqlDatabase db = dbAdapter::instance().getDatabase();
+    setQuery(QString("SELECT id as artist_id, name FROM artist WHERE `name` LIKE '%%1%' ORDER BY name ASC").arg(name).toUtf8(), db);
 }
 
 void ArtistSqlModel::cleanQuery()
 {
-    setQuery("SELECT id as artist_id, name FROM artist ORDER BY name ASC");
+    QSqlDatabase db = dbAdapter::instance().getDatabase();
+    setQuery("SELECT id as artist_id, name FROM artist ORDER BY name ASC", db);
 }
 
 void ArtistSqlModel::refresh()
 {
-    setQuery(SQL_SELECT);
+    QSqlDatabase db = dbAdapter::instance().getDatabase();
+    setQuery(SQL_SELECT, db);
 }

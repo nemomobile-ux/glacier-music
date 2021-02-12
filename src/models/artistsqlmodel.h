@@ -12,14 +12,16 @@ public:
     QVariant data(const QModelIndex &index, int role) const;
     QHash<int, QByteArray> roleNames() const { return hash; }
 
-private:
-    const static char* SQL_SELECT;
-    QHash<int,QByteArray> hash;
-
 public slots:
     void refresh();
     void searchQuery(const QString name);
     void cleanQuery();
+
+private:
+    const static char* SQL_SELECT;
+    QHash<int,QByteArray> hash;
+
+    QSqlDatabase mDB;
 };
 
 #endif // ARTISTSQLMODEL_H
