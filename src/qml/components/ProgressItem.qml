@@ -116,11 +116,20 @@ Item {
 
         if(ms >= 60000) {
             var min = Math.trunc(ms/60000);
-            out += min+":"
+            if(min < 10 ) {
+                out += "0"+min+":"
+            }
             ms = ms-min*60000
+        } else {
+            out += "00:"
         }
 
-        out+= Math.trunc(ms/1000)
+        var sec = Math.trunc(ms/1000)
+        if(sec < 10) {
+            out += "0"+sec;
+        } else {
+            out += sec
+        }
 
         return out;
     }
