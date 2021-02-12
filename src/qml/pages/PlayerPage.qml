@@ -83,6 +83,18 @@ Page {
                     pixelSize: Theme.fontSizeTiny
                 }
                 color: Theme.accentColor
+
+                MouseArea{
+                    anchors.fill: parent
+                    onClicked: {
+                        console.log(nextTrackModel.get(nextTrackModel.currentIndex).artist_id)
+                        console.log(nextTrackModel.get(nextTrackModel.currentIndex).artist)
+
+                        pageStack.push(Qt.resolvedUrl("/usr/share/glacier-music/qml/pages/TracksPage.qml"),
+                                       {artistId: nextTrackModel.get(nextTrackModel.currentIndex).artist_id,
+                                        artistName: nextTrackModel.get(nextTrackModel.currentIndex).artist});
+                    }
+                }
             }
         }
     }
