@@ -23,15 +23,17 @@ import QtQuick.Controls 1.0
 import QtQuick.Controls.Nemo 1.0
 import QtQuick.Controls.Styles.Nemo 1.0
 
+import org.glacier.music.widgets 1.0
+
 Item {
     id: progressItem
     width: parent.width
     height: Theme.itemHeightMedium
 
-    Rectangle{
+    WaveWidget{
         id: lineOfProgress
         width: parent.width-Theme.itemSpacingSmall*2
-        height: Theme.itemHeightExtraSmall/10
+        height: Theme.itemHeightExtraSmall/3
 
         anchors{
             verticalCenter: parent.verticalCenter
@@ -39,22 +41,9 @@ Item {
             leftMargin: Theme.itemSpacingSmall
         }
 
-        color: Theme.fillColor
-        radius: height/2
-
-        Rectangle{
-            id: progressPoint
-            width: Theme.itemHeightExtraSmall/3
-            height: width
-
-            anchors{
-                verticalCenter: lineOfProgress.verticalCenter
-            }
-
-            color: Theme.accentColor
-
-            radius: height/2
-        }
+        accentColor: Theme.accentColor
+        fillColor: Theme.fillColor
+        progress: rootAudio.position/rootAudio.duration
 
         MouseArea{
             id: rewindArea
@@ -98,8 +87,6 @@ Item {
     Connections {
         target: rootAudio
         onPositionChanged: {
-            progressPoint.x = lineOfProgress.width*(rootAudio.position/rootAudio.duration)
-
             startSec.text = formatIime(rootAudio.position)
             endSec.text = formatIime(rootAudio.duration-rootAudio.position)
         }

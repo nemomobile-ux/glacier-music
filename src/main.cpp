@@ -35,6 +35,7 @@
 #include "models/artistsqlmodel.h"
 #include "models/tracksqlmodel.h"
 #include "models/playlistmodel.h"
+#include "widgets/wavewidget.h"
 
 Q_DECL_EXPORT int main(int argc, char *argv[])
 {
@@ -49,6 +50,7 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     qmlRegisterType<ArtistSqlModel>("org.glacier.music.artistmodel",1,0,"ArtistModel");
     qmlRegisterType<TrackSqlModel>("org.glacier.music.trackmodel",1,0,"TrackModel");
     qmlRegisterType<PlayListModel>("org.glacier.music.playlistmodel",1,0,"PlaylistModel");
+    qmlRegisterType<WaveWidget>("org.glacier.music.widgets",1,0,"WaveWidget");
 
     QQuickWindow *window = GlacierApp::showWindow();
     window->setTitle(QObject::tr("Music"));

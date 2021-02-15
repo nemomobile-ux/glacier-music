@@ -24,7 +24,9 @@ set(SRC
 	models/playlistmodel.cpp
 	models/playlistmodel.h
 	models/tracksqlmodel.cpp
-	models/tracksqlmodel.h)
+        models/tracksqlmodel.h
+        widgets/wavewidget.cpp
+        widgets/wavewidget.h)
 
 add_executable(glacier-music ${SRC})
 
