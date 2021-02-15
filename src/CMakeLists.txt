@@ -25,6 +25,8 @@ set(SRC
 	models/playlistmodel.h
 	models/tracksqlmodel.cpp
         models/tracksqlmodel.h
+        widgets/blurredimage.cpp
+        widgets/blurredimage.h
         widgets/wavewidget.cpp
         widgets/wavewidget.h)
 

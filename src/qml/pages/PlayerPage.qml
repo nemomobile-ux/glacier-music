@@ -6,6 +6,8 @@ import QtQuick.Controls 1.0
 import QtQuick.Controls.Nemo 1.0
 import QtQuick.Controls.Styles.Nemo 1.0
 
+import org.glacier.music.widgets 1.0
+
 import "../components"
 
 Page {
@@ -22,6 +24,11 @@ Page {
                 }
             }
         ]
+    }
+
+    BlurredImage{
+        id: blurredImage
+        anchors.fill: parent
     }
 
     Rectangle {
@@ -154,8 +161,10 @@ Page {
 /*Change cover */
             if(nextTrackModel.get(currentIndex).cover != "") {
                 coverArea.cover = nextTrackModel.get(currentIndex).cover;
+                blurredImage.imagePath = nextTrackModel.get(currentIndex).cover;
             } else {
                 coverArea.cover = "/usr/share/glacier-music/images/cover.png";
+                blurredImage.imagePath = "/usr/share/glacier-music/images/cover.png";
                 coverLoader.getCoverByTrackId(nextTrackModel.get(currentIndex).trackId)
             }
         }
