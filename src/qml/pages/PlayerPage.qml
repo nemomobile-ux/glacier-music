@@ -151,6 +151,24 @@ Page {
             {
                 settings.setValue("currentTrack",nextTrackModel.get(currentIndex).trackId);
             }
+/*Change cover */
+            if(nextTrackModel.get(currentIndex).cover != "") {
+                coverArea.cover = nextTrackModel.get(currentIndex).cover;
+            } else {
+                coverArea.cover = "/usr/share/glacier-music/images/cover.png";
+                coverLoader.getCoverByTrackId(nextTrackModel.get(currentIndex).trackId)
+            }
+        }
+    }
+
+    Connections{
+        target: coverLoader
+        onCoverReady: {
+            coverArea.cover = coverFile
+        }
+        onCoverLoading: {
+            /*FIXME add loader*/
+            coverArea.cover = "/usr/share/glacier-music/images/cover.png";
         }
     }
 

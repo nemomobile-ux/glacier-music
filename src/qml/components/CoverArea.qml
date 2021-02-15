@@ -22,28 +22,4 @@ Rectangle{
         source: "/usr/share/glacier-music/images/cover.png"
         fillMode: Image.PreserveAspectFit
     }
-
-    Connections {
-        target: nextTrackModel
-        onCurrentIndexChanged: {
-            if(nextTrackModel.get(currentIndex).cover != "")
-            {
-                coverArea.cover = nextTrackModel.get(currentIndex).cover;
-            }
-            else
-            {
-                coverArea.cover = "/usr/share/glacier-music/images/cover.png";
-                coverLoader.getCoverByTrackId(nextTrackModel.get(currentIndex).trackId)
-            }
-        }
-    }
-
-    Connections{
-        target: coverLoader
-        onCoverReady: coverArea.cover = coverFile
-        onCoverLoading: {
-            /*FIXME add loader*/
-            coverArea.cover = "/usr/share/glacier-music/images/cover.png";
-        }
-    }
 }
