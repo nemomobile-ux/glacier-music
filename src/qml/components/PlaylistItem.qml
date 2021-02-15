@@ -8,6 +8,7 @@ ListViewItemWithActions{
     id: playListItem
     width: parent.width
     height: Theme.itemHeightHuge
+    iconColorized: false
 
     icon: cover != "" ? cover : "image://theme/music"
     label: title
@@ -19,7 +20,6 @@ ListViewItemWithActions{
             id: editButton
             iconSource: "image://theme/edit"
             onClicked: {
-                console.log(trackId)
                 pageStack.push(Qt.resolvedUrl("/usr/share/glacier-music/qml/pages/EditTrackPage.qml"),{trackId:trackId});
             }
         },
