@@ -92,6 +92,13 @@ Item {
         }
     }
 
+    Connections{
+        target: nextTrackModel
+        onCurrentIndexChanged: {
+            lineOfProgress.fileName = nextTrackModel.get(currentIndex).fileName;
+        }
+    }
+
     function formatIime(ms) {
         var out = ""
 

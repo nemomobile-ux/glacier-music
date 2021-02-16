@@ -15,6 +15,8 @@ set(SRC
 	main.cpp
 	musicbrainzconnect.cpp
 	musicbrainzconnect.h
+        peakscreator.cpp
+        peakscreator.h
 	rescancollection.cpp
 	rescancollection.h
 	track.cpp
