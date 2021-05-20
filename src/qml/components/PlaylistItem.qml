@@ -8,7 +8,6 @@ ListViewItemWithActions{
     id: playListItem
     width: parent.width
     height: Theme.itemHeightHuge
-    iconColorized: false
 
     icon: cover != "" ? cover : "image://theme/music"
     label: title
