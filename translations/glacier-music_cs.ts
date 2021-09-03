@@ -81,7 +81,7 @@
     </message>
     <message>
         <location filename="../src/qml/glacier-music.qml" line="153"/>
-        <source>No music files fonud</source>
+        <source>No music files found</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

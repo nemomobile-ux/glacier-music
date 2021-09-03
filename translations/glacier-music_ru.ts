@@ -79,7 +79,7 @@
     </message>
     <message>
         <location filename="../src/qml/glacier-music.qml" line="153"/>
-        <source>No music files fonud</source>
+        <source>No music files found</source>
         <translation>Нет музыкальных файлов</translation>
     </message>
     <message>

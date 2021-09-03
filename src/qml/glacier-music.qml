@@ -150,7 +150,7 @@ ApplicationWindow {
 
         cancelText: qsTr("Cancel")
         acceptText: qsTr("Ok")
-        headingText: qsTr("No music files fonud")
+        headingText: qsTr("No music files found")
         subLabelText: qsTr("Please add music files into Music or Download directory. Or connect card with music")
 
         onSelected: {
