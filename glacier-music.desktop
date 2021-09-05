@@ -4,3 +4,4 @@ Name=Music
 Exec=invoker --type=nemomobile -s glacier-music
 Icon=/usr/share/glacier-music/images/icon-app-music.png
 X-Desktop-File-Install-Version=0.20
+Name[cs]=Hudba
