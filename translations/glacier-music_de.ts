@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="de" version="2.1">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="de">
 <context>
     <name>EditTrackPage</name>
     <message>
@@ -20,7 +20,7 @@
     <message>
         <location filename="../src/qml/pages/PlayListPage.qml" line="14"/>
         <source>Playlist</source>
-        <translation>Playliste</translation>
+        <translation>Playlist</translation>
     </message>
 </context>
 <context>
