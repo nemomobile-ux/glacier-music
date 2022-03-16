@@ -85,7 +85,7 @@
     <message>
         <location filename="../src/qml/glacier-music.qml" line="154"/>
         <source>Please add music files into Music or Download directory. Or connect card with music</source>
-        <translation>Bitte Musik in den Musik- oder Downloadordner hinzufügen. Oder eine Speicherkarte mit Musik einbinden</translation>
+        <translation>Bitte Musik in den Musik- oder Downloadordner hinzufügen. Oder eine Speicherkarte mit Musik einstecken</translation>
     </message>
 </context>
 </TS>
