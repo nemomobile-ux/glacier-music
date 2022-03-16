@@ -49,7 +49,7 @@
     <message>
         <location filename="../src/qml/pages/SettingsPage.qml" line="38"/>
         <source>Enable file sorting</source>
-        <translation>Sortieren der Datei aktivieren</translation>
+        <translation>Dateisortierung aktivieren</translation>
     </message>
     <message>
         <location filename="../src/qml/pages/SettingsPage.qml" line="63"/>
