@@ -19,14 +19,14 @@ Page {
         width: parent.width
         anchors{
             top: parent.top
-            topMargin: 40
+            topMargin: Theme.itemSpacingLarge
         }
 
         ListModel{
             id: fileOrganizeModel
-            ListElement { name: "Only in interal storage"}
-            ListElement { name: "Yes" }
-            ListElement { name: "No" }
+            ListElement { name: qsTr("Only in interal storage") }
+            ListElement { name: qsTr("Yes") }
+            ListElement { name: qsTr("No") }
         }
 
         GlacierRoller {
@@ -36,12 +36,12 @@ Page {
             clip: true
             model: fileOrganizeModel
             label: qsTr("Enable file sorting")
-            delegate: GlacierRollerItem{
+            delegate: GlacierRollerItem {
                 Text {
                     height: fileOrganize.itemHeight
                     text: name
-                    color: "white"
-                    font.pixelSize: 32
+                    color: Theme.textColor
+                    font.pixelSize: Theme.fontSizeMedium
                     font.bold: (fileOrganize.activated && fileOrganize.currentIndex === index)
                 }
             }
@@ -56,7 +56,7 @@ Page {
         width: parent.width
         anchors{
             top: fileSortingRow.bottom
-            margins: 40
+            margins: Theme.itemSpacingLarge
         }
 
         CheckBox {
@@ -65,14 +65,11 @@ Page {
                 left: parent.left
                 leftMargin: height
             }
-            checked: settings.value("alwaysFromTheBeginning",1) == 1
+            checked: settings.value("alwaysFromTheBeginning",1) === 1
             onClicked: {
-                if(checked)
-                {
+                if(checked) {
                     settings.setValue("alwaysFromTheBeginning",1)
-                }
-                else
-                {
+                } else {
                     settings.setValue("alwaysFromTheBeginning",0)
                 }
                 console.warn(settings.value("alwaysFromTheBeginning",1))

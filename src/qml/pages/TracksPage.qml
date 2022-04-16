@@ -13,7 +13,7 @@ Page {
 
     headerTools: HeaderToolsLayout {
         id: tools
-        title: artistId == 0 ? qsTr("Tracks") : qsTr(artistName)
+        title: artistId == 0 ? qsTr("Tracks") : artistName
         showBackButton: true;
     }
 
@@ -29,7 +29,9 @@ Page {
         delegate: ListViewItemWithActions{
             id: trackItem
             label: artistId == 0 ? artist_name+" "+title : title
-            description: track+" - "+album
+            description: ((track !== 0) ? track : "") +
+                         ((track !== 0) && (album !== "") ? " - " : "") +
+                         album
             icon: "image://theme/music"
             showNext: false
 
@@ -48,8 +50,7 @@ Page {
     }
 
     Component.onCompleted: {
-        if(artistId != 0)
-        {
+        if(artistId != 0) {
             trackModel.setArtist(artistId);
         }
     }

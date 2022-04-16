@@ -130,8 +130,8 @@ ApplicationWindow {
     MprisPlayer {
         id: mprisPlayer
 
-        property string artist: "Loading"
-        property string song: "tags..."
+        property string artist: qsTr("Loading")
+        property string song: qsTr("tags...")
 
         serviceName: "glacier-music"
         identity: "Glacier Music"

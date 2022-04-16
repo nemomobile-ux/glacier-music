@@ -52,7 +52,7 @@ Page {
             }
         }
 
-        Item{
+        Item {
             id: trackLabelArea
             width: isUiPortrait ? parent.width-Theme.itemSpacingSmall*2 : parent.width-Theme.itemSpacingSmall*2-coverArea.width
             height: Theme.itemHeightExtraLarge
@@ -65,9 +65,9 @@ Page {
                 rightMargin: isUiPortrait ? undefined : Theme.itemSpacingSmall
             }
 
-            Label{
+            Label {
                 id: trackName
-                text: "Unknow track"
+                text: qsTr("Unknown track")
                 anchors{
                     top: parent.top
                     left: parent.left
@@ -79,16 +79,14 @@ Page {
                 }
             }
 
-            Label{
+            Label {
                 id: artistsName
                 text: "Unknow artist"
                 anchors{
                     top: trackName.bottom
                     left: parent.left
                 }
-                font{
-                    pixelSize: Theme.fontSizeTiny
-                }
+                font.pixelSize: Theme.fontSizeTiny
                 color: Theme.accentColor
 
                 MouseArea{
@@ -136,30 +134,26 @@ Page {
             trackName.text = nextTrackModel.get(currentIndex).title
             rootAudio.source = "file://" + nextTrackModel.get(currentIndex).fileName
 
-/*Set seek of firs playing dong and play only if old state is playing*/
-            if(currentIndex == 0 && settings.value("currentTrack") == nextTrackModel.get(currentIndex).trackId)
+            // Set seek of firs playing dong and play only if old state is playing
+            if(currentIndex === 0 && settings.value("currentTrack") === nextTrackModel.get(currentIndex).trackId)
             {
                 rootAudio.seek(settings.value("seek"))
-                if(settings.value("playbackState") == 1)
-                {
+                if(settings.value("playbackState") === 1) {
                     rootAudio.play();
                 }
-            }
-            else
-            {
+            } else {
                 rootAudio.play();
             }
             nextTrackModel.setPlayed(currentIndex)
 
             mprisPlayer.artist = nextTrackModel.get(currentIndex).artist
             mprisPlayer.song = nextTrackModel.get(currentIndex).title
-/*Update current song in config file */
-            if(settings.value("currentTrack") != nextTrackModel.get(currentIndex).trackId)
-            {
+            // Update current song in config file
+            if(settings.value("currentTrack") !== nextTrackModel.get(currentIndex).trackId) {
                 settings.setValue("currentTrack",nextTrackModel.get(currentIndex).trackId);
             }
-/*Change cover */
-            if(nextTrackModel.get(currentIndex).cover != "") {
+            // Change cover
+            if(nextTrackModel.get(currentIndex).cover !== "") {
                 coverArea.cover = nextTrackModel.get(currentIndex).cover;
                 blurredImage.imagePath = nextTrackModel.get(currentIndex).cover;
             } else {
@@ -194,37 +188,30 @@ Page {
     Connections{
         target: collection
         onUpdateRescanProgress: {
-            if(nextTrackModel.rowCount() < 5)
-            {
+            if(nextTrackModel.rowCount() < 5) {
                 nextTrackModel.formatRandomPlaylist(1);
             }
         }
     }
 
-    function playNext()
-    {
+    function playNext() {
         console.log((nextTrackModel.currentIndex+1) + " | " + nextTrackModel.rowCount())
-        if(nextTrackModel.currentIndex >= nextTrackModel.rowCount()-1)
-        {
+        if(nextTrackModel.currentIndex >= nextTrackModel.rowCount()-1) {
             nextTrackModel.formatRandomPlaylist(1);
         }
         ++nextTrackModel.currentIndex
     }
 
-    function playPrev()
-    {
-        if(nextTrackModel.currentIndex != 0){
+    function playPrev() {
+        if(nextTrackModel.currentIndex !== 0){
             --nextTrackModel.currentIndex
         }
     }
 
-    function playPause(){
-        if(rootAudio.playbackState == MediaPlayer.PlayingState)
-        {
+    function playPause() {
+        if(rootAudio.playbackState == MediaPlayer.PlayingState) {
             rootAudio.pause();
-        }
-        else
-        {
+        } else {
             rootAudio.play()
         }
     }
