@@ -81,7 +81,7 @@ Page {
 
             Label {
                 id: artistsName
-                text: "Unknow artist"
+                text: qsTr("Unknown artist")
                 anchors{
                     top: trackName.bottom
                     left: parent.left
