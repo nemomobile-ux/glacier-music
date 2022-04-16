@@ -32,7 +32,9 @@ set(SRC
         widgets/wavewidget.cpp
         widgets/wavewidget.h)
 
-add_executable(glacier-music ${SRC})
+qtquick_compiler_add_resources(RESOURCES qml/glacier-music.qrc)
+
+add_executable(glacier-music ${SRC} ${RESOURCES})
 
 target_link_libraries(glacier-music
 	Qt5::Qml
@@ -43,5 +45,3 @@ target_link_libraries(glacier-music
 	PkgConfig::TAGLIB)
 install(TARGETS glacier-music RUNTIME
 	DESTINATION ${CMAKE_INSTALL_BINDIR})
-install(DIRECTORY qml
-	DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/glacier-music)
