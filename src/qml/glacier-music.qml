@@ -74,7 +74,7 @@ ApplicationWindow {
     Component.onCompleted: {
         if(collection.isFirstRun())
         {
-            pageStack.push(Qt.resolvedUrl("/usr/share/glacier-music/qml/pages/SettingsPage.qml"));
+            pageStack.push(Qt.resolvedUrl("../pages/SettingsPage.qml"));
         }
         collection.rescanCollection()
         nextTrackModel.loadPlaylistFromDB()

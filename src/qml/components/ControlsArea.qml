@@ -25,7 +25,7 @@ Rectangle{
         MouseArea{
             anchors.fill: parent
             onClicked: {
-                pageStack.push(Qt.resolvedUrl("/usr/share/glacier-music/qml/pages/PlayListPage.qml"));
+                pageStack.push(Qt.resolvedUrl("../pages/PlayListPage.qml"));
             }
         }
 
