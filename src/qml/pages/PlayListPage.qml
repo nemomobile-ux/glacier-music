@@ -18,7 +18,7 @@ Page {
              ToolButton {
                  iconSource: "image://theme/book"
                  onClicked: {
-                      pageStack.push(Qt.resolvedUrl("/usr/share/glacier-music/qml/pages/LibraryPage.qml"));
+                      pageStack.push(Qt.resolvedUrl("../pages/LibraryPage.qml"));
                  }
              }
         ]

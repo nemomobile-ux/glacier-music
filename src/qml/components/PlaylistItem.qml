@@ -20,7 +20,7 @@ ListViewItemWithActions{
             id: editButton
             iconSource: "image://theme/edit"
             onClicked: {
-                pageStack.push(Qt.resolvedUrl("/usr/share/glacier-music/qml/pages/EditTrackPage.qml"),{trackId:trackId});
+                pageStack.push(Qt.resolvedUrl("../pages/EditTrackPage.qml"),{trackId:trackId});
             }
         },
         ActionButton{

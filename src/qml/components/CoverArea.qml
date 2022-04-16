@@ -19,7 +19,7 @@ Rectangle{
         id: coverImage
         width: parent.width
         height: parent.height
-        source: "/usr/share/glacier-music/images/cover.png"
+        source: "file:///usr/share/glacier-music/images/cover.png"
         fillMode: Image.PreserveAspectFit
     }
 }

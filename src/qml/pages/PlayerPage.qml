@@ -20,7 +20,7 @@ Page {
             ToolButton {
                 iconSource: "image://theme/gear"
                 onClicked: {
-                    pageStack.push(Qt.resolvedUrl("/usr/share/glacier-music/qml/pages/SettingsPage.qml"));
+                    pageStack.push(Qt.resolvedUrl("../pages/SettingsPage.qml"));
                 }
             }
         ]
@@ -97,7 +97,7 @@ Page {
                         console.log(nextTrackModel.get(nextTrackModel.currentIndex).artist_id)
                         console.log(nextTrackModel.get(nextTrackModel.currentIndex).artist)
 
-                        pageStack.push(Qt.resolvedUrl("/usr/share/glacier-music/qml/pages/TracksPage.qml"),
+                        pageStack.push(Qt.resolvedUrl("../pages/TracksPage.qml"),
                                        {artistId: nextTrackModel.get(nextTrackModel.currentIndex).artist_id,
                                         artistName: nextTrackModel.get(nextTrackModel.currentIndex).artist});
                     }
@@ -163,8 +163,8 @@ Page {
                 coverArea.cover = nextTrackModel.get(currentIndex).cover;
                 blurredImage.imagePath = nextTrackModel.get(currentIndex).cover;
             } else {
-                coverArea.cover = "/usr/share/glacier-music/images/cover.png";
-                blurredImage.imagePath = "/usr/share/glacier-music/images/cover.png";
+                coverArea.cover = "file:///usr/share/glacier-music/images/cover.png";
+                blurredImage.imagePath = "file:///usr/share/glacier-music/images/cover.png";
                 coverLoader.getCoverByTrackId(nextTrackModel.get(currentIndex).trackId)
             }
         }
@@ -177,7 +177,7 @@ Page {
         }
         onCoverLoading: {
             /*FIXME add loader*/
-            coverArea.cover = "/usr/share/glacier-music/images/cover.png";
+            coverArea.cover = "file:///usr/share/glacier-music/images/cover.png";
         }
     }
 

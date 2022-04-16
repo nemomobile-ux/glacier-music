@@ -75,9 +75,9 @@ void MusicBrainzConnect::loadCover(QString releaseId)
         return;
     }
 
-    qDebug() << "Load cover form "<< QString("http://coverartarchive.org/release/"+releaseId);
+    qDebug() << "Load cover form "<< QString("https://coverartarchive.org/release/"+releaseId);
 
-    Downloader *cbDownloader = new Downloader("http://coverartarchive.org/release/"+releaseId);
+    Downloader *cbDownloader = new Downloader("https://coverartarchive.org/release/"+releaseId);
     connect(cbDownloader,SIGNAL(stringReady(QByteArray)),this,SLOT(coverNetworkData(QByteArray)));
     cbDownloader->loadData();
 }
