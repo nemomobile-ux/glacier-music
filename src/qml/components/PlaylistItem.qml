@@ -10,10 +10,11 @@ ListViewItemWithActions{
     height: Theme.itemHeightHuge
     iconColorized: false
 
-    icon: cover != "" ? cover : "image://theme/music"
+    icon: cover !== "" ? cover : "image://theme/music"
     label: title
     description: artist
     showNext: false
+    selected: (nextTrack.currentIndex === index)
 
     actions: [
         ActionButton{
@@ -30,13 +31,6 @@ ListViewItemWithActions{
         }
     ]
 
-    Rectangle{
-        visible: (nextTrack.currentIndex == index)
-        width: parent.width
-        height: 1
-        color: Theme.accentColor
-        anchors.bottom: parent.bottom
-    }
 
     onClicked:{
         nextTrack.currentIndex = index
