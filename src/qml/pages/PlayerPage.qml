@@ -134,7 +134,7 @@ Page {
             rootAudio.stop();
 
             trackName.text = nextTrackModel.get(currentIndex).title
-            rootAudio.source = nextTrackModel.get(currentIndex).fileName
+            rootAudio.source = Qt.resolvedUrl("file://" + nextTrackModel.get(currentIndex).fileName)
 
 /*Set seek of firs playing dong and play only if old state is playing*/
             if(currentIndex == 0 && settings.value("currentTrack") == nextTrackModel.get(currentIndex).trackId)

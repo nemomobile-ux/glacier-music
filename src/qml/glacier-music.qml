@@ -49,6 +49,26 @@ ApplicationWindow {
 
     MediaPlayer{
         id: rootAudio
+
+        function statusToStr(st) {
+            switch (st) {
+            case MediaPlayer.NoMedia: return "no media has been set.";
+            case MediaPlayer.Loading: return "the media is currently being loaded."
+            case MediaPlayer.Loaded: return "the media has been loaded."
+            case MediaPlayer.Buffering: return "the media is buffering data."
+            case MediaPlayer.Stalled: return "playback has been interrupted while the media is buffering data."
+            case MediaPlayer.Buffered: return "the media has buffered data."
+            case MediaPlayer.EndOfMedia: return "the media has played to the end."
+            case MediaPlayer.InvalidMedia: return "the media cannot be played."
+            default:
+            case MediaPlayer.UnknownStatus: return "the status of the media is unknown"
+            }
+        }
+
+        onStatusChanged: {
+            console.log("rootAudio.status " + statusToStr(status) + " " + source)
+        }
+
         onVolumeChanged: {
             settings.setValue("volume",volume);
             settings.sync();
