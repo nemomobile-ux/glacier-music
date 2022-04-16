@@ -1,4 +1,4 @@
-*.pro.user
+CMakeLists.txt.user*
 *.pyc
 .directory
 *.o
@@ -11,5 +11,6 @@ qrc_*
 documentation.list
 Makefile
 installroot/
+build/
 RPMS/
 debug*.list

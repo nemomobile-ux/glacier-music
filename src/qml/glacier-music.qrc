@@ -1,0 +1,16 @@
+<RCC>
+    <qresource prefix="/">
+        <file>components/PlaylistItem.qml</file>
+        <file>components/ControlsArea.qml</file>
+        <file>components/ProgressItem.qml</file>
+        <file>components/CoverArea.qml</file>
+        <file>pages/PlayerPage.qml</file>
+        <file>pages/ArtistsPage.qml</file>
+        <file>pages/PlayListPage.qml</file>
+        <file>pages/SettingsPage.qml</file>
+        <file>pages/TracksPage.qml</file>
+        <file>pages/EditTrackPage.qml</file>
+        <file>pages/LibraryPage.qml</file>
+        <file>glacier-music.qml</file>
+    </qresource>
+</RCC>
