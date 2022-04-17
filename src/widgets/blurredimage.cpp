@@ -25,19 +25,20 @@ void BlurredImage::paint(QPainter *painter)
     painter->drawRect(target);
 }
 
-void BlurredImage::setImagePath(QString path)
+void BlurredImage::setImagePath(QString qml_path)
 {
-    if(path == m_imagePath) {
+    if(qml_path == m_imagePath) {
         return;
     }
 
-    QFile imgFile(path);
+    QUrl path = qml_path;
+    QFile imgFile(path.toLocalFile());
     if(!imgFile.exists()) {
         qWarning() << "Not exists!!!" << path;
         return;
     }
 
-    m_imagePath = path;
+    m_imagePath = path.toLocalFile();
     emit imagePathChanged();
     update();
 }
