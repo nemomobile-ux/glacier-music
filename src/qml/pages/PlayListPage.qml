@@ -39,11 +39,18 @@ Page {
         anchors.fill: parent
 
         model: nextTrackModel
-        delegate: PlaylistItem{}
+        delegate: PlaylistItem{
+            width: parent.width
+        }
+        currentIndex: nextTrackModel.currentIndex
 
         onCurrentIndexChanged: {
             nextTrackModel.currentIndex = currentIndex
         }
+    }
+
+    ScrollDecorator {
+        flickable: nextTrack
     }
 
 }

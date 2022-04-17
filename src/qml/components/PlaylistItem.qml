@@ -6,7 +6,6 @@ import QtQuick.Controls.Styles.Nemo 1.0
 
 ListViewItemWithActions{
     id: playListItem
-    width: parent.width
     height: Theme.itemHeightHuge
     iconColorized: false
 

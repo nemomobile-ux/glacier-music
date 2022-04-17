@@ -75,12 +75,12 @@ void AudioFile::loadTags()
 
     if(artist.length() < 1)
     {
-        artist = "Unknown Artist";
+        artist = tr("Unknown Artist");
     }
 
     if(title.length() < 1)
     {
-        title = "Unknown Track";
+        title = tr("Unknown Track");
     }
 }
 
@@ -105,6 +105,8 @@ bool AudioFile::sync()
     tagFile->tag()->setTitle(title.toStdWString());
     tagFile->tag()->setTrack(track);
     tagFile->tag()->setYear(year);
+
+    qDebug() << "Saving tags " << fileuri << " " << artist << " " << title << " "<< album;
     return tagFile->save();
 }
 
