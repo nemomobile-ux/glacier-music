@@ -10,7 +10,7 @@ ListViewItemWithActions{
     height: Theme.itemHeightHuge
     iconColorized: false
 
-    icon: cover !== "" ? cover : "image://theme/music"
+    icon: cover !== "" ?  (String(cover).startsWith("/")  ? "file://"+cover : cover ) : "image://theme/music"
     label: title
     description: artist
     showNext: false

@@ -34,9 +34,11 @@ Page {
             }
             Label {
                 text: track.title
+                font.bold: true
             }
             Label {
                 text: track.artist
+                color:  Theme.accentColor
             }
         }
     }
