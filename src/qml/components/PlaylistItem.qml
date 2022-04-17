@@ -21,7 +21,7 @@ ListViewItemWithActions{
             id: editButton
             iconSource: "image://theme/edit"
             onClicked: {
-                pageStack.push(Qt.resolvedUrl("../pages/EditTrackPage.qml"),{trackId:trackId});
+                pageStack.push(Qt.resolvedUrl("../pages/EditTrackPage.qml"),{track: nextTrack.model.get(index)});
             }
         },
         ActionButton{
