@@ -6,6 +6,7 @@ import QtQuick.Controls.Styles.Nemo 1.0
 
 
 import org.glacier.music.trackmodel 1.0
+import "../components"
 
 Page {
     id: editTrackPage
@@ -30,17 +31,56 @@ Page {
                 fillMode: Image.PreserveAspectFit
             }
             Label {
-                text: track.trackId
-            }
-            Label {
                 text: track.title
                 font.bold: true
+                width: parent.width
+                wrapMode: Text.Wrap
             }
             Label {
                 text: track.artist
                 color:  Theme.accentColor
+                width: parent.width
+                wrapMode: Text.Wrap
             }
+            Label {
+                text: track.album
+                width: parent.width
+                wrapMode: Text.Wrap
+            }
+            Label {
+                text: (track.track !== 0) ? track.year : ''
+                width: parent.width
+                wrapMode: Text.Wrap
+            }
+            Label {
+                text: track.genre
+                width: parent.width
+                wrapMode: Text.Wrap
+            }
+            Label {
+                text: (track.year !== 0) ? track.year : ''
+                width: parent.width
+                wrapMode: Text.Wrap
+            }
+            Label {
+                text: track.comment
+                width: parent.width
+                wrapMode: Text.Wrap
+            }
+            Label {
+                text: formatTimeSeconds(track.length)
+                width: parent.width
+                wrapMode: Text.Wrap
+            }
+
         }
+    }
+
+    function formatTimeSeconds(s) {
+        var m = Math.floor(s / 60);
+        s = s % 60;
+        return ((m > 9) ? m : "0"+ m) + ":" + ((s > 9) ? s : "0"+s)
+
     }
 
     ScrollDecorator {
