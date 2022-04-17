@@ -131,12 +131,13 @@ Page {
         onCurrentIndexChanged: {
             rootAudio.stop();
 
-            trackName.text = nextTrackModel.get(currentIndex).title
-            rootAudio.source = "file://" + nextTrackModel.get(currentIndex).fileName
+            var track = nextTrackModel.get(currentIndex);
+            trackName.text = track.title
+            artistsName.text = track.artist;
+            rootAudio.source = "file://" + track.fileName
 
             // Set seek of firs playing dong and play only if old state is playing
-            if(currentIndex === 0 && settings.value("currentTrack") === nextTrackModel.get(currentIndex).trackId)
-            {
+            if(currentIndex === 0 && settings.value("currentTrack") === track.trackId) {
                 rootAudio.seek(settings.value("seek"))
                 if(settings.value("playbackState") === 1) {
                     rootAudio.play();
@@ -146,14 +147,14 @@ Page {
             }
             nextTrackModel.setPlayed(currentIndex)
 
-            mprisPlayer.artist = nextTrackModel.get(currentIndex).artist
-            mprisPlayer.song = nextTrackModel.get(currentIndex).title
+            mprisPlayer.artist = track.artist
+            mprisPlayer.song = track.title
             // Update current song in config file
-            if(settings.value("currentTrack") !== nextTrackModel.get(currentIndex).trackId) {
-                settings.setValue("currentTrack",nextTrackModel.get(currentIndex).trackId);
+            if(settings.value("currentTrack") !== track.trackId) {
+                settings.setValue("currentTrack", track.trackId);
             }
             // Change cover
-            var cover = nextTrackModel.get(currentIndex).cover;
+            var cover = track.cover;
             if (cover !== "") {
                 cover = String(cover).startsWith("/") ? "file://" + cover : cover;
                 coverArea.cover = cover;
@@ -161,7 +162,7 @@ Page {
             } else {
                 coverArea.cover = "file:///usr/share/glacier-music/images/cover.png";
                 blurredImage.imagePath = "file:///usr/share/glacier-music/images/cover.png";
-                coverLoader.getCoverByTrackId(nextTrackModel.get(currentIndex).trackId)
+                coverLoader.getCoverByTrackId(track.trackId)
             }
         }
     }
