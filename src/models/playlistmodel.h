@@ -17,6 +17,12 @@ class PlayListModel: public QAbstractListModel
         QString fileName;
         bool played;
         QString cover;
+        QString album;
+        QString comment;
+        QString genre;
+        int year;
+        int length;
+        int track; // number
     };
 
 public:

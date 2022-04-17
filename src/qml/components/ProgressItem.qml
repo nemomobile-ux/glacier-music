@@ -87,8 +87,8 @@ Item {
     Connections {
         target: rootAudio
         onPositionChanged: {
-            startSec.text = formatIime(rootAudio.position)
-            endSec.text = formatIime(rootAudio.duration-rootAudio.position)
+            startSec.text = formatTime(rootAudio.position)
+            endSec.text = formatTime(rootAudio.duration-rootAudio.position)
         }
     }
 
@@ -99,7 +99,7 @@ Item {
         }
     }
 
-    function formatIime(ms) {
+    function formatTime(ms) {
         var out = ""
 
         if(ms >= 3600000) {

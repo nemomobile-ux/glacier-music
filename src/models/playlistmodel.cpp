@@ -16,6 +16,12 @@ PlayListModel::PlayListModel(QObject *parent) :
     hash.insert(Qt::UserRole+4 ,QByteArray("fileName"));
     hash.insert(Qt::UserRole+5 ,QByteArray("played"));
     hash.insert(Qt::UserRole+6 ,QByteArray("cover"));
+    hash.insert(Qt::UserRole+7 ,QByteArray("album"));
+    hash.insert(Qt::UserRole+8 ,QByteArray("comment"));
+    hash.insert(Qt::UserRole+9 ,QByteArray("genre"));
+    hash.insert(Qt::UserRole+10 ,QByteArray("year"));
+    hash.insert(Qt::UserRole+11 ,QByteArray("length"));
+    hash.insert(Qt::UserRole+12 ,QByteArray("track"));
 
     m_currentIndex = -1;
 }
@@ -35,6 +41,12 @@ void PlayListModel::addItem(int trackId, int count)
     item.title = track->getTitle();
     item.fileName = track->getFileName();
     item.cover = track->getCover();
+    item.album = track->getAlbum();
+    item.comment = track->getComment();
+    item.genre = track->getGenre();
+    item.year = track->getYear();
+    item.length = track->getLength();
+    item.track = track->getNumber();
 
     if(count == 0)
     {
@@ -70,34 +82,34 @@ QVariant PlayListModel::data(const QModelIndex &index, int role) const
     if (index.row() >= playList.size())
         return QVariant();
     playListItem item = playList.at(index.row());
-    if(role == Qt::UserRole)
-    {
+    if(role == Qt::UserRole) {
         return item.trackId;
-    }
-    else if(role == Qt::UserRole+1)
-    {
+    } else if(role == Qt::UserRole+1) {
         return item.artist;
-    }
-    else if(role == Qt::UserRole+2)
-    {
+    } else if(role == Qt::UserRole+2) {
         return item.artist_id;
-    }
-    else if(role == Qt::UserRole+3)
-    {
+    } else if(role == Qt::UserRole+3) {
         return item.title;
-    }
-    else if(role == Qt::UserRole+4)
-    {
+    } else if(role == Qt::UserRole+4) {
         return item.fileName;
-    }
-    else if(role == Qt::UserRole+5)
-    {
+    } else if(role == Qt::UserRole+5) {
         return item.played;
-    }
-    else if(role == Qt::UserRole+6)
-    {
+    } else if(role == Qt::UserRole+6) {
         return item.cover;
+    } else if (role == Qt::UserRole+7) {
+        return item.album;
+    } else if (role == Qt::UserRole+8) {
+        return item.comment;
+    } else if (role == Qt::UserRole+9) {
+        return item.genre;
+    } else if (role == Qt::UserRole+10) {
+        return item.year;
+    } else if (role == Qt::UserRole+11) {
+        return item.length;
+    } else if (role == Qt::UserRole+12) {
+        return item.track;
     }
+
     return QVariant();
 }
 
@@ -147,6 +159,12 @@ QVariant PlayListModel::get(int idx)
     itemData.insert("fileName",item.fileName);
     itemData.insert("played",item.played);
     itemData.insert("cover",item.cover);
+    itemData.insert("album", item.album);
+    itemData.insert("comment", item.comment);
+    itemData.insert("genre", item.genre);
+    itemData.insert("year", item.year);
+    itemData.insert("length",item.length);
+    itemData.insert("track",item.track);
 
     return QVariant(itemData);
 }
