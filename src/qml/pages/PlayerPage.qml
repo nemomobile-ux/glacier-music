@@ -153,8 +153,8 @@ Page {
                 settings.setValue("currentTrack",nextTrackModel.get(currentIndex).trackId);
             }
             // Change cover
-            if(nextTrackModel.get(currentIndex).cover !== "") {
-                var cover = nextTrackModel.get(currentIndex).cover;
+            var cover = nextTrackModel.get(currentIndex).cover;
+            if (cover !== "") {
                 cover = String(cover).startsWith("/") ? "file://" + cover : cover;
                 coverArea.cover = cover;
                 blurredImage.imagePath = cover;
