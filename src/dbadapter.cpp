@@ -30,7 +30,7 @@ dbAdapter& dbAdapter::instance(){
 void dbAdapter::initDB()
 {
     m_db.exec("CREATE TABLE `artist` (`id` INTEGER PRIMARY KEY AUTOINCREMENT,`name` TEXT )");
-    m_db.exec("INSERT INTO `artist` (`id`, `name`) VALUES ('0','Unknow Artist')");
+    m_db.exec("INSERT INTO `artist` (`id`, `name`) VALUES ('0','Unknown Artist')");
     m_db.exec("CREATE TABLE `tracks` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, \
             `artist_id` INTEGER NOT NULL, \
             `filename` TEXT NOT NULL,\

@@ -22,6 +22,16 @@ Page {
                  }
              }
         ]
+         drawerLevels: [
+             Button {
+                 anchors.horizontalCenter: (parent==undefined) ? undefined : parent.horizontalCenter;
+                 text: qsTr("Clear playlist")
+                 onClicked: {
+                     nextTrackModel.clearPlaylist();
+                 }
+             }
+         ]
+
     }
 
     ListView{
