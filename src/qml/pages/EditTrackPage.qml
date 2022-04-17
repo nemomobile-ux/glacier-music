@@ -48,7 +48,7 @@ Page {
                 wrapMode: Text.Wrap
             }
             Label {
-                text: (track.track !== 0) ? track.year : ''
+                text: (track.track !== 0) ? track.track : ''
                 width: parent.width
                 wrapMode: Text.Wrap
             }
