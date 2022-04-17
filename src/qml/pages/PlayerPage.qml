@@ -122,6 +122,7 @@ Page {
     }
 
     Connections{
+        id: playNextConnection
         target: rootAudio
         onStopped: playNext()
     }
@@ -129,14 +130,14 @@ Page {
     Connections{
         target: nextTrackModel
         onCurrentIndexChanged: {
+            playNextConnection.enabled = false;
             rootAudio.stop();
-
             var track = nextTrackModel.get(currentIndex);
+
             trackName.text = track.title
             artistsName.text = track.artist;
             rootAudio.source = "file://" + track.fileName
-
-            // Set seek of firs playing dong and play only if old state is playing
+            // Set seek of first playing song and play only if old state is playing
             if(currentIndex === 0 && settings.value("currentTrack") === track.trackId) {
                 rootAudio.seek(settings.value("seek"))
                 if(settings.value("playbackState") === 1) {
@@ -145,6 +146,8 @@ Page {
             } else {
                 rootAudio.play();
             }
+            playNextConnection.enabled = true;
+
             nextTrackModel.setPlayed(currentIndex)
 
             mprisPlayer.artist = track.artist
@@ -198,7 +201,7 @@ Page {
     }
 
     function playNext() {
-        console.log((nextTrackModel.currentIndex+1) + " | " + nextTrackModel.rowCount())
+        console.log("playNext(): " + (nextTrackModel.currentIndex+1) + " | " + nextTrackModel.rowCount())
         if(nextTrackModel.currentIndex >= nextTrackModel.rowCount()-1) {
             nextTrackModel.formatRandomPlaylist(1);
         }
