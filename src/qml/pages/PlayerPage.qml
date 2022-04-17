@@ -154,8 +154,10 @@ Page {
             }
             // Change cover
             if(nextTrackModel.get(currentIndex).cover !== "") {
-                coverArea.cover = nextTrackModel.get(currentIndex).cover;
-                blurredImage.imagePath = nextTrackModel.get(currentIndex).cover;
+                var cover = nextTrackModel.get(currentIndex).cover;
+                cover = String(cover).startsWith("/") ? "file://" + cover : cover;
+                coverArea.cover = cover;
+                blurredImage.imagePath = cover;
             } else {
                 coverArea.cover = "file:///usr/share/glacier-music/images/cover.png";
                 blurredImage.imagePath = "file:///usr/share/glacier-music/images/cover.png";
