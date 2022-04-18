@@ -7,7 +7,7 @@ import QtQuick.Controls.Styles.Nemo 1.0
 import org.glacier.music.trackmodel 1.0
 
 Page {
-    id: artistPage
+    id: tracksPage
     property int artistId: 0
     property string artistName: ""
 
@@ -22,7 +22,7 @@ Page {
     }
 
     ListView{
-        id: artistListView
+        id: tracksListView
         model: trackModel
         width: parent.width
         height: parent.height
@@ -47,6 +47,10 @@ Page {
         }
 
         clip: true
+    }
+
+    ScrollDecorator {
+        flickable: tracksListView
     }
 
     Component.onCompleted: {

@@ -40,7 +40,7 @@ Page {
 
         model: nextTrackModel
         delegate: PlaylistItem{
-            width: parent.width
+            width: nextTrack.width
         }
         currentIndex: nextTrackModel.currentIndex
 

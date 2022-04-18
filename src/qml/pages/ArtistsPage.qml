@@ -31,4 +31,8 @@ Item{
         }
         clip: true
     }
+
+    ScrollDecorator {
+        flickable: artistListView
+    }
 }

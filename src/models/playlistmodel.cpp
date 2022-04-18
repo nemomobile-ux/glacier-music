@@ -271,7 +271,7 @@ void PlayListModel::formatAutoPlaylist()
         QString a_notin = QString("0");
 
         foreach (playListItem item, playList) {
-            s_notin.append(","+item.trackId);
+            s_notin.append(&","[item.trackId]);
         }
 
         QSqlDatabase db = dbAdapter::instance().getDatabase();
