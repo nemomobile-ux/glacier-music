@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Chupligin Sergey <neochapay@gmail.com>
+ * Copyright (C) 2021-2022 Chupligin Sergey <neochapay@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -86,7 +86,7 @@ Item {
 
     Connections {
         target: rootAudio
-        onPositionChanged: {
+        function onPositionChanged() {
             startSec.text = formatTime(rootAudio.position)
             endSec.text = formatTime(rootAudio.duration-rootAudio.position)
         }
@@ -94,7 +94,7 @@ Item {
 
     Connections{
         target: nextTrackModel
-        onCurrentIndexChanged: {
+        function onCurrentIndexChanged(currentIndex) {
             lineOfProgress.fileName = nextTrackModel.get(currentIndex).fileName;
         }
     }
