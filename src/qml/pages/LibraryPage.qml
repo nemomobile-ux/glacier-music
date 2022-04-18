@@ -20,7 +20,7 @@ Page {
         anchors.fill: parent
 
         Tab {
-            title: "Artists"
+            title: qsTr("Artists")
             ArtistsPage{
                 onViewTracks: {
                     pageStack.push(Qt.resolvedUrl("../pages/TracksPage.qml"), {artistId: artist_id, artistName: artist_name});
@@ -28,7 +28,7 @@ Page {
             }
         }
         Tab {
-            title: "Tracks"
+            title: qsTr("Tracks")
             TracksPage{}
         }
     }
