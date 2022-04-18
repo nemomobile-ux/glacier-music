@@ -58,25 +58,10 @@ void TrackSqlModel::refresh()
 
 void TrackSqlModel::setArtist(const int artist_id)
 {
-    if(artist_id == 0)
-    {
-        cleanQuery();
-        return;
-    }
     QSqlDatabase db = dbAdapter::instance().getDatabase();
-    setQuery(QString("SELECT tracks.id as track_id, \
-                                 tracks.artist_id, \
-                                 tracks.title, \
-                                 tracks.album, \
-                                 tracks.comment, \
-                                 tracks.genre, \
-                                 tracks.track, \
-                                 tracks.year, \
-                                 tracks.filename, \
-                                 artist.name as artist_name \
-                                 FROM tracks \
-                                 INNER JOIN artist ON artist.id = tracks.artist_id \
-                        WHERE artist_id = %1 ORDER BY artist_name ASC").arg(artist_id).toUtf8(), db);
+    setQuery(QString("SELECT * \
+                        FROM tracks \
+                        WHERE artist_id = %1 ORDER BY title ASC").arg(artist_id).toUtf8(), db);
 }
 
 void TrackSqlModel::cleanQuery()

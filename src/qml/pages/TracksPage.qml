@@ -50,8 +50,6 @@ Page {
     }
 
     Component.onCompleted: {
-        if(artistId != 0) {
-            trackModel.setArtist(artistId);
-        }
+        trackModel.setArtist(artistId);
     }
 }
