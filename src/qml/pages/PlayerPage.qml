@@ -191,7 +191,7 @@ Page {
 
     Connections{
         target: coverLoader
-        function onCoverReady() {
+        function onCoverReady(coverFile) {
             coverArea.cover = coverFile
         }
         function onCoverLoaing() {
