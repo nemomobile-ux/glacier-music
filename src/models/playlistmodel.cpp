@@ -36,17 +36,17 @@ void PlayListModel::addItem(int trackId, int count)
 
     playListItem item;
     item.trackId = trackId;
-    item.artist = track->getArtistName();
-    item.artist_id = track->getArtistId();
-    item.title = track->getTitle();
+    item.artist = track->artistName();
+    item.artist_id = track->artistID();
+    item.title = track->title();
     item.fileName = track->getFileName();
-    item.cover = track->getCover();
-    item.album = track->getAlbum();
-    item.comment = track->getComment();
-    item.genre = track->getGenre();
-    item.year = track->getYear();
-    item.length = track->getLength();
-    item.track = track->getNumber();
+    item.cover = track->cover();
+    item.album = track->album();
+    item.comment = track->comment();
+    item.genre = track->genre();
+    item.year = track->year();
+    item.length = track->length();
+    item.track = track->num();
 
     if(count == 0)
     {

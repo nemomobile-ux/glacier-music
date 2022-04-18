@@ -16,9 +16,9 @@ void Cover::getCoverByTrackId(int trackId)
         return;
     }
 
-    QString artist = m_track->getArtistName();
-    QString title = m_track->getTitle();
-    QString cover = m_track->getCover();
+    QString artist = m_track->artistName();
+    QString title = m_track->title();
+    QString cover = m_track->cover();
 
     QFile coverFile(cover);
 

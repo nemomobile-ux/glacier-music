@@ -26,37 +26,46 @@
 
 class Artist;
 
-class Track : public Item
+class Track : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(int id READ id CONSTANT)
+    Q_PROPERTY(QString title READ title WRITE setTitle NOTIFY titleChanged)
+    Q_PROPERTY(QString album READ album WRITE setAlbum NOTIFY albumChanged)
+    Q_PROPERTY(QString genre READ genre WRITE setGenre NOTIFY genreChanged)
+    Q_PROPERTY(int num READ num WRITE setNum NOTIFY numChanged)
+    Q_PROPERTY(int year READ year WRITE setYear NOTIFY yearChanged)
+    Q_PROPERTY(int length READ length CONSTANT)
+    Q_PROPERTY(QString comment READ comment WRITE setComment NOTIFY commentChanged)
+    Q_PROPERTY(QString artistName READ artistName WRITE setArtistName NOTIFY artistNameChanged)
+    Q_PROPERTY(int artistID READ artistID NOTIFY artistIDChanged)
+    Q_PROPERTY(QString cover READ cover WRITE setCover NOTIFY coverChanged)
+
 public:
-    Track(const QString file);
-
-    Artist* getArtist() {return m_artist;}
-    void setArtist(Artist *artist) {m_artist = artist;}
-
-    Q_INVOKABLE static Track* toId(const int trackId);
-    Q_INVOKABLE const QString getTitle() {return m_title;}
-    Q_INVOKABLE const QString getAlbum() {return m_album;}
-    Q_INVOKABLE const QString getGenre() {return m_genre;}
-    Q_INVOKABLE const QString getCover() {return m_cover;}
-    Q_INVOKABLE const QString getComment() {return m_comment;}
+    explicit Track(const QString file, QObject *parent = nullptr);
+    static Track* toId(const int trackId);
 
 public slots:
-    int getArtistId() {return m_artist_id;}
-    QString getArtistName(){return m_artist->title() ;}
-    QString getFileName(){return m_fileName;}
-    int getNumber() {return m_number;}
-    int getYear() {return m_year;}
-    int getLength() {return m_length;}
+    int id() {return m_id;}
+    QString title() {return m_title;}
+    QString album() {return m_album;}
+    QString genre() {return m_genre;}
+    int num() {return m_number;}
+    int year() {return m_year;}
+    int length() {return m_length;}
+    QString comment() {return m_comment;}
+    QString artistName() {return m_artist->title();}
+    int artistID() {return m_artist->id();}
+    QString cover() {return m_cover;}
 
-    void setTitle(const QString title) {m_title = title;}
-    void setAlbum(const QString album) {m_album = album;}
-    void setGenre(const QString genre) {m_genre = genre;}
-    void setNum(const int num) {m_number = num;}
-    void setYear(const int year) {m_year = year;}
-    void setLength(const int length) {m_length = length;}
-    void setComment(const QString comment) {m_comment = comment;}
+    QString getFileName(){return m_fileName;}
+
+    void setTitle(const QString title);
+    void setAlbum(const QString album);
+    void setGenre(const QString genre);
+    void setNum(const int num);
+    void setYear(const int year);
+    void setComment(const QString comment);
     void setArtistName(const QString name);
     void setCover(const QString coverFile);
 
@@ -65,14 +74,22 @@ public slots:
     void remove();
 
 signals:
-    void titleChanged();
     void trackFileNotFound();
+    void titleChanged();
+    void albumChanged();
+    void genreChanged();
+    void numChanged();
+    void yearChanged();
+    void lengthChanged();
+    void commentChanged();
+    void artistNameChanged();
+    void artistIDChanged();
+    void coverChanged();
 
 private:
     int getTrackIdFromFileName(const QString fileName);
 
     int m_id;
-    int m_artist_id;
     QString m_title;
     QString m_album;
     QString m_genre;
