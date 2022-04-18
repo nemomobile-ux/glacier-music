@@ -128,6 +128,10 @@ Track::Track(const QString file, QObject *parent) : QObject(parent)
                 update();
             }
             m_cover = query.value(6).toString();
+            QFile cf(m_cover);
+            if(!cf.exists()) {
+                m_cover = "";
+            }
         }
         else
         {
