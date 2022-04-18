@@ -212,7 +212,7 @@ Page {
 
     Connections{
         target: collection
-        function onUpdateRescanProgress(prc) {
+        function onrescanCollectionFinished(prc) {
             if(nextTrackModel.rowCount() < 5) {
                 nextTrackModel.formatRandomPlaylist(1);
             }

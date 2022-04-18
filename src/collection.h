@@ -17,6 +17,7 @@ public:
 signals:
     void newFile(QString path);
     void updateRescanProgress(QVariant prc);
+    void rescanCollectionFinished();
     void noMusicFiles();
 
 public slots:

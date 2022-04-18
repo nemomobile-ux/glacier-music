@@ -44,4 +44,7 @@ void Collection::rescanCollection()
 void Collection::m_rescanCollectionProgress(QVariant prc)
 {
     emit updateRescanProgress(prc);
+    if(prc == 100) {
+        emit rescanCollectionFinished();
+    }
 }
