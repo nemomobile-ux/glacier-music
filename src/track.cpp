@@ -1,15 +1,44 @@
+/*
+ * Copyright (C) 2021-2022 Chupligin Sergey <neochapay@gmail.com>
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Library General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Library General Public License for more details.
+ *
+ * You should have received a copy of the GNU Library General Public License
+ * along with this library; see the file COPYING.LIB.  If not, write to
+ * the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
+ */
+
 #include "track.h"
-#include "artist.h"
 #include "dbadapter.h"
 #include "audiofile.h"
 #include "musicbrainzconnect.h"
 
 Track::Track(const QString file)
+    : m_id(0)
+    , m_artist_id(0)
+    , m_title("")
+    , m_album("")
+    , m_genre("")
+    , m_cover("")
+    , m_number(0)
+    , m_year(0)
+    , m_comment("")
+    , m_fileName(file)
+    , m_length(0)
+    , m_artist(new Artist(0))
+    , m_played(false)
+    , m_startTime(0)
+    , m_endTime (0)
 {
-    m_artist_id = 0;
-    m_number = 0;
-    m_year = 0;
-
     QFile trackFile(file);
     if(!trackFile.exists())
     {
@@ -27,19 +56,28 @@ Track::Track(const QString file)
         {
             emit trackFileNotFound();
             qDebug() << "File " << file << " is bad";
+            delete(trackFile);
             return;
         }
-
-        Artist *newArtist = new Artist();
-        newArtist->setName(trackFile->artist);
-        if(newArtist->getId() == 0)
+        else
         {
-            newArtist->insert();
+            qDebug() << trackFile->artist << trackFile->album;
+        }
+
+        Artist *newArtist = new Artist(trackFile->artist);
+        uint artistId = newArtist->id();
+        if(artistId == 0)
+        {
+            artistId = newArtist->create(trackFile->artist);
+            newArtist = new Artist(artistId);
+        }
+
+        if(artistId == 0) {
+            qWarning() << "Empty artist";
         }
 
         m_artist = newArtist;
-        m_artist_id = m_artist->idFromName(trackFile->artist);
-        m_artist_title = trackFile->artist;
+        m_artist_id = artistId;
         m_title = trackFile->title;
         m_album = trackFile->album;
         m_genre = trackFile->genre;
@@ -180,7 +218,7 @@ void Track::update()
         AudioFile audioFile(m_fileName);
         if(audioFile.isValid)
         {
-            audioFile.artist = m_artist->getName();
+            audioFile.artist = m_artist->title();
             audioFile.title = m_title;
             audioFile.album = m_album;
             audioFile.comment = m_comment;
@@ -195,16 +233,11 @@ void Track::update()
 
 void Track::setArtistName(const QString name)
 {
-    Artist* artist = new Artist();
-    int a_id = m_artist->idFromName(name);
-    if(a_id == 0)
-    {
-        m_artist->setName(name);
-        m_artist->insert();
-        a_id = artist->idFromName(name);
+    if(m_artist->id() == 0) {
+        return;
     }
-    m_artist_title = name;
-    setArtistId(a_id);
+
+    m_artist->setTitle(name);
 }
 
 void Track::setCover(const QString coverFile)
@@ -214,15 +247,6 @@ void Track::setCover(const QString coverFile)
         m_cover = coverFile;
         update();
     }
-}
-
-void Track::setArtistId(const int id)
-{
-    Artist* artist = new Artist();
-    m_artist = artist->toId(id);
-    m_artist_id = id;
-
-    update();
 }
 
 void Track::remove()
@@ -246,7 +270,7 @@ void Track::remove()
             file->remove();
         }
 
-        if(m_artist->getTracks().length() == 0)
+        if(m_artist->trackCount() == 0)
         {
             m_artist->remove();
         }
