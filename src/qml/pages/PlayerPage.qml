@@ -192,7 +192,7 @@ Page {
     Connections{
         target: coverLoader
         function onCoverReady(coverFile) {
-            coverArea.cover = coverFile
+            coverArea.cover = "file://" + coverFile
         }
         function onCoverLoaing() {
             /*FIXME add loader*/
