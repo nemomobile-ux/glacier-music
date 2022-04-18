@@ -237,6 +237,10 @@ Page {
         if(rootAudio.playbackState == MediaPlayer.PlayingState) {
             rootAudio.pause();
         } else {
+            if(rootAudio.source == "") {
+                playNext()
+            }
+
             rootAudio.play()
         }
     }
