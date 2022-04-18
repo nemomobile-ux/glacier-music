@@ -11,3 +11,5 @@ Name[fi]=Musiikki
 Name[de]=Musik
 Name[uk]=Музика
 Name[vi]=Âm nhạc
+Categories=AudioVideo;Player;
+MimeType=audio/mp3;audio/x-mp1;audio/x-mp2;audio/x-mp3;
