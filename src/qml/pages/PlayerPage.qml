@@ -60,7 +60,7 @@ Page {
 
         CoverArea{
             id: coverArea
-            width: isUiPortrait ? height : Theme.itemHeightExtraLarge
+            width: isUiPortrait ? parent.width : Theme.itemHeightExtraLarge
             height: isUiPortrait ? trackInfo.height-trackLabelArea.height : Theme.itemHeightExtraLarge
             anchors{
                 top: isUiPortrait ? parent.top : trackLabelArea.top
@@ -68,6 +68,10 @@ Page {
                 horizontalCenter: isUiPortrait ? parent.horizontalCenter : undefined
                 right: isUiPortrait ? undefined : trackLabelArea.left
                 rightMargin: isUiPortrait ? undefined : Theme.itemSpacingSmall
+            }
+
+            onCoverChanged: {
+                blurredImage.imagePath = cover
             }
         }
 
@@ -181,10 +185,8 @@ Page {
             if (cover !== "") {
                 cover = String(cover).startsWith("/") ? "file://" + cover : cover;
                 coverArea.cover = cover;
-                blurredImage.imagePath = cover;
             } else {
                 coverArea.cover = "file:///usr/share/glacier-music/images/cover.png";
-                blurredImage.imagePath = "file:///usr/share/glacier-music/images/cover.png";
                 coverLoader.getCoverByTrackId(track.trackId)
             }
         }
