@@ -56,10 +56,7 @@ ApplicationWindow {
 
     PlaylistModel{
         id: nextTrackModel
-        Component.onCompleted: {
-            loadPlaylistFromDB();
-            nextTrackModel.currentIndex = 0
-        }
+        playMode: PlaylistModel.DirectoryShuffle
     }
 
     Cover{

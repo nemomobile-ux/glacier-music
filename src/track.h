@@ -101,7 +101,6 @@ private:
     int m_length;
 
     Artist *m_artist;
-    bool m_played;
 
     uint m_startTime;
     uint m_endTime;

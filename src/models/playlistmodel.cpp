@@ -1,3 +1,23 @@
+/*
+ * Copyright (C) 2021-2022 Chupligin Sergey <neochapay@gmail.com>
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Library General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Library General Public License for more details.
+ *
+ * You should have received a copy of the GNU Library General Public License
+ * along with this library; see the file COPYING.LIB.  If not, write to
+ * the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
+ */
+
+
 #include "playlistmodel.h"
 
 #include "../track.h"
@@ -8,68 +28,51 @@
 
 PlayListModel::PlayListModel(QObject *parent) :
     QAbstractListModel(parent)
+  , m_playMode(PlayMode::Random)
+  , m_repeatMode(RepeatMode::NoneRepeat)
 {
     hash.insert(Qt::UserRole ,QByteArray("trackId"));
     hash.insert(Qt::UserRole+1 ,QByteArray("artist"));
     hash.insert(Qt::UserRole+2 ,QByteArray("artist_id"));
     hash.insert(Qt::UserRole+3 ,QByteArray("title"));
     hash.insert(Qt::UserRole+4 ,QByteArray("fileName"));
-    hash.insert(Qt::UserRole+5 ,QByteArray("played"));
-    hash.insert(Qt::UserRole+6 ,QByteArray("cover"));
-    hash.insert(Qt::UserRole+7 ,QByteArray("album"));
-    hash.insert(Qt::UserRole+8 ,QByteArray("comment"));
-    hash.insert(Qt::UserRole+9 ,QByteArray("genre"));
-    hash.insert(Qt::UserRole+10 ,QByteArray("year"));
-    hash.insert(Qt::UserRole+11 ,QByteArray("length"));
-    hash.insert(Qt::UserRole+12 ,QByteArray("track"));
+    hash.insert(Qt::UserRole+5 ,QByteArray("cover"));
+    hash.insert(Qt::UserRole+6 ,QByteArray("album"));
+    hash.insert(Qt::UserRole+7 ,QByteArray("comment"));
+    hash.insert(Qt::UserRole+8 ,QByteArray("genre"));
+    hash.insert(Qt::UserRole+9 ,QByteArray("year"));
+    hash.insert(Qt::UserRole+10 ,QByteArray("length"));
+    hash.insert(Qt::UserRole+11 ,QByteArray("track"));
 
     m_currentIndex = -1;
+
+    connect(this, &PlayListModel::playModeChanged, this, &PlayListModel::updatePlayList);
 }
 
 void PlayListModel::addItem(int trackId, int count)
 {
     Track *track = Track::toId(trackId);
-    if(!track)
-    {
+    if(!track) {
         return;
     }
 
-    playListItem item;
-    item.trackId = trackId;
-    item.artist = track->artistName();
-    item.artist_id = track->artistID();
-    item.title = track->title();
-    item.fileName = track->getFileName();
-    item.cover = track->cover();
-    item.album = track->album();
-    item.comment = track->comment();
-    item.genre = track->genre();
-    item.year = track->year();
-    item.length = track->length();
-    item.track = track->num();
-
-    if(count == 0)
-    {
-        count = playList.size();
+    if(count == 0) {
+        count = m_playList.size();
     }
 
-    insertRows(count,1,item);
-
+    insertRows(count,1,track);
 
     QSqlDatabase db = dbAdapter::instance().getDatabase();
     QSqlQuery query(db);
     query.prepare("INSERT INTO playlist (`song_id`, `time`) VALUES ( :trackid , 0)");
     query.bindValue(":trackid",trackId);
     query.exec();
-
-    qDebug() << "Add " << item.artist << "" << item.title << item.fileName;
-
 }
 
 int PlayListModel::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent);
-    return playList.count();
+    return m_playList.count();
 }
 
 
@@ -79,47 +82,46 @@ QVariant PlayListModel::data(const QModelIndex &index, int role) const
     if (!index.isValid())
         return QVariant();
 
-    if (index.row() >= playList.size())
+    if (index.row() >= m_playList.size())
         return QVariant();
-    playListItem item = playList.at(index.row());
+
+    Track* item = m_playList.at(index.row());
     if(role == Qt::UserRole) {
-        return item.trackId;
+        return item->id();
     } else if(role == Qt::UserRole+1) {
-        return item.artist;
+        return item->artistName();
     } else if(role == Qt::UserRole+2) {
-        return item.artist_id;
+        return item->artistID();
     } else if(role == Qt::UserRole+3) {
-        return item.title;
+        return item->title();
     } else if(role == Qt::UserRole+4) {
-        return item.fileName;
+        return item->getFileName();
     } else if(role == Qt::UserRole+5) {
-        return item.played;
-    } else if(role == Qt::UserRole+6) {
-        return item.cover;
+        return item->cover();
+    } else if (role == Qt::UserRole+6) {
+        return item->album();
     } else if (role == Qt::UserRole+7) {
-        return item.album;
+        return item->comment();
     } else if (role == Qt::UserRole+8) {
-        return item.comment;
+        return item->genre();
     } else if (role == Qt::UserRole+9) {
-        return item.genre;
+        return item->year();
     } else if (role == Qt::UserRole+10) {
-        return item.year;
+        return item->length();
     } else if (role == Qt::UserRole+11) {
-        return item.length;
-    } else if (role == Qt::UserRole+12) {
-        return item.track;
+        return item->title();
     }
 
     return QVariant();
 }
 
-bool PlayListModel::insertRows(int position, int rows, playListItem &item, const QModelIndex &parent)
+bool PlayListModel::insertRows(int position, int rows, Track *item, const QModelIndex &parent)
 {
     Q_UNUSED(parent);
 
     beginInsertRows(QModelIndex(), position, position+rows-1);
     for (int row = 0; row < rows; ++row) {
-        playList.insert(position, item);
+        m_playList.insert(position, item);
     }
     endInsertRows();
     return true;
@@ -129,42 +131,57 @@ bool PlayListModel::insertRows(int position, int rows, playListItem &item, const
 bool PlayListModel::removeRows(int position, int rows, const QModelIndex &index)
 {
     Q_UNUSED(index);
-    if((position+rows) > playList.count())
+    if((position+rows) > m_playList.count())
     {
         return false;
     }
 
     beginRemoveRows(QModelIndex(), position, position+rows-1);
     for (int row = 0; row < rows; ++row) {
-        playList.removeAt(position);
+        m_playList.removeAt(position);
     }
     endRemoveRows();
     return true;
 }
 
+void PlayListModel::setPlayMode(PlayListModel::PlayMode mode)
+{
+    if(mode != m_playMode) {
+        m_playMode = mode;
+        emit playModeChanged();
+    }
+}
+
+void PlayListModel::setRepeatMode(PlayListModel::RepeatMode mode)
+{
+    if(mode != m_repeatMode) {
+        m_repeatMode = mode;
+        emit repeatModeChanged();
+    }
+}
+
 QVariant PlayListModel::get(int idx)
 {
-    if(idx >= playList.size())
+    if(idx >= m_playList.size())
     {
         return QVariant();
     }
 
     QMap<QString, QVariant> itemData;
-    playListItem item = playList.at(idx);
+    Track* item = m_playList.at(idx);
 
-    itemData.insert("trackId",item.trackId);
-    itemData.insert("artist",item.artist);
-    itemData.insert("artist_id",item.artist_id);
-    itemData.insert("title",item.title);
-    itemData.insert("fileName",item.fileName);
-    itemData.insert("played",item.played);
-    itemData.insert("cover",item.cover);
-    itemData.insert("album", item.album);
-    itemData.insert("comment", item.comment);
-    itemData.insert("genre", item.genre);
-    itemData.insert("year", item.year);
-    itemData.insert("length",item.length);
-    itemData.insert("track",item.track);
+    itemData.insert("trackId",item->id());
+    itemData.insert("artist",item->artistName());
+    itemData.insert("artist_id",item->artistID());
+    itemData.insert("title",item->title());
+    itemData.insert("fileName",item->getFileName());
+    itemData.insert("cover",item->cover());
+    itemData.insert("album", item->album());
+    itemData.insert("comment", item->comment());
+    itemData.insert("genre", item->genre());
+    itemData.insert("year", item->year());
+    itemData.insert("length",item->length());
+    itemData.insert("track",item->title());
 
     return QVariant(itemData);
 }
@@ -177,7 +194,7 @@ void PlayListModel::remove(int idx)
 void PlayListModel::clearPlaylist()
 {
     qDebug() << "Clear playlist";
-    playList.clear();
+    m_playList.clear();
 
     QSqlDatabase db = dbAdapter::instance().getDatabase();
     QSqlQuery query(db);
@@ -190,187 +207,135 @@ void PlayListModel::clearPlaylist()
     }
 }
 
+void PlayListModel::updatePlayList()
+{
+    if(m_currentIndex < 0) {
+        return;
+    }
+    QSqlDatabase db = dbAdapter::instance().getDatabase();
+    QSqlQuery query(db);
+
+    QString queryString;
+    Track* currentTrack = m_playList.at(m_currentIndex);
+
+    QFileInfo trackFile(currentTrack->getFileName());
+
+    switch (m_playMode) {
+    case PlayMode::Random:
+        queryString = "SELECT id FROM tracks \
+                        WHERE id <> "+QString::number(currentTrack->id())+" \
+                        ORDER BY RANDOM() \
+                LIMIT 10";
+        break;
+    case PlayMode::Artist:
+        queryString = "SELECT id FROM tracks \
+                        WHERE artist_id = " + QString(currentTrack->artistID()) + " \
+                        AND id <> "+ QString::number(currentTrack->id()) + " \
+                        ORDER BY titile ASC \
+                LIMIT 10";
+        break;
+    case PlayMode::ArtistShuffle:
+        queryString = "SELECT id FROM tracks \
+                        WHERE artist_id = " + QString(currentTrack->artistID()) + " \
+                        AND id <> "+ QString::number(currentTrack->id()) + " \
+                        ORDER BY RANDOM() \
+                LIMIT 10";
+        break;
+    case PlayMode::Album:
+        queryString = "SELECT id FROM tracks \
+                        WHERE album = " + QString(currentTrack->album()) + " \
+                        AND id <> "+ QString::number(currentTrack->id()) + " \
+                        ORDER BY num ASC \
+                LIMIT 10";
+        break;
+    case PlayMode::AlbumShuffle:
+        queryString = "SELECT id FROM tracks \
+                        WHERE album = " + QString(currentTrack->album()) + " \
+                        AND id <> "+ QString::number(currentTrack->id()) + " \
+                        ORDER BY RANDOM() \
+                LIMIT 10";
+        break;
+    case PlayMode::Directory:
+        queryString = "SELECT id FROM tracks \
+                        WHERE filename LIKE \"%" + QString(trackFile.absoluteDir().path()) + "%\" \
+                        AND id <> "+ QString::number(currentTrack->id()) + " \
+                        ORDER BY filename ASC \
+                LIMIT 10";
+        break;
+    case PlayMode::DirectoryShuffle:
+        queryString = "SELECT id FROM tracks \
+                        WHERE filename LIKE \"%" + QString(trackFile.absoluteDir().path()) + "%\" \
+                        AND id <> "+ QString::number(currentTrack->id()) + " \
+                        ORDER BY RANDOM() \
+                LIMIT 10";
+        break;
+    }
+
+    qDebug() << queryString;
+
+    bool ok = query.exec(queryString);
+    if(!ok) {
+        qDebug() << query.lastQuery() << query.lastError().text();
+    } else {
+        while(query.next()) {
+            addItem(query.value(0).toInt());
+        }
+    }
+}
+
 void PlayListModel::loadPlaylistFromDB()
 {
+    m_playList.clear();
     QSqlDatabase db = dbAdapter::instance().getDatabase();
     QSqlQuery query(db);
     bool ok = false;
 
-/*Load preview unfinifed playing song*/
-    query.prepare("SELECT song_id FROM playlist WHERE time > 0 ORDER BY id DESC LIMIT 1");
+    int i = 0;
+    int ci = -1;
+    /*Load preview unfinifed playing song*/
+    query.prepare("SELECT * FROM playlist ORDER BY id ASC");
     ok = query.exec();
-    if(!ok)
-    {
+    if(!ok) {
         qDebug() << query.lastQuery() << query.lastError().text();
-    }
-    else
-    {
-        while(query.next())
-        {
-            addItem(query.value(0).toInt());
+    } else {
+        while(query.next()) {
+            Track* item = Track::toId(query.value(1).toInt());
+            if(!item) {
+                continue;
+            }
+
+            if(ci == -1 && query.value(2).toUInt() == 0) {
+                ci = i;
+            }
+            m_playList.push_back(item);
+            i++;
         }
     }
 
-/*Load next songs */
-    query.prepare("SELECT song_id FROM playlist WHERE time = 0");
-    ok = query.exec();
-
-    if(!ok)
-    {
-        qDebug() << query.lastQuery() << query.lastError().text();
-    }
-    else
-    {
-        while(query.next())
-        {
-            addItem(query.value(0).toInt());
-        }
+    if(ci != -1) {
+        setCurrentIndex(ci);
     }
 }
 
-void PlayListModel::formatRandomPlaylist(const int tracksCount)
+void PlayListModel::setCurrentIndex(int currentIndex)
 {
-    qDebug() << "Format random playlist";
-
-    QSqlDatabase db = dbAdapter::instance().getDatabase();
-    QSqlQuery query(db);
-    query.prepare("SELECT id FROM tracks ORDER BY RANDOM() LIMIT :limit");
-    query.bindValue(":limit",tracksCount);
-    bool ok = query.exec();
-
-    if(!ok)
+    if(currentIndex >= 0 && currentIndex < m_playList.count() && currentIndex != m_currentIndex)
     {
-        qDebug() << query.lastQuery() << query.lastError().text();
-    }
-    else
-    {
-        while(query.next())
-        {
-            addItem(query.value(0).toInt());
-        }
-    }
-}
+        m_currentIndex = currentIndex;
+        emit currentIndexChanged(m_currentIndex);
 
-void PlayListModel::formatAutoPlaylist()
-{
-    uint songRepeat = 60*60;
-    uint artistRepeat = 3*60*60;
-
-    int smartSong = 10; //How many songs add to playlist
-    int errors = 0;     //num of errors
-    int buildRepear = 8;//max repeat of find song
-
-    for(int i=0; i < smartSong; i++)
-    {
-        if(errors > buildRepear)
-        {
-            break;
-        }
-
-        QString s_notin = QString("0");
-        QString a_notin = QString("0");
-
-        foreach (playListItem item, playList) {
-            s_notin.append(&","[item.trackId]);
-        }
-
+        uint currentPlayId = m_playList.at(currentIndex)->id();
         QSqlDatabase db = dbAdapter::instance().getDatabase();
         QSqlQuery query(db);
-
-        //create played artist list
-        query.prepare("SELECT tracks.artist_id \
-                      FROM tracks \
-                      INNER JOIN playlist ON tracks.id = playlist.song_id \
-                WHERE ptime < :atime");
-                query.bindValue(":atime",QDateTime().toTime_t()-artistRepeat);
-
-                if(query.next())
-        {
-            a_notin.append(",");
-            a_notin.append(query.value(0).toString());
-        }
-
-        //create songs list
-        query.prepare("SELECT tracks.id,\
-                      playlist.time as ptime \
-                      FROM tracks \
-                      LEFT OUTER JOIN playlist ON tracks.id = playlist.song_id \
-                WHERE ptime < :stime OR ptime IS NULL \
-                AND tracks.id NOT IN (:s_notin) \
-                AND artist_id NOT IN (:a_notin) \
-                ORDER BY RANDOM()");
-
-                query.bindValue(":stime",QDateTime().toTime_t()-songRepeat);
-                query.bindValue(":s_notin",s_notin);
-        query.bindValue(":a_notin",a_notin);
+        query.prepare("UPDATE playlist SET `time` = :time WHERE song_id=:trackid AND time = 0");
+        query.bindValue(":trackid",currentPlayId);
+        query.bindValue(":time", QDateTime::currentMSecsSinceEpoch());
 
         bool ok = query.exec();
         if(!ok)
         {
             qDebug() << query.lastQuery() << query.lastError().text();
         }
-
-        if(query.next())
-        {
-            addItem(query.value(0).toInt());
-        }
-        else
-        {
-            errors++;
-            i++;
-        }
-    }
-
-    if(playList.count() < smartSong)
-    {
-        formatRandomPlaylist(playList.count()-smartSong);
-    }
-}
-
-void PlayListModel::setPlayed(int idx, const QModelIndex &parent)
-{
-    Q_UNUSED(parent);
-
-    if(idx > playList.count())
-    {
-        return;
-    }
-
-    for (int row = 0; row < playList.count(); ++row)
-    {
-        playList[row].played = false;
-        dataChanged(index(row),index(row));
-    }
-
-    playList[idx].played = true;
-    dataChanged(index(idx),index(idx));
-
-    //add to database
-    QVariant track = get(idx);
-    int track_id = track.toMap().find("trackId").value().toInt();
-
-    qDebug() << "Play trackID" << track_id;
-
-    QSqlDatabase db = dbAdapter::instance().getDatabase();
-    QSqlQuery query(db);
-    query.prepare("UPDATE playlist SET `time` = :time WHERE song_id=:trackid AND time = 0");
-    query.bindValue(":trackid",track_id);
-    query.bindValue(":time", QDateTime::currentMSecsSinceEpoch());
-
-    bool ok = query.exec();
-    if(!ok)
-    {
-        qDebug() << query.lastQuery() << query.lastError().text();
-    }
-}
-
-
-void PlayListModel::setCurrentIndex(int currentIndex)
-{
-    if(currentIndex >= 0 && currentIndex < playList.count() && currentIndex != m_currentIndex)
-    {
-        m_currentIndex = currentIndex;
-        emit currentIndexChanged(m_currentIndex);
     }
 }
 

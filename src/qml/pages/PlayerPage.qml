@@ -152,6 +152,9 @@ Page {
             playNextConnection.enabled = false;
             rootAudio.stop();
             var track = nextTrackModel.get(currentIndex);
+            if(!track) {
+                return;
+            }
 
             trackName.text = track.title
             artistsName.text = track.artist;
@@ -166,8 +169,6 @@ Page {
                 rootAudio.play();
             }
             playNextConnection.enabled = true;
-
-            nextTrackModel.setPlayed(currentIndex)
 
             mprisPlayer.artist = track.artist
             mprisPlayer.song = track.title
@@ -214,7 +215,7 @@ Page {
         target: collection
         function onrescanCollectionFinished(prc) {
             if(nextTrackModel.rowCount() < 5) {
-                nextTrackModel.formatRandomPlaylist(1);
+                nextTrackModel.updatePlayList();
             }
         }
     }
@@ -222,7 +223,7 @@ Page {
     function playNext() {
         console.log("playNext(): " + (nextTrackModel.currentIndex+1) + " | " + nextTrackModel.rowCount())
         if(nextTrackModel.currentIndex >= nextTrackModel.rowCount()-1) {
-            nextTrackModel.formatRandomPlaylist(1);
+            nextTrackModel.updatePlayList();
         }
         ++nextTrackModel.currentIndex
     }

@@ -34,7 +34,6 @@ Track::Track(const QString file, QObject *parent) : QObject(parent)
     , m_fileName(file)
     , m_length(0)
     , m_artist(new Artist(0))
-    , m_played(false)
     , m_startTime(0)
     , m_endTime (0)
 {
