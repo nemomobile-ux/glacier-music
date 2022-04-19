@@ -221,7 +221,10 @@ Page {
     }
 
     function playNext() {
-        console.log("playNext(): " + (nextTrackModel.currentIndex+1) + " | " + nextTrackModel.rowCount())
+        if(nextTrackModel.rowCount() == 0) {
+            nextTrackModel.updatePlayList();
+        }
+
         if(nextTrackModel.currentIndex >= nextTrackModel.rowCount()-1) {
             nextTrackModel.updatePlayList();
         }

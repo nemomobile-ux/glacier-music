@@ -194,78 +194,88 @@ void PlayListModel::remove(int idx)
 void PlayListModel::clearPlaylist()
 {
     qDebug() << "Clear playlist";
+    beginRemoveRows(QModelIndex(),0,m_playList.count());
     m_playList.clear();
 
     QSqlDatabase db = dbAdapter::instance().getDatabase();
     QSqlQuery query(db);
-    query.prepare("DELETE FROM playlist WHERE time = 0");
-    bool ok = query.exec();
+    bool ok = query.exec("DELETE FROM playlist");
 
-    if(!ok)
-    {
+    endRemoveRows();
+    m_currentIndex = -1;
+
+    if(!ok) {
         qDebug() << query.lastQuery() << query.lastError().text();
     }
 }
 
 void PlayListModel::updatePlayList()
 {
-    if(m_currentIndex < 0) {
-        return;
-    }
     QSqlDatabase db = dbAdapter::instance().getDatabase();
     QSqlQuery query(db);
 
     QString queryString;
-    Track* currentTrack = m_playList.at(m_currentIndex);
+    int currentTrackId = 0;
+    int currentArtistId = 0;
 
-    QFileInfo trackFile(currentTrack->getFileName());
+    QString currentAlbum = "";
+    QString currentDir = "/";
+
+    if(m_currentIndex > 0) {
+        Track* currentTrack = m_playList.at(m_currentIndex);
+        QFileInfo trackFile(currentTrack->getFileName());
+        currentTrackId = currentTrack->id();
+        currentAlbum = currentTrack->album();
+        currentArtistId = currentTrack->artistID();
+        currentDir = trackFile.absoluteDir().path();
+    }
 
     switch (m_playMode) {
     case PlayMode::Random:
         queryString = "SELECT id FROM tracks \
-                        WHERE id <> "+QString::number(currentTrack->id())+" \
+                        WHERE id <> "+QString::number(currentTrackId)+" \
                         ORDER BY RANDOM() \
                 LIMIT 10";
         break;
     case PlayMode::Artist:
         queryString = "SELECT id FROM tracks \
-                        WHERE artist_id = " + QString(currentTrack->artistID()) + " \
-                        AND id <> "+ QString::number(currentTrack->id()) + " \
+                        WHERE artist_id = " + QString(currentArtistId) + " \
+                        AND id <> "+ QString::number(currentTrackId) + " \
                         ORDER BY titile ASC \
                 LIMIT 10";
         break;
     case PlayMode::ArtistShuffle:
         queryString = "SELECT id FROM tracks \
-                        WHERE artist_id = " + QString(currentTrack->artistID()) + " \
-                        AND id <> "+ QString::number(currentTrack->id()) + " \
+                        WHERE artist_id = " + QString(currentArtistId) + " \
+                        AND id <> "+ QString::number(currentTrackId) + " \
                         ORDER BY RANDOM() \
                 LIMIT 10";
         break;
     case PlayMode::Album:
         queryString = "SELECT id FROM tracks \
-                        WHERE album = " + QString(currentTrack->album()) + " \
-                        AND id <> "+ QString::number(currentTrack->id()) + " \
+                        WHERE album = " + QString(currentAlbum) + " \
+                        AND id <> "+ QString::number(currentTrackId) + " \
                         ORDER BY num ASC \
                 LIMIT 10";
         break;
     case PlayMode::AlbumShuffle:
         queryString = "SELECT id FROM tracks \
-                        WHERE album = " + QString(currentTrack->album()) + " \
-                        AND id <> "+ QString::number(currentTrack->id()) + " \
+                        WHERE album = " + QString(currentAlbum) + " \
+                        AND id <> "+ QString::number(currentTrackId) + " \
                         ORDER BY RANDOM() \
                 LIMIT 10";
         break;
     case PlayMode::Directory:
         queryString = "SELECT id FROM tracks \
-                        WHERE filename LIKE \"%" + QString(trackFile.absoluteDir().path()) + "%\" \
-                        AND id <> "+ QString::number(currentTrack->id()) + " \
+                        WHERE filename LIKE \"%" + QString(currentDir) + "%\" \
+                        AND id <> "+ QString::number(currentTrackId) + " \
                         ORDER BY filename ASC \
                 LIMIT 10";
         break;
     case PlayMode::DirectoryShuffle:
         queryString = "SELECT id FROM tracks \
-                        WHERE filename LIKE \"%" + QString(trackFile.absoluteDir().path()) + "%\" \
-                        AND id <> "+ QString::number(currentTrack->id()) + " \
+                        WHERE filename LIKE \"%" + QString(currentDir) + "%\" \
+                        AND id <> "+ QString::number(currentTrackId) + " \
                         ORDER BY RANDOM() \
                 LIMIT 10";
         break;

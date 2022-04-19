@@ -20,18 +20,15 @@ Page {
                  onClicked: {
                       pageStack.push(Qt.resolvedUrl("../pages/LibraryPage.qml"));
                  }
-             }
-        ]
-         drawerLevels: [
-             Button {
-                 anchors.horizontalCenter: (parent==undefined) ? undefined : parent.horizontalCenter;
-                 text: qsTr("Clear playlist")
+             },
+             ToolButton {
+                 iconSource: "file:///usr/share/glacier-music/images/erasier.svg"
                  onClicked: {
                      nextTrackModel.clearPlaylist();
                  }
              }
-         ]
 
+        ]
     }
 
     ListView{
