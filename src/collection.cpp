@@ -66,12 +66,12 @@ void Collection::rescanCollection()
 }
 
 
-void Collection::m_rescanCollectionProgress(QVariant prc)
+void Collection::m_rescanCollectionProgress(QVariant progress)
 {
-    emit updateRescanProgress(prc);
-    m_rescanNotification->setProgress(prc);
+    emit updateRescanProgress(progress);
+    m_rescanNotification->setProgress(progress);
 
-    if(prc == 1) {
+    if(progress == 1) {
         m_rescanNotification->close();
         emit rescanCollectionFinished();
     }

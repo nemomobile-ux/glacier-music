@@ -45,7 +45,7 @@ public slots:
     void rescanCollection();
 
 private slots:
-    void m_rescanCollectionProgress(QVariant prc);
+    void m_rescanCollectionProgress(QVariant progress);
 
 private:
     bool m_firstRun;
