@@ -93,6 +93,7 @@ void RescanCollection::scan()
             Track *track = new Track(fileUrl);
             Q_UNUSED(track);
             m_scannedFiles++;
+            delete(track);
 
             double prc = m_scannedFiles/m_aviableFiles;
             emit scanProcess(QVariant(prc));
