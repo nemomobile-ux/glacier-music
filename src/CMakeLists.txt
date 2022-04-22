@@ -41,7 +41,9 @@ target_link_libraries(glacier-music
 	Qt5::Quick
 	Qt5::Multimedia
 	Qt5::Sql
+        Qt5::DBus
 	Glacier::App
-	PkgConfig::TAGLIB)
+        PkgConfig::TAGLIB
+        PkgConfig::NEMONOTIFICATIONS)
 install(TARGETS glacier-music RUNTIME
 	DESTINATION ${CMAKE_INSTALL_BINDIR})

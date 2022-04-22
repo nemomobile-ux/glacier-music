@@ -116,28 +116,8 @@ ApplicationWindow {
         nextTrackModel.loadPlaylistFromDB()
     }
 
-    Rectangle{
-        id: rescanProgress
-        width: parent.width
-        height: Theme.itemHeightExtraSmall/10
-        color: Theme.accentColor
-        visible: false;
-        anchors.top: root.top
-    }
-
     Connections{
         target: collection
-        function onUpdateRescanProgress(prc) {
-            if(prc < 100)
-            {
-                rescanProgress.width = root.width*(prc/100);
-                rescanProgress.visible = true;
-            }
-            else
-            {
-                rescanProgress.visible = false;
-            }
-        }
         function onNoMusicFiles() {
             noMusicDialog.visible = true
         }
