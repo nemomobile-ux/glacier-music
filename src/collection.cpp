@@ -32,6 +32,7 @@ Collection::Collection(QObject *parent) : QObject(parent)
     m_rescanNotification->setAppName(QObject::tr("Music"));
     m_rescanNotification->setBody(QObject::tr("rescan collection"));
     m_rescanNotification->setAppIcon("/usr/share/glacier-music/images/icon-app-music.png");
+    m_rescanNotification->setUrgency(Notification::Urgency::Low);
 
     m_firstRun = false;
     QDir cacheLocation = QDir(QStandardPaths::writableLocation(QStandardPaths::CacheLocation));
