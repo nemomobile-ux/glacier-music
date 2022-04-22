@@ -29,6 +29,16 @@
         <source>Library</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../src/qml/pages/LibraryPage.qml" line="23"/>
+        <source>Artists</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/qml/pages/LibraryPage.qml" line="31"/>
+        <source>Tracks</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PlayListPage</name>
@@ -37,35 +47,26 @@
         <source>Playlist</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <location filename="../src/qml/pages/PlayListPage.qml" line="28"/>
-        <source>Clear playlist</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>PlayerPage</name>
     <message>
-        <location filename="../src/qml/pages/PlayerPage.qml" line="18"/>
+        <location filename="../src/qml/pages/PlayerPage.qml" line="37"/>
         <source>Music</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/qml/pages/PlayerPage.qml" line="70"/>
-        <source>Unknown track</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/qml/pages/PlayerPage.qml" line="84"/>
-        <source>Unknown artist</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
+        <location filename="../src/collection.cpp" line="32"/>
         <location filename="../src/main.cpp" line="59"/>
         <source>Music</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/collection.cpp" line="33"/>
+        <source>rescan collection</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -103,6 +104,19 @@
     </message>
 </context>
 <context>
+    <name>TrackLabelArea</name>
+    <message>
+        <location filename="../src/qml/components/TrackLabelArea.qml" line="29"/>
+        <source>Unknown track</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/qml/components/TrackLabelArea.qml" line="30"/>
+        <source>Unknown artist</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>TracksPage</name>
     <message>
         <location filename="../src/qml/pages/TracksPage.qml" line="16"/>
@@ -113,32 +127,32 @@
 <context>
     <name>glacier-music</name>
     <message>
-        <location filename="../src/qml/glacier-music.qml" line="133"/>
+        <location filename="../src/qml/glacier-music.qml" line="129"/>
         <source>Loading</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/glacier-music.qml" line="134"/>
+        <location filename="../src/qml/glacier-music.qml" line="130"/>
         <source>tags...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/glacier-music.qml" line="171"/>
+        <location filename="../src/qml/glacier-music.qml" line="167"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/glacier-music.qml" line="172"/>
+        <location filename="../src/qml/glacier-music.qml" line="168"/>
         <source>Ok</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/glacier-music.qml" line="173"/>
+        <location filename="../src/qml/glacier-music.qml" line="169"/>
         <source>No music files found</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qml/glacier-music.qml" line="174"/>
+        <location filename="../src/qml/glacier-music.qml" line="170"/>
         <source>Please add music files into Music or Download directory. Or connect card with music</source>
         <translation type="unfinished"></translation>
     </message>
