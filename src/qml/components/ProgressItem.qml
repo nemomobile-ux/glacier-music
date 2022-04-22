@@ -25,20 +25,32 @@ import QtQuick.Controls.Styles.Nemo 1.0
 
 import org.glacier.music.widgets 1.0
 
-Item {
+Row {
     id: progressItem
-    width: parent.width
+    width: parent.width-Theme.itemSpacingSmall*2
     height: Theme.itemHeightMedium
+    spacing: Theme.itemSpacingSmall
+
+    anchors{
+        left: parent.left
+        leftMargin: Theme.itemSpacingSmall
+    }
+
+    Label{
+        id: startSec
+        text: "00:00"
+
+        font.pixelSize: Theme.fontSizeTiny
+        anchors.verticalCenter: parent.verticalCenter
+    }
 
     WaveWidget{
         id: lineOfProgress
-        width: parent.width-Theme.itemSpacingSmall*2
+        width: parent.width-Theme.itemSpacingSmall*4-startSec.paintedWidth-endSec.paintedWidth
         height: Theme.itemHeightExtraSmall/3
 
         anchors{
             verticalCenter: parent.verticalCenter
-            left: parent.left
-            leftMargin: Theme.itemSpacingSmall
         }
 
         accentColor: Theme.accentColor
@@ -57,31 +69,12 @@ Item {
     }
 
     Label{
-        id: startSec
-        text: "0:00"
-
-        font.pixelSize: Theme.fontSizeTiny/2
-
-        anchors{
-            left: parent.left
-            leftMargin: Theme.itemSpacingSmall
-            bottom: parent.bottom
-            bottomMargin: Theme.itemSpacingSmall
-        }
-    }
-
-    Label{
         id: endSec
-        text: "9:99"
+        text: "99:99"
 
-        font.pixelSize: Theme.fontSizeTiny/2
+        font.pixelSize: Theme.fontSizeTiny
 
-        anchors{
-            right: parent.right
-            rightMargin: Theme.itemSpacingSmall
-            bottom: parent.bottom
-            bottomMargin: Theme.itemSpacingSmall
-        }
+        anchors.verticalCenter: parent.verticalCenter
     }
 
     Connections {

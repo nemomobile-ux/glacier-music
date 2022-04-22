@@ -50,98 +50,37 @@ Page {
         anchors.fill: parent
     }
 
-    Rectangle {
+    Column {
         id: trackInfo
-        width: parent.width
-        height: parent.height-progressItem.height-controsArea.height
+        anchors.fill: parent
+        spacing: Theme.itemSpacingSmall
 
-        color: "transparent"
         clip: true
 
         CoverArea{
             id: coverArea
-            width: isUiPortrait ? parent.width : Theme.itemHeightExtraLarge
-            height: isUiPortrait ? trackInfo.height-trackLabelArea.height : Theme.itemHeightExtraLarge
-            anchors{
-                top: isUiPortrait ? parent.top : trackLabelArea.top
-                topMargin: isUiPortrait ? Theme.itemSpacingSmall : undefined
-                horizontalCenter: isUiPortrait ? parent.horizontalCenter : undefined
-                right: isUiPortrait ? undefined : trackLabelArea.left
-                rightMargin: isUiPortrait ? undefined : Theme.itemSpacingSmall
-            }
+            width: parent.width
+            height: parent.height-trackLabelArea.height-progressItem.height-controsArea.height-Theme.itemSpacingSmall*4
 
             onCoverChanged: {
                 blurredImage.imagePath = cover
             }
         }
 
-        Item {
+        TrackLabelArea{
             id: trackLabelArea
-            width: isUiPortrait ? parent.width-Theme.itemSpacingSmall*2 : parent.width-Theme.itemSpacingSmall*2-coverArea.width
-            height: Theme.itemHeightExtraLarge
-
-            anchors{
-                top: isUiPortrait ? coverArea.bottom : undefined
-                left:  isUiPortrait ? parent.left : undefined
-                right: isUiPortrait ? undefined : parent.right
-                leftMargin: isUiPortrait ? Theme.itemSpacingSmall : undefined
-                rightMargin: isUiPortrait ? undefined : Theme.itemSpacingSmall
-            }
-
-            Label {
-                id: trackName
-                text: qsTr("Unknown track")
-                anchors{
-                    top: parent.top
-                    left: parent.left
-                }
-
-                font{
-                    bold: true
-                    pixelSize: Theme.fontSizeSmall
-                }
-            }
-
-            Label {
-                id: artistsName
-                text: qsTr("Unknown artist")
-                anchors{
-                    top: trackName.bottom
-                    left: parent.left
-                }
-                font.pixelSize: Theme.fontSizeTiny
-                color: Theme.accentColor
-
-                MouseArea{
-                    anchors.fill: parent
-                    onClicked: {
-                        console.log(nextTrackModel.get(nextTrackModel.currentIndex).artist_id)
-                        console.log(nextTrackModel.get(nextTrackModel.currentIndex).artist)
-
-                        pageStack.push(Qt.resolvedUrl("../pages/TracksPage.qml"),
-                                       {artistId: nextTrackModel.get(nextTrackModel.currentIndex).artist_id,
-                                        artistName: nextTrackModel.get(nextTrackModel.currentIndex).artist});
-                    }
-                }
-            }
         }
-    }
 
-    ProgressItem{
-        id: progressItem
-        width: parent.width
-        anchors{
-            bottom: controsArea.top
+        ProgressItem{
+            id: progressItem
+            width: parent.width
         }
-    }
 
-    ControlsArea{
-        id: controsArea
-        width: parent.width
-        anchors{
-            bottom: parent.bottom
-            bottomMargin: Theme.itemSpacingSmall
+        ControlsArea{
+            id: controsArea
+            width: parent.width
         }
+
     }
 
     Connections{
@@ -160,8 +99,9 @@ Page {
                 return;
             }
 
-            trackName.text = track.title
-            artistsName.text = track.artist;
+            trackLabelArea.trackName = track.title
+            trackLabelArea.artistsName = track.artist;
+
             rootAudio.source = "file://" + track.fileName
             // Set seek of first playing song and play only if old state is playing
             if(currentIndex === 0 && settings.value("currentTrack") === track.trackId) {
