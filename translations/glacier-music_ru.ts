@@ -1,8 +1,21 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="ru" version="2.1">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="ru">
+<context>
+    <name>AudioFile</name>
+    <message>
+        <location filename="../src/audiofile.cpp" line="78"/>
+        <source>Unknown Artist</source>
+        <translation>Неизвестный исполнитель</translation>
+    </message>
+    <message>
+        <location filename="../src/audiofile.cpp" line="83"/>
+        <source>Unknown Track</source>
+        <translation>Неизвестный трек</translation>
+    </message>
+</context>
 <context>
     <name>EditTrackPage</name>
     <message>
-        <location filename="../src/qml/pages/EditTrackPage.qml" line="17"/>
+        <location filename="../src/qml/pages/EditTrackPage.qml" line="18"/>
         <source>Edit track info</source>
         <translation>Редактировать информациб о треке</translation>
     </message>
@@ -13,6 +26,16 @@
         <location filename="../src/qml/pages/LibraryPage.qml" line="15"/>
         <source>Library</source>
         <translation>Библиотека</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/pages/LibraryPage.qml" line="23"/>
+        <source>Artists</source>
+        <translation>Исполнители</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/pages/LibraryPage.qml" line="31"/>
+        <source>Tracks</source>
+        <translation>Трек</translation>
     </message>
 </context>
 <context>
@@ -26,7 +49,7 @@
 <context>
     <name>PlayerPage</name>
     <message>
-        <location filename="../src/qml/pages/PlayerPage.qml" line="18"/>
+        <location filename="../src/qml/pages/PlayerPage.qml" line="37"/>
         <source>Music</source>
         <translation>Музыка</translation>
     </message>
@@ -34,9 +57,15 @@
 <context>
     <name>QObject</name>
     <message>
+        <location filename="../src/collection.cpp" line="32"/>
         <location filename="../src/main.cpp" line="59"/>
         <source>Music</source>
         <translation>Музыка</translation>
+    </message>
+    <message>
+        <location filename="../src/collection.cpp" line="33"/>
+        <source>rescan collection</source>
+        <translation>обновление коллекции</translation>
     </message>
 </context>
 <context>
@@ -45,6 +74,21 @@
         <location filename="../src/qml/pages/SettingsPage.qml" line="13"/>
         <source>Settings</source>
         <translation>Настройки</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/pages/SettingsPage.qml" line="27"/>
+        <source>Only in interal storage</source>
+        <translation>Только внутреннее хранилище</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/pages/SettingsPage.qml" line="28"/>
+        <source>Yes</source>
+        <translation>Да</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/pages/SettingsPage.qml" line="29"/>
+        <source>No</source>
+        <translation>Нет</translation>
     </message>
     <message>
         <location filename="../src/qml/pages/SettingsPage.qml" line="38"/>
@@ -58,6 +102,19 @@
     </message>
 </context>
 <context>
+    <name>TrackLabelArea</name>
+    <message>
+        <location filename="../src/qml/components/TrackLabelArea.qml" line="29"/>
+        <source>Unknown track</source>
+        <translation>Неизвестный трек</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/components/TrackLabelArea.qml" line="30"/>
+        <source>Unknown artist</source>
+        <translation>Неизвестный исполнитель</translation>
+    </message>
+</context>
+<context>
     <name>TracksPage</name>
     <message>
         <location filename="../src/qml/pages/TracksPage.qml" line="16"/>
@@ -68,22 +125,32 @@
 <context>
     <name>glacier-music</name>
     <message>
-        <location filename="../src/qml/glacier-music.qml" line="151"/>
+        <location filename="../src/qml/glacier-music.qml" line="129"/>
+        <source>Loading</source>
+        <translation>Загружается</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/glacier-music.qml" line="130"/>
+        <source>tags...</source>
+        <translation>теги...</translation>
+    </message>
+    <message>
+        <location filename="../src/qml/glacier-music.qml" line="167"/>
         <source>Cancel</source>
         <translation>Отменить</translation>
     </message>
     <message>
-        <location filename="../src/qml/glacier-music.qml" line="152"/>
+        <location filename="../src/qml/glacier-music.qml" line="168"/>
         <source>Ok</source>
         <translation>Ок</translation>
     </message>
     <message>
-        <location filename="../src/qml/glacier-music.qml" line="153"/>
+        <location filename="../src/qml/glacier-music.qml" line="169"/>
         <source>No music files found</source>
         <translation>Нет музыкальных файлов</translation>
     </message>
     <message>
-        <location filename="../src/qml/glacier-music.qml" line="154"/>
+        <location filename="../src/qml/glacier-music.qml" line="170"/>
         <source>Please add music files into Music or Download directory. Or connect card with music</source>
         <translation>Пожалуйста добавьте музыкальные файлы в папку Музыка или Загрузки. Или вставьте карточку с музыкой</translation>
     </message>
