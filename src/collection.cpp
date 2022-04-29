@@ -30,7 +30,8 @@ Collection::Collection(QObject *parent) : QObject(parent)
 {
     m_rescanNotification = new Notification(this);
     m_rescanNotification->setAppName(QObject::tr("Music"));
-    m_rescanNotification->setBody(QObject::tr("rescan collection"));
+    m_rescanNotification->setSummary(QObject::tr("Rescan collection"));
+    m_rescanNotification->setBody(QObject::tr("Searching new music files"));
     m_rescanNotification->setAppIcon("/usr/share/glacier-music/images/icon-app-music.png");
     m_rescanNotification->setUrgency(Notification::Urgency::Low);
 
