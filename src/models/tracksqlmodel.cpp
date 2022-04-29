@@ -15,7 +15,6 @@ TrackSqlModel::TrackSqlModel(QObject *parent) : QSqlQueryModel(parent)
     hash.insert(Qt::UserRole+7,QByteArray("year"));
     hash.insert(Qt::UserRole+8,QByteArray("filename"));
     hash.insert(Qt::UserRole+9,QByteArray("artist_name"));
-    hash.insert(Qt::UserRole+10,QByteArray("fileName"));
     refresh();
 }
 
