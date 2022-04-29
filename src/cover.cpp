@@ -49,8 +49,10 @@ void Cover::getCoverByTrackId(int trackId)
         /*Search cover to tags*/
         AudioFile file(m_track->getFileName());
         QImage coverImgFromTags = file.coverImg();
+
         if(!coverImgFromTags.isNull()) {
-            QString coverPath = m_coverDir+"/"+artist+"_"+title+".jpg";
+            QString hash = QString(QCryptographicHash::hash((QString(QString::number(trackId)+"_"+artist+"_"+title).toUtf8()),QCryptographicHash::Md5).toHex());
+            QString coverPath = m_coverDir+"/"+hash+".jpg";
             coverImgFromTags.save(coverPath,"jpg",100);
             qDebug() << "We have cover in tag. Save to " << coverPath ;
             m_coverReady(coverPath);
