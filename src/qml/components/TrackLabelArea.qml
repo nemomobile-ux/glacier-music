@@ -24,7 +24,7 @@ Item {
     id: trackLabelArea
     width: parent.width
     height: Theme.itemHeightExtraLarge
-
+    clip: true
 
     property string trackName: qsTr("Unknown track")
     property string artistsName: qsTr("Unknown artist")
@@ -40,8 +40,9 @@ Item {
 
         font{
             bold: true
-            pixelSize: Theme.fontSizeSmall
+            pixelSize: trackLabelArea.height/2
         }
+        color: Theme.textColor
     }
 
     Label {
@@ -53,7 +54,7 @@ Item {
             leftMargin: Theme.itemSpacingSmall
         }
 
-        font.pixelSize: Theme.fontSizeTiny
+        font.pixelSize: trackLabelArea.height/4
         color: Theme.accentColor
 
         MouseArea{
