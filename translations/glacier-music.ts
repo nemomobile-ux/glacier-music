@@ -66,7 +66,12 @@
     </message>
     <message>
         <location filename="../src/collection.cpp" line="33"/>
-        <source>rescan collection</source>
+        <source>Rescan collection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/collection.cpp" line="34"/>
+        <source>Searching new music files</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
