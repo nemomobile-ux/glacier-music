@@ -64,8 +64,13 @@
     </message>
     <message>
         <location filename="../src/collection.cpp" line="33"/>
-        <source>rescan collection</source>
-        <translation>prohledat kolekci</translation>
+        <source>Rescan collection</source>
+        <translation>Prohledat kolekci</translation>
+    </message>
+    <message>
+        <location filename="../src/collection.cpp" line="34"/>
+        <source>Searching new music files</source>
+        <translation>Hledají se nové skladby</translation>
     </message>
 </context>
 <context>
