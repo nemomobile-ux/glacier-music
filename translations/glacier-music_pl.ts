@@ -132,7 +132,7 @@
     <message>
         <location filename="../src/qml/glacier-music.qml" line="130"/>
         <source>tags...</source>
-        <translation>Tagi...</translation>
+        <translation>tagi...</translation>
     </message>
     <message>
         <location filename="../src/qml/glacier-music.qml" line="167"/>
