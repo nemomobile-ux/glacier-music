@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 Chupligin Sergey <neochapay@gmail.com>
+ * Copyright (C) 2017-2022 Chupligin Sergey <neochapay@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -35,8 +35,6 @@
 #include "models/artistsqlmodel.h"
 #include "models/tracksqlmodel.h"
 #include "models/playlistmodel.h"
-#include "widgets/wavewidget.h"
-#include "widgets/blurredimage.h"
 
 Q_DECL_EXPORT int main(int argc, char *argv[])
 {
@@ -51,9 +49,6 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     qmlRegisterType<ArtistSqlModel>("org.glacier.music.artistmodel",1,0,"ArtistModel");
     qmlRegisterType<TrackSqlModel>("org.glacier.music.trackmodel",1,0,"TrackModel");
     qmlRegisterType<PlayListModel>("org.glacier.music.playlistmodel",1,0,"PlaylistModel");
-
-    qmlRegisterType<WaveWidget>("org.glacier.music.widgets",1,0,"WaveWidget");
-    qmlRegisterType<BlurredImage>("org.glacier.music.widgets",1,0,"BlurredImage");
 
     QQuickWindow *window = GlacierApp::showWindow();
     window->setTitle(QObject::tr("Music"));

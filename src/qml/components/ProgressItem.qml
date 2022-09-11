@@ -23,7 +23,7 @@ import QtQuick.Controls 1.0
 import QtQuick.Controls.Nemo 1.0
 import QtQuick.Controls.Styles.Nemo 1.0
 
-import org.glacier.music.widgets 1.0
+import org.glacier.music 1.0
 
 Row {
     id: progressItem

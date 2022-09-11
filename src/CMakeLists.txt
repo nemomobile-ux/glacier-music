@@ -15,8 +15,6 @@ set(SRC
 	main.cpp
 	musicbrainzconnect.cpp
 	musicbrainzconnect.h
-        peakscreator.cpp
-        peakscreator.h
 	rescancollection.cpp
 	rescancollection.h
 	track.cpp
@@ -26,15 +24,12 @@ set(SRC
 	models/playlistmodel.cpp
 	models/playlistmodel.h
 	models/tracksqlmodel.cpp
-        models/tracksqlmodel.h
-        widgets/blurredimage.cpp
-        widgets/blurredimage.h
-        widgets/wavewidget.cpp
-        widgets/wavewidget.h)
+        models/tracksqlmodel.h)
 
 qtquick_compiler_add_resources(RESOURCES qml/glacier-music.qrc)
 
 add_executable(glacier-music ${SRC} ${RESOURCES})
+add_subdirectory(plugin)
 
 target_link_libraries(glacier-music
 	Qt5::Qml
