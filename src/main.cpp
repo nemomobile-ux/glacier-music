@@ -32,9 +32,6 @@
 
 #include "collection.h"
 #include "cover.h"
-#include "models/artistsqlmodel.h"
-#include "models/tracksqlmodel.h"
-#include "models/playlistmodel.h"
 
 Q_DECL_EXPORT int main(int argc, char *argv[])
 {
@@ -45,10 +42,6 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
 
     qmlRegisterType<Collection>("org.glacier.music.collection",1,0,"Collection");
     qmlRegisterType<Cover>("org.glacier.music.cover",1,0,"Cover");
-
-    qmlRegisterType<ArtistSqlModel>("org.glacier.music.artistmodel",1,0,"ArtistModel");
-    qmlRegisterType<TrackSqlModel>("org.glacier.music.trackmodel",1,0,"TrackModel");
-    qmlRegisterType<PlayListModel>("org.glacier.music.playlistmodel",1,0,"PlaylistModel");
 
     QQuickWindow *window = GlacierApp::showWindow();
     window->setTitle(QObject::tr("Music"));

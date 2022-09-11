@@ -31,7 +31,7 @@ import org.nemomobile.settings 1.0
 import org.nemomobile.mpris 1.0
 
 import org.glacier.music.collection 1.0
-import org.glacier.music.playlistmodel 1.0
+import org.glacier.music 1.0
 import org.glacier.music.cover 1.0
 
 import Nemo.Dialogs 1.0

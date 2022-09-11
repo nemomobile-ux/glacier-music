@@ -20,7 +20,6 @@
 #include "track.h"
 #include "dbadapter.h"
 #include "audiofile.h"
-#include "musicbrainzconnect.h"
 
 Track::Track(const QString file, QObject *parent) : QObject(parent)
     , m_id(0)

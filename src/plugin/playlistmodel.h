@@ -23,7 +23,7 @@
 #include <QObject>
 #include <QAbstractListModel>
 
-#include "../track.h"
+#include "track.h"
 
 class PlayListModel: public QAbstractListModel
 {

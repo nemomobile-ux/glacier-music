@@ -15,7 +15,7 @@ include(FeatureSummary)
 include(GNUInstallDirs)
 
 set(QT_MIN_VERSION "5.11.0")
-find_package(Qt5 COMPONENTS Qml Quick Multimedia Sql DBus LinguistTools REQUIRED)
+find_package(Qt5 COMPONENTS Core Gui Qml Quick Multimedia Sql DBus LinguistTools REQUIRED)
 find_package(Glacier 0.8 COMPONENTS App REQUIRED)
 find_package(Qt5QuickCompiler)
 find_package(PkgConfig REQUIRED)

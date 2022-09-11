@@ -16,42 +16,28 @@
  * the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA 02110-1301, USA.
  */
+#ifndef TRACKSQLMODEL_H
+#define TRACKSQLMODEL_H
 
-import QtQuick 2.6
+#include <QSqlQueryModel>
 
-import QtQuick.Controls 1.0
-import QtQuick.Controls.Nemo 1.0
-import QtQuick.Controls.Styles.Nemo 1.0
+class TrackSqlModel :public QSqlQueryModel
+{
+    Q_OBJECT
 
-import org.glacier.music 1.0
+public:
+    explicit TrackSqlModel(QObject *parent = 0);
+    QVariant data(const QModelIndex &index, int role) const;
+    QHash<int, QByteArray> roleNames() const {return hash;}
 
-Item{
-    id: artistPage
+private:
+    const static char* SQL_SELECT;
+    QHash<int,QByteArray> hash;
 
-    ArtistModel{
-        id: artistModel
-    }
+public slots:
+    void refresh();
+    void setArtist(const int artist_id);
+    void cleanQuery();
+};
 
-    signal viewTracks(int artist_id, string artist_name)
-
-    ListView{
-        id: artistListView
-        model: artistModel
-        width: parent.width
-        height: parent.height
-
-        delegate: ListViewItemWithActions{
-            label: name
-            iconVisible: false
-
-            onClicked: {
-                viewTracks(artist_id, name)
-            }
-        }
-        clip: true
-    }
-
-    ScrollDecorator {
-        flickable: artistListView
-    }
-}
+#endif // TRACKSQLMODEL_H

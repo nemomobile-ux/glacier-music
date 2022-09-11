@@ -17,11 +17,10 @@
  * Boston, MA 02110-1301, USA.
  */
 
-
 #include "playlistmodel.h"
 
-#include "../track.h"
-#include "../dbadapter.h"
+#include <track.h>
+#include <dbadapter.h>
 
 #include <QSqlDatabase>
 #include <QSqlQuery>

@@ -14,23 +14,32 @@ endfunction()
 
 set(SRC
     plugin.cpp
+    artistsqlmodel.cpp
+    artistsqlmodel.h
     blurredimage.cpp
     blurredimage.h
     peakscreator.cpp
     peakscreator.h
+    playlistmodel.cpp
+    playlistmodel.h
+    tracksqlmodel.cpp
+    tracksqlmodel.h
     wavewidget.cpp
     wavewidget.h)
 
-add_library(glaciermusic SHARED ${SRC})
+add_library(glaciermusicplugin SHARED ${SRC})
+include_directories("../lib")
 
-target_link_libraries(glaciermusic
+target_link_libraries(glaciermusicplugin
     Qt5::Core
     Qt5::Gui
     Qt5::Qml
     Qt5::Quick
-    Qt5::Multimedia)
+    Qt5::Multimedia
+    Qt5::Sql
+    Glacier::Music)
 
 FindQtInstallQml()
 
 install(FILES qmldir DESTINATION ${QT_INSTALL_QML}/org/glacier/music/)
-install(TARGETS glaciermusic DESTINATION ${QT_INSTALL_QML}/org/glacier/music/)
+install(TARGETS glaciermusicplugin DESTINATION ${QT_INSTALL_QML}/org/glacier/music/)

@@ -1,5 +1,5 @@
 #include "artistsqlmodel.h"
-#include "../dbadapter.h"
+#include <dbadapter.h>
 
 #include <QSqlQueryModel>
 
