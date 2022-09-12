@@ -15,7 +15,7 @@ Item{
         id: coverImage
         width: parent.width*0.8
         height: width
-        source: "file:///usr/share/glacier-music/images/cover.png"
+        source: "file://"+player.cover
         fillMode: Image.PreserveAspectFit
         anchors.centerIn: parent
     }

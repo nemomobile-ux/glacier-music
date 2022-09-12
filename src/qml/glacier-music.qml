@@ -25,14 +25,10 @@ import QtQuick.Controls.Styles.Nemo 1.0
 import QtQuick.Window 2.1
 import QtQuick.Layouts 1.0
 
-import QtMultimedia 5.5
-
 import org.nemomobile.settings 1.0
 import org.nemomobile.mpris 1.0
 
-import org.glacier.music.collection 1.0
 import org.glacier.music 1.0
-import org.glacier.music.cover 1.0
 
 import Nemo.Dialogs 1.0
 
@@ -50,74 +46,30 @@ ApplicationWindow {
         id: settings;
     }
 
-    Collection{
+/*    Collection{
         id: collection
-    }
+    }*/
 
     PlaylistModel{
         id: nextTrackModel
         playMode: PlaylistModel.DirectoryShuffle
     }
 
-    Cover{
+/*    Cover{
         id: coverLoader
-    }
-
-    MediaPlayer{
-        id: rootAudio
-
-        function statusToStr(st) {
-            switch (st) {
-            case MediaPlayer.NoMedia: return "no media has been set.";
-            case MediaPlayer.Loading: return "the media is currently being loaded."
-            case MediaPlayer.Loaded: return "the media has been loaded."
-            case MediaPlayer.Buffering: return "the media is buffering data."
-            case MediaPlayer.Stalled: return "playback has been interrupted while the media is buffering data."
-            case MediaPlayer.Buffered: return "the media has buffered data."
-            case MediaPlayer.EndOfMedia: return "the media has played to the end."
-            case MediaPlayer.InvalidMedia: return "the media cannot be played."
-            default:
-            case MediaPlayer.UnknownStatus: return "the status of the media is unknown"
-            }
-        }
-
-        onStatusChanged: {
-            console.log("rootAudio.status " + statusToStr(status) + " " + source)
-        }
-
-        onVolumeChanged: {
-            settings.setValue("volume",volume);
-            settings.sync();
-        }
-
-        onPositionChanged: {
-            if(rootAudio.playbackState == MediaPlayer.PlayingState){
-                settings.setValue("seek",position);
-            }
-        }
-
-        onPlaybackStateChanged: {
-            settings.setValue("playbackState",rootAudio.playbackState);
-        }
-
-        Component.onCompleted: {
-            volume = settings.value("volume",1)
-        }
-    }
+    }*/
 
     initialPage: PlayerPage{}
 
     Component.onCompleted: {
-        if(collection.isFirstRun())
+        if(player.isFirstRun)
         {
             pageStack.push(Qt.resolvedUrl("../pages/SettingsPage.qml"));
         }
-        collection.rescanCollection()
-        nextTrackModel.loadPlaylistFromDB()
     }
 
     Connections{
-        target: collection
+        target: player
         function onNoMusicFiles() {
             noMusicDialog.visible = true
         }
@@ -138,11 +90,11 @@ ApplicationWindow {
 
         canGoNext: true
         canGoPrevious: true
-        canPause: rootAudio.playbackState == MediaPlayer.PlayingState
-        canPlay: rootAudio.playbackState != MediaPlayer.PlayingState
+        canPause: player.playbackState == player.PlayingState
+        canPlay: player.playbackState != player.PlayingState
         canSeek: false
 
-        playbackStatus: (rootAudio.playbackState == MediaPlayer.PlayingState) ? Mpris.Playing : Mpris.Paused
+        playbackStatus: (player.playbackState == player.PlayingState) ? Mpris.Playing : Mpris.Paused
 
         onArtistChanged: {
             var metadata = mprisPlayer.metadata

@@ -84,12 +84,6 @@ Page {
     }
 
     Connections{
-        id: playNextConnection
-        target: rootAudio
-        function onStopped() { playNext() }
-    }
-
-    Connections{
         target: nextTrackModel
         function onCurrentIndexChanged(currentIndex) {
             playNextConnection.enabled = false;
@@ -120,26 +114,6 @@ Page {
             if(settings.value("currentTrack") !== track.trackId) {
                 settings.setValue("currentTrack", track.trackId);
             }
-            // Change cover
-            var cover = track.cover;
-            if (cover !== "") {
-                cover = String(cover).startsWith("/") ? "file://" + cover : cover;
-                coverArea.cover = cover;
-            } else {
-                coverArea.cover = "file:///usr/share/glacier-music/images/cover.png";
-                coverLoader.getCoverByTrackId(track.trackId)
-            }
-        }
-    }
-
-    Connections{
-        target: coverLoader
-        function onCoverReady(coverFile) {
-            coverArea.cover = "file://" + coverFile
-        }
-        function onCoverLoaing() {
-            /*FIXME add loader*/
-            coverArea.cover = "file:///usr/share/glacier-music/images/cover.png";
         }
     }
 

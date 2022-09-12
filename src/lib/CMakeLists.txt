@@ -1,13 +1,18 @@
 set(SRC artist.cpp
     audiofile.cpp
     dbadapter.cpp
+    sourcepluginmanager.cpp
+    sourcepluginhost.cpp
     track.cpp)
 
-set(HEADERS item.h)
+set(HEADERS item.h
+    sourcepluginmanager.h
+    sourcepluginhost.h)
 
 set(PUBLIC_HEADERS artist.h
     audiofile.h
     dbadapter.h
+    musicsourceplugin.h
     track.h)
 
 add_library(glaciermusic SHARED ${SRC} ${HEADERS} ${PUBLIC_HEADERS})

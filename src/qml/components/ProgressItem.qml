@@ -55,7 +55,7 @@ Row {
 
         accentColor: Theme.accentColor
         fillColor: Theme.fillColor
-        progress: rootAudio.position/rootAudio.duration
+        progress: player.progress
 
         MouseArea{
             id: rewindArea
@@ -63,7 +63,7 @@ Row {
 
             onClicked: {
                 var current_poz = (mouseX-x)/width
-                rootAudio.seek(rootAudio.duration*current_poz)
+                player.seek(player.duration*current_poz)
             }
         }
     }
@@ -78,10 +78,10 @@ Row {
     }
 
     Connections {
-        target: rootAudio
+        target: player
         function onPositionChanged() {
-            startSec.text = formatTime(rootAudio.position)
-            endSec.text = formatTime(rootAudio.duration-rootAudio.position)
+            startSec.text = formatTime(player.position)
+            endSec.text = formatTime(player.duration-player.position)
         }
     }
 

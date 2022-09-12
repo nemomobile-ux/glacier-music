@@ -29,9 +29,8 @@
 #include <QCoreApplication>
 
 #include <glacierapp.h>
+#include "glaciermusicplayer.h"
 
-#include "collection.h"
-#include "cover.h"
 
 Q_DECL_EXPORT int main(int argc, char *argv[])
 {
@@ -40,8 +39,10 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     QGuiApplication *app = GlacierApp::app(argc, argv);
     app->setOrganizationName("NemoMobile");
 
-    qmlRegisterType<Collection>("org.glacier.music.collection",1,0,"Collection");
-    qmlRegisterType<Cover>("org.glacier.music.cover",1,0,"Cover");
+    QQmlApplicationEngine *engine = GlacierApp::engine(app);
+
+    GlacierMusicPlayer *player = new GlacierMusicPlayer();
+    engine->rootContext()->setContextProperty("player", player);
 
     QQuickWindow *window = GlacierApp::showWindow();
     window->setTitle(QObject::tr("Music"));

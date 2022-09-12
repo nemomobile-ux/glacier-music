@@ -18,7 +18,6 @@
  */
 
 import QtQuick 2.6
-import QtMultimedia 5.5
 
 import QtQuick.Controls 1.0 //needed for the Stack attached property
 import QtQuick.Controls.Nemo 1.0
@@ -75,7 +74,7 @@ Item{
 
         anchors.centerIn: parent;
 
-        source: (rootAudio.playbackState == MediaPlayer.PlayingState) ?
+        source: (player.playbackState == player.PlayingState) ?
                     "image://theme/pause" :
                     "image://theme/play"
 
@@ -149,11 +148,11 @@ Item{
             minimumValue: 0
             maximumValue: 1
             stepSize: 0.05
-            value: rootAudio.volume
+            value: player.volume
 
             onValueChanged:{
                 removeVolumeTimer.restart()
-                rootAudio.volume = value
+                player.volume = value
             }
         }
     }
