@@ -41,8 +41,8 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
 
     QQmlApplicationEngine *engine = GlacierApp::engine(app);
 
-    GlacierMusicPlayer *player = new GlacierMusicPlayer();
-    engine->rootContext()->setContextProperty("player", player);
+    GlacierMusicPlayer player;
+    engine->rootContext()->setContextProperty("player", &player);
 
     QQuickWindow *window = GlacierApp::showWindow();
     window->setTitle(QObject::tr("Music"));

@@ -34,7 +34,9 @@ signals:
     void coverLoaing();
 
 public slots:
-    void getCoverByTrackId(int trackId);
+    void getCoverByTrack(const QString artist,
+                         const QString title,
+                         const QString album);
 
 private slots:
     void m_coverReady(QString coverFile);

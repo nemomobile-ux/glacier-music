@@ -1,4 +1,5 @@
 /*
+        qmlRegisterType<TrackSqlModel>(uri,1,0,"TrackModel");
  * Copyright (C) 2022 Chupligin Sergey <neochapay@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
@@ -24,8 +25,6 @@
 
 #include "blurredimage.h"
 #include "wavewidget.h"
-#include "artistsqlmodel.h"
-#include "tracksqlmodel.h"
 #include "playlistmodel.h"
 
 class Q_DECL_EXPORT GlacierMusicPlugin : public QQmlExtensionPlugin
@@ -48,8 +47,6 @@ public:
         qmlRegisterType<WaveWidget>(uri ,1,0,"WaveWidget");
         qmlRegisterType<BlurredImage>(uri,1,0,"BlurredImage");
 
-        qmlRegisterType<ArtistSqlModel>(uri,1,0,"ArtistModel");
-        qmlRegisterType<TrackSqlModel>(uri,1,0,"TrackModel");
         qmlRegisterType<PlayListModel>(uri,1,0,"PlaylistModel");
     }
 };

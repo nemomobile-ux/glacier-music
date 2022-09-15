@@ -146,8 +146,8 @@ Item{
             anchors.centerIn: parent
 
             minimumValue: 0
-            maximumValue: 1
-            stepSize: 0.05
+            maximumValue: 100
+            stepSize: 1
             value: player.volume
 
             onValueChanged:{

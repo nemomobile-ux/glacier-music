@@ -26,10 +26,16 @@ GlacierMusicPlayer::GlacierMusicPlayer(QObject *parent)
     , m_coverAdapter(new Cover)
 {
     SourcePluginManager *sources = new SourcePluginManager();
+    if(sources->getPlugins().empty()) {
+        qWarning() << "dont have sources plugin";
+    } else {
+
+    }
 
     setVolume(m_settings->value("volume").toInt());
 
     connect(m_coverAdapter, &Cover::coverLoaing, this, &GlacierMusicPlayer::setDefaultCover);
+    delete(sources);
 }
 
 GlacierMusicPlayer::~GlacierMusicPlayer()

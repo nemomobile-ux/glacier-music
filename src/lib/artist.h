@@ -17,46 +17,26 @@
  * Boston, MA 02110-1301, USA.
  */
 
-
 #ifndef ARTIST_H
 #define ARTIST_H
 
-#include "dbadapter.h"
+#include <QObject>
 
 class Artist : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(uint id READ id NOTIFY idChanged)
     Q_PROPERTY(QString title READ title WRITE setTitle NOTIFY titleChanged)
-    Q_PROPERTY(uint trackCount READ trackCount NOTIFY trackCountChanged)
 
 public:
-    explicit Artist(uint id, QObject *parent = nullptr);
     explicit Artist(QString title, QObject *parent = nullptr);
-    uint getId(QString name);
-
-    uint id() {return m_id;}
-    uint trackCount() {return m_trackCount;}
 
     QString title() {return  m_title;}
     void setTitle(QString title);
 
-    uint create(QString title);
-    void remove();
-
 signals:
-    void idChanged();
     void titleChanged();
-    void trackCountChanged();
-
-    void idNotFound();
-    void titleNotFound();
 
 private:
-    uint m_id;
-    uint m_trackCount;
     QString m_title;
-
-    void calcTrackCount();
 };
 #endif // ARTIST_H

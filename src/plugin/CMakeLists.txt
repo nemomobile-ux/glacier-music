@@ -14,16 +14,12 @@ endfunction()
 
 set(SRC
     plugin.cpp
-    artistsqlmodel.cpp
-    artistsqlmodel.h
     blurredimage.cpp
     blurredimage.h
     peakscreator.cpp
     peakscreator.h
     playlistmodel.cpp
     playlistmodel.h
-    tracksqlmodel.cpp
-    tracksqlmodel.h
     wavewidget.cpp
     wavewidget.h)
 
@@ -36,7 +32,6 @@ target_link_libraries(glaciermusicplugin
     Qt5::Qml
     Qt5::Quick
     Qt5::Multimedia
-    Qt5::Sql
     Glacier::Music)
 
 FindQtInstallQml()

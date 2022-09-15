@@ -9,6 +9,7 @@ class GLACIERMUSIC_EXPORT MusicSourcePlugin : public QObject {
 
 public:
     virtual bool enabled() = 0;
+    virtual QString name() = 0;
 
 signals:
     void pluginChanged(QString id);

@@ -1,6 +1,4 @@
 set(SRC
-	collection.cpp
-	collection.h
 	cover.cpp
 	cover.h
 	downloader.cpp
@@ -9,9 +7,7 @@ set(SRC
         glaciermusicplayer.h
 	main.cpp
 	musicbrainzconnect.cpp
-	musicbrainzconnect.h
-	rescancollection.cpp
-	rescancollection.h)
+	musicbrainzconnect.h)
 
 qtquick_compiler_add_resources(RESOURCES qml/glacier-music.qrc)
 
@@ -20,7 +16,6 @@ add_subdirectory(plugin)
 add_subdirectory(sources)
 
 include_directories("lib")
-
 
 add_executable(glacier-music ${SRC} ${RESOURCES})
 

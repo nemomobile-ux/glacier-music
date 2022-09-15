@@ -29,7 +29,7 @@
 class GlacierMusicPlayer : public QMediaPlayer
 {
     Q_OBJECT
-    Q_PROPERTY(bool firstRun READ firstRun)
+    Q_PROPERTY(bool firstRun READ firstRun CONSTANT)
     Q_PROPERTY(QString cover READ cover NOTIFY coverChanged)
 
 public:

@@ -28,7 +28,6 @@
 class PlayListModel: public QAbstractListModel
 {
     Q_OBJECT
-    Q_PROPERTY(int currentIndex READ currentIndex WRITE setCurrentIndex NOTIFY currentIndexChanged)
     Q_PROPERTY(PlayMode playMode READ playMode WRITE setPlayMode NOTIFY playModeChanged)
     Q_PROPERTY(RepeatMode repeatMode READ repeatMode WRITE setRepeatMode NOTIFY repeatModeChanged)
 
@@ -66,16 +65,11 @@ public:
     RepeatMode repeatMode() {return m_repeatMode;}
     void setRepeatMode(RepeatMode mode);
 
-    Q_INVOKABLE void updatePlayList();
-
 public slots:
     void clearPlaylist();
-    void loadPlaylistFromDB();
-    void addItem(const int trackId, int count = 0);
+    void addItem(Track *track);
     QVariant get(const int idx);
     void remove(const int idx);
-    void setCurrentIndex(int currentIndex);
-    int currentIndex() {return m_currentIndex;}
 
 signals:
     void playListUpdate();
@@ -88,8 +82,6 @@ private:
     QList<Track*> m_playList;
     PlayMode m_playMode;
     RepeatMode m_repeatMode;
-
-    int m_currentIndex;
 };
 
 #endif // PLAYLISTMODEL_H
