@@ -9,16 +9,15 @@
 
 class QPluginLoader;
 
-class GLACIERMUSIC_EXPORT SourcePluginHost : public QObject
-{
+class GLACIERMUSIC_EXPORT SourcePluginHost : public QObject {
 public:
-    SourcePluginHost(const QString& fileName, QObject *parent = 0);
+    SourcePluginHost(const QString& fileName, QObject* parent = 0);
 
     bool load();
-    MusicSourcePlugin *get();
+    MusicSourcePlugin* get();
 
     bool enabled();
-    bool valid() {return m_valid;}
+    bool valid() { return m_valid; }
 
 private:
     QPluginLoader* m_loader;

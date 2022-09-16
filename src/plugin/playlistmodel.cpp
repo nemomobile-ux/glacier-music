@@ -21,35 +21,35 @@
 
 #include <track.h>
 
-PlayListModel::PlayListModel(QObject *parent) :
-    QAbstractListModel(parent)
-  , m_playMode(PlayMode::Random)
-  , m_repeatMode(RepeatMode::NoneRepeat)
+PlayListModel::PlayListModel(QObject* parent)
+    : QAbstractListModel(parent)
+    , m_playMode(PlayMode::Random)
+    , m_repeatMode(RepeatMode::NoneRepeat)
 {
-    hash.insert(Qt::UserRole ,QByteArray("artist"));
-    hash.insert(Qt::UserRole+1 ,QByteArray("title"));
-    hash.insert(Qt::UserRole+2 ,QByteArray("fileName"));
-    hash.insert(Qt::UserRole+3 ,QByteArray("cover"));
-    hash.insert(Qt::UserRole+4 ,QByteArray("album"));
-    hash.insert(Qt::UserRole+5 ,QByteArray("comment"));
-    hash.insert(Qt::UserRole+6 ,QByteArray("genre"));
-    hash.insert(Qt::UserRole+7 ,QByteArray("year"));
-    hash.insert(Qt::UserRole+8 ,QByteArray("length"));
-    hash.insert(Qt::UserRole+9 ,QByteArray("track"));
+    hash.insert(Qt::UserRole, QByteArray("artist"));
+    hash.insert(Qt::UserRole + 1, QByteArray("title"));
+    hash.insert(Qt::UserRole + 2, QByteArray("fileName"));
+    hash.insert(Qt::UserRole + 3, QByteArray("cover"));
+    hash.insert(Qt::UserRole + 4, QByteArray("album"));
+    hash.insert(Qt::UserRole + 5, QByteArray("comment"));
+    hash.insert(Qt::UserRole + 6, QByteArray("genre"));
+    hash.insert(Qt::UserRole + 7, QByteArray("year"));
+    hash.insert(Qt::UserRole + 8, QByteArray("length"));
+    hash.insert(Qt::UserRole + 9, QByteArray("track"));
 }
 
 void PlayListModel::addItem(Track* track)
 {
-    insertRows(1,1,track);
+    insertRows(1, 1, track);
 }
 
-int PlayListModel::rowCount(const QModelIndex &parent) const
+int PlayListModel::rowCount(const QModelIndex& parent) const
 {
     Q_UNUSED(parent);
     return m_playList.count();
 }
 
-QVariant PlayListModel::data(const QModelIndex &index, int role) const
+QVariant PlayListModel::data(const QModelIndex& index, int role) const
 {
     if (!index.isValid())
         return QVariant();
@@ -58,36 +58,36 @@ QVariant PlayListModel::data(const QModelIndex &index, int role) const
         return QVariant();
 
     Track* item = m_playList.at(index.row());
-    if(role == Qt::UserRole) {
+    if (role == Qt::UserRole) {
         return item->artist();
-    } else if(role == Qt::UserRole+1) {
+    } else if (role == Qt::UserRole + 1) {
         return item->title();
-    } else if(role == Qt::UserRole+2) {
+    } else if (role == Qt::UserRole + 2) {
         return item->getFileName();
-    } else if(role == Qt::UserRole+3) {
+    } else if (role == Qt::UserRole + 3) {
         return item->cover();
-    } else if (role == Qt::UserRole+4) {
+    } else if (role == Qt::UserRole + 4) {
         return item->album();
-    } else if (role == Qt::UserRole+5) {
+    } else if (role == Qt::UserRole + 5) {
         return item->comment();
-    } else if (role == Qt::UserRole+6) {
+    } else if (role == Qt::UserRole + 6) {
         return item->genre();
-    } else if (role == Qt::UserRole+7) {
+    } else if (role == Qt::UserRole + 7) {
         return item->year();
-    } else if (role == Qt::UserRole+8) {
+    } else if (role == Qt::UserRole + 8) {
         return item->length();
-    } else if (role == Qt::UserRole+9) {
+    } else if (role == Qt::UserRole + 9) {
         return item->title();
     }
 
     return QVariant();
 }
 
-bool PlayListModel::insertRows(int position, int rows, Track *item, const QModelIndex &parent)
+bool PlayListModel::insertRows(int position, int rows, Track* item, const QModelIndex& parent)
 {
     Q_UNUSED(parent);
 
-    beginInsertRows(QModelIndex(), position, position+rows-1);
+    beginInsertRows(QModelIndex(), position, position + rows - 1);
     for (int row = 0; row < rows; ++row) {
         m_playList.insert(position, item);
     }
@@ -95,15 +95,14 @@ bool PlayListModel::insertRows(int position, int rows, Track *item, const QModel
     return true;
 }
 
-
-bool PlayListModel::removeRows(int position, int rows, const QModelIndex &index)
+bool PlayListModel::removeRows(int position, int rows, const QModelIndex& index)
 {
     Q_UNUSED(index);
-    if((position+rows) > m_playList.count()) {
+    if ((position + rows) > m_playList.count()) {
         return false;
     }
 
-    beginRemoveRows(QModelIndex(), position, position+rows-1);
+    beginRemoveRows(QModelIndex(), position, position + rows - 1);
     for (int row = 0; row < rows; ++row) {
         m_playList.removeAt(position);
     }
@@ -113,7 +112,7 @@ bool PlayListModel::removeRows(int position, int rows, const QModelIndex &index)
 
 void PlayListModel::setPlayMode(PlayListModel::PlayMode mode)
 {
-    if(mode != m_playMode) {
+    if (mode != m_playMode) {
         m_playMode = mode;
         emit playModeChanged();
     }
@@ -121,7 +120,7 @@ void PlayListModel::setPlayMode(PlayListModel::PlayMode mode)
 
 void PlayListModel::setRepeatMode(PlayListModel::RepeatMode mode)
 {
-    if(mode != m_repeatMode) {
+    if (mode != m_repeatMode) {
         m_repeatMode = mode;
         emit repeatModeChanged();
     }
@@ -129,30 +128,30 @@ void PlayListModel::setRepeatMode(PlayListModel::RepeatMode mode)
 
 QVariant PlayListModel::get(int idx)
 {
-    if(idx >= m_playList.size()) {
+    if (idx >= m_playList.size()) {
         return QVariant();
     }
 
     QMap<QString, QVariant> itemData;
     Track* item = m_playList.at(idx);
 
-    itemData.insert("artist",item->artist());
-    itemData.insert("title",item->title());
-    itemData.insert("fileName",item->getFileName());
-    itemData.insert("cover",item->cover());
+    itemData.insert("artist", item->artist());
+    itemData.insert("title", item->title());
+    itemData.insert("fileName", item->getFileName());
+    itemData.insert("cover", item->cover());
     itemData.insert("album", item->album());
     itemData.insert("comment", item->comment());
     itemData.insert("genre", item->genre());
     itemData.insert("year", item->year());
-    itemData.insert("length",item->length());
-    itemData.insert("track",item->title());
+    itemData.insert("length", item->length());
+    itemData.insert("track", item->title());
 
     return QVariant(itemData);
 }
 
 void PlayListModel::remove(int idx)
 {
-    removeRows(idx,1);
+    removeRows(idx, 1);
 }
 
 void PlayListModel::clearPlaylist()
@@ -161,4 +160,3 @@ void PlayListModel::clearPlaylist()
     m_playList.clear();
     endResetModel();
 }
-

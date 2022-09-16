@@ -3,15 +3,23 @@
 
 #include <musicsourceplugin.h>
 
-class LocalSourcePlugin: public MusicSourcePlugin
-{
+class LocalSourcePlugin : public MusicSourcePlugin {
     Q_OBJECT
     Q_INTERFACES(MusicSourcePlugin)
-    Q_PLUGIN_METADATA( IID "GlacierMusic.SourcePlugin")
+    Q_PLUGIN_METADATA(IID "GlacierMusic.SourcePlugin")
 public:
-    LocalSourcePlugin(QObject *parent = nullptr);
-    bool enabled() {return true;}
-    QString name() {return tr("Local music database");}
+    LocalSourcePlugin(QObject* parent = nullptr);
+    bool enabled() { return true; }
+    QString name() { return tr("Local music database"); }
+
+    bool hasBack();
+    void setHasBack(bool hasBack);
+
+    bool hasForward();
+    void setHasForward(bool hasForward);
+
+    QList<Track*> tracks();
+    void setTracks(QList<Track*> tracks);
 };
 
 #endif // LOCALSOURCEPLUGIN_H

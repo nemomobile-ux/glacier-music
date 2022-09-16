@@ -136,23 +136,6 @@ Page {
         }
     }
 
-    function playNext() {
-        if(nextTrackModel.rowCount() == 0) {
-            nextTrackModel.updatePlayList();
-        }
-
-        if(nextTrackModel.currentIndex >= nextTrackModel.rowCount()-1) {
-            nextTrackModel.updatePlayList();
-        }
-        ++nextTrackModel.currentIndex
-    }
-
-    function playPrev() {
-        if(nextTrackModel.currentIndex !== 0){
-            --nextTrackModel.currentIndex
-        }
-    }
-
     function playPause() {
         if(rootAudio.playbackState == MediaPlayer.PlayingState) {
             rootAudio.pause();

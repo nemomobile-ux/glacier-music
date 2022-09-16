@@ -22,15 +22,14 @@
 
 #include <QObject>
 
-class Artist : public QObject
-{
+class Artist : public QObject {
     Q_OBJECT
     Q_PROPERTY(QString title READ title WRITE setTitle NOTIFY titleChanged)
 
 public:
-    explicit Artist(QString title, QObject *parent = nullptr);
+    explicit Artist(QString title, QObject* parent = nullptr);
 
-    QString title() {return  m_title;}
+    QString title() { return m_title; }
     void setTitle(QString title);
 
 signals:

@@ -2,18 +2,17 @@
 #define DBADAPTER_H
 
 #include <QObject>
-#include <QtSql>
 #include <QSqlQueryModel>
+#include <QtSql>
 
-class dbAdapter : public QObject
-{
+class dbAdapter : public QObject {
     Q_OBJECT
 public:
-    explicit dbAdapter(QObject *parent = 0);
+    explicit dbAdapter(QObject* parent = 0);
     ~dbAdapter();
 
     static dbAdapter& instance();
-    QSqlQueryModel *getTable(QString table);
+    QSqlQueryModel* getTable(QString table);
     QSqlDatabase getDatabase();
 
 signals:

@@ -3,47 +3,48 @@
 #include <QDir>
 #include <QStandardPaths>
 
-//NEED TO FIX
+// NEED TO FIX
 static const int INTERVAL = 60;
 
-PeaksCreator::PeaksCreator(QObject *parent)
+PeaksCreator::PeaksCreator(QObject* parent)
     : QObject(parent)
     , m_decoder(new QAudioDecoder(this))
 {
     connect(m_decoder, &QAudioDecoder::bufferReady,
-            this, &PeaksCreator::mSetBuffer);
+        this, &PeaksCreator::mSetBuffer);
 
     connect(m_decoder, &QAudioDecoder::finished,
-            this, &PeaksCreator::mSavePeaksToFile);
+        this, &PeaksCreator::mSavePeaksToFile);
 
-    m_peaksDir = QStandardPaths::writableLocation(QStandardPaths::CacheLocation)+"/peaks";
+    m_peaksDir = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/peaks";
     QDir peaks(m_peaksDir);
-    if(!peaks.exists()) {
+    if (!peaks.exists()) {
         peaks.mkpath(m_peaksDir);
     }
 }
 
 void PeaksCreator::setFileName(QString path)
 {
-    if(path == m_fileName) {
+    if (path == m_fileName) {
         return;
     }
 
     QFile audioFile(path);
-    if(!audioFile.exists()) {
+    if (!audioFile.exists()) {
         return;
     }
     m_fileName = path;
 
     /*Check if we have saved peaks of this file*/
-    QString hashFileName = QString("%1").arg(QString(QCryptographicHash::hash(m_fileName.toUtf8(),QCryptographicHash::Md5).toHex()));
-    m_peaksFile = m_peaksDir+"/"+hashFileName+".peak";
+    QString hashFileName = QString("%1").arg(QString(QCryptographicHash::hash(m_fileName.toUtf8(), QCryptographicHash::Md5).toHex()));
+    m_peaksFile = m_peaksDir + "/" + hashFileName + ".peak";
 }
 
-void PeaksCreator::getPeaks(){
+void PeaksCreator::getPeaks()
+{
     m_samples.clear();
     QFile peaksFile(m_peaksFile);
-    if(peaksFile.exists()) {
+    if (peaksFile.exists()) {
         mLoadPeaksFromFile();
     } else {
         loadAudioFile();
@@ -52,7 +53,7 @@ void PeaksCreator::getPeaks(){
 
 void PeaksCreator::loadAudioFile()
 {
-    if(m_fileName.isEmpty()) {
+    if (m_fileName.isEmpty()) {
         qDebug() << "Wrong filename";
         return;
     }
@@ -80,7 +81,7 @@ void PeaksCreator::mLoadPeaksFromFile()
 {
     m_samples.clear();
     QFile peakFile(m_peaksFile);
-    if(!peakFile.exists() || !peakFile.open(QIODevice::ReadOnly)) {
+    if (!peakFile.exists() || !peakFile.open(QIODevice::ReadOnly)) {
         loadAudioFile();
         return;
     }
@@ -88,7 +89,7 @@ void PeaksCreator::mLoadPeaksFromFile()
     QTextStream peaksRaw(&peakFile);
     QString data = peakFile.readLine();
     QStringList fields = data.split(";");
-    foreach(QString value, fields) {
+    foreach (QString value, fields) {
         m_samples.append(value.toDouble());
     };
     emit peaksReady(m_samples);
@@ -101,25 +102,25 @@ void PeaksCreator::mSavePeaksToFile()
     file.open(QIODevice::WriteOnly | QIODevice::Text);
     QTextStream out(&file);
 
-    m_duration /= 1000*60;
+    m_duration /= 1000 * 60;
 
-    double bytesInSeconds = m_audioData.size()/(double)m_duration;
+    double bytesInSeconds = m_audioData.size() / (double)m_duration;
 
-    m_duration = m_duration - m_duration%INTERVAL;
-    short *buf = (short*)m_audioData.data();
+    m_duration = m_duration - m_duration % INTERVAL;
+    short* buf = (short*)m_audioData.data();
 
-    for (int i = 0; i < m_duration; i+= INTERVAL) {
+    for (int i = 0; i < m_duration; i += INTERVAL) {
         double sum = 0;
         double iteratorCount = 0;
-        int j = (bytesInSeconds*i);
-        double k = j + bytesInSeconds*INTERVAL;
+        int j = (bytesInSeconds * i);
+        double k = j + bytesInSeconds * INTERVAL;
 
-        for (j/=2; j < k/2; j+= 2) {
+        for (j /= 2; j < k / 2; j += 2) {
             sum += qFabs(buf[j]);
             iteratorCount++;
         }
 
-        double outData = sum/iteratorCount;
+        double outData = sum / iteratorCount;
         out << outData << ";";
         m_samples.append(outData);
     }
@@ -128,10 +129,10 @@ void PeaksCreator::mSavePeaksToFile()
     emit peaksReady(m_samples);
 }
 
-qreal PeaksCreator::mGetPeakValue(const QAudioFormat &format)
+qreal PeaksCreator::mGetPeakValue(const QAudioFormat& format)
 {
     qreal ret(0);
-    if (format.isValid()){
+    if (format.isValid()) {
         switch (format.sampleType()) {
         case QAudioFormat::Unknown:
             break;

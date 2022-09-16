@@ -6,10 +6,10 @@
 SourcePluginManager::SourcePluginManager()
 {
     QDir pluginsDir("/usr/lib/glacier-music/plugin/sources");
-    for(const QString& file: pluginsDir.entryList(QDir::Files)) {
+    for (const QString& file : pluginsDir.entryList(QDir::Files)) {
         SourcePluginHost* sph = new SourcePluginHost(pluginsDir.absoluteFilePath(file), this);
-        if(sph) {
-            if(sph->valid()) {
+        if (sph) {
+            if (sph->valid()) {
                 m_pluginList.push_back(sph->get());
                 connect(sph->get(), &MusicSourcePlugin::pluginChanged, this, &SourcePluginManager::pluginDataChanged);
             } else {
@@ -18,11 +18,10 @@ SourcePluginManager::SourcePluginManager()
         } else {
             qWarning() << "can't load" << pluginsDir.absoluteFilePath(file);
         }
-        delete(sph);
+        delete (sph);
     }
 }
 
 SourcePluginManager::~SourcePluginManager()
 {
-
 }

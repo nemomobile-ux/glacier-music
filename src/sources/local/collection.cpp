@@ -18,15 +18,16 @@
  */
 
 #include "collection.h"
-#include "rescancollection.h"
 #include "dbadapter.h"
+#include "rescancollection.h"
 
 #include <QDir>
 #include <QStandardPaths>
 
 #include <QDebug>
 
-Collection::Collection(QObject *parent) : QObject(parent)
+Collection::Collection(QObject* parent)
+    : QObject(parent)
 {
     m_rescanNotification = new Notification(this);
     m_rescanNotification->setAppName(QObject::tr("Music"));
@@ -37,17 +38,16 @@ Collection::Collection(QObject *parent) : QObject(parent)
 
     m_firstRun = false;
     QDir cacheLocation = QDir(QStandardPaths::writableLocation(QStandardPaths::CacheLocation));
-    QFile dbFile(QStandardPaths::writableLocation(QStandardPaths::CacheLocation)+"/db.sql");
+    QFile dbFile(QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/db.sql");
 
-    if(!cacheLocation.exists() || !dbFile.exists()) {
+    if (!cacheLocation.exists() || !dbFile.exists()) {
         m_firstRun = true;
-        cacheLocation.mkpath(cacheLocation.absolutePath()+"/images/");
+        cacheLocation.mkpath(cacheLocation.absolutePath() + "/images/");
     }
 
     dbAdapter* dba = new dbAdapter();
-    connect(dba,SIGNAL(baseCreate()),this,SLOT(rescanCollection()));
+    connect(dba, SIGNAL(baseCreate()), this, SLOT(rescanCollection()));
 }
-
 
 Collection::~Collection()
 {
@@ -56,24 +56,23 @@ Collection::~Collection()
 
 void Collection::rescanCollection()
 {
-    RescanCollection *rCollection = new RescanCollection();
+    RescanCollection* rCollection = new RescanCollection();
 
     m_rescanThread = new QThread;
-    connect(m_rescanThread,SIGNAL(started()),rCollection, SLOT(scan()));
-    connect(rCollection,SIGNAL(scanProcess(QVariant)),this,SLOT(m_rescanCollectionProgress(QVariant)));
-    connect(rCollection,SIGNAL(noMusicFiles()),this,SIGNAL(noMusicFiles()));
+    connect(m_rescanThread, SIGNAL(started()), rCollection, SLOT(scan()));
+    connect(rCollection, SIGNAL(scanProcess(QVariant)), this, SLOT(m_rescanCollectionProgress(QVariant)));
+    connect(rCollection, SIGNAL(noMusicFiles()), this, SIGNAL(noMusicFiles()));
     rCollection->moveToThread(m_rescanThread);
     m_rescanThread->start();
     m_rescanNotification->publish();
 }
-
 
 void Collection::m_rescanCollectionProgress(QVariant progress)
 {
     emit updateRescanProgress(progress);
     m_rescanNotification->setProgress(progress);
 
-    if(progress == 1) {
+    if (progress == 1) {
         m_rescanNotification->close();
         emit rescanCollectionFinished();
     }

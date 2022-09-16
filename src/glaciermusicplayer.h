@@ -20,29 +20,41 @@
 #ifndef GLACIERMUSICPLAYER_H
 #define GLACIERMUSICPLAYER_H
 
-#include <QObject>
 #include <QMediaPlayer>
+#include <QObject>
 #include <QSettings>
 
 #include "cover.h"
+#include "sourcepluginmanager.h"
 
-class GlacierMusicPlayer : public QMediaPlayer
-{
+class GlacierMusicPlayer : public QMediaPlayer {
     Q_OBJECT
     Q_PROPERTY(bool firstRun READ firstRun CONSTANT)
     Q_PROPERTY(QString cover READ cover NOTIFY coverChanged)
 
+    Q_PROPERTY(bool hasBack READ hasBack NOTIFY hasBackChanged)
+    Q_PROPERTY(bool hasForward READ hasForward NOTIFY hasForwardChanged)
+
 public:
-    explicit GlacierMusicPlayer(QObject *parent = nullptr);
+    explicit GlacierMusicPlayer(QObject* parent = nullptr);
     ~GlacierMusicPlayer();
-    bool firstRun() {return false;}
+    bool firstRun() { return false; }
 
     QString cover();
+
+    bool hasBack();
+    bool hasForward();
+
+    Q_INVOKABLE void playPrev();
+    Q_INVOKABLE void playForward();
 
 signals:
     void noMusicFiles();
     void noSourcePlugins();
     void coverChanged();
+
+    void hasBackChanged();
+    void hasForwardChanged();
 
 private slots:
     void setDefaultCover();
@@ -52,6 +64,8 @@ private:
     Cover* m_coverAdapter;
 
     QString m_coverPath;
+
+    MusicSourcePlugin* m_plugin;
 };
 
 #endif // GLACIERMUSICPLAYER_H

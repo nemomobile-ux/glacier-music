@@ -2,16 +2,15 @@
 
 #include <QImage>
 
-BlurredImage::BlurredImage(QQuickItem *parent)
+BlurredImage::BlurredImage(QQuickItem* parent)
     : QQuickPaintedItem(parent)
     , m_imagePath("/usr/share/glacier-music/images/cover.png")
     , m_radius(50)
     , m_opacity(0.5)
 {
-
 }
 
-void BlurredImage::paint(QPainter *painter)
+void BlurredImage::paint(QPainter* painter)
 {
     QSizeF itemSize = size();
     QRectF target(0, 0, itemSize.width(), itemSize.height());
@@ -27,13 +26,13 @@ void BlurredImage::paint(QPainter *painter)
 
 void BlurredImage::setImagePath(QString qml_path)
 {
-    if(qml_path == m_imagePath) {
+    if (qml_path == m_imagePath) {
         return;
     }
 
     QUrl path = qml_path;
     QFile imgFile(path.toLocalFile());
-    if(!imgFile.exists()) {
+    if (!imgFile.exists()) {
         qWarning() << "Not exists!!!" << path;
         return;
     }
@@ -45,7 +44,7 @@ void BlurredImage::setImagePath(QString qml_path)
 
 void BlurredImage::setRadius(int radius)
 {
-    if(radius != m_radius) {
+    if (radius != m_radius) {
         m_radius = radius;
         emit radiusChanged();
         update();
@@ -54,18 +53,18 @@ void BlurredImage::setRadius(int radius)
 
 void BlurredImage::setOpacity(qreal opacity)
 {
-    if(opacity != m_opacity) {
+    if (opacity != m_opacity) {
         m_opacity = opacity;
         emit opacityChanged();
         update();
     }
 }
 
-
 QImage BlurredImage::makeBlurred(QImage& image, const QRect& rect, int radius, bool alphaOnly)
 {
     int tab[] = { 14, 10, 8, 6, 5, 5, 4, 3, 3, 3, 3, 2, 2, 2, 2, 2, 2 };
-    int alpha = (radius < 1)  ? 16 : (radius > 17) ? 1 : tab[radius-1];
+    int alpha = (radius < 1) ? 16 : (radius > 17) ? 1
+                                                  : tab[radius - 1];
 
     QImage result = image.convertToFormat(QImage::Format_ARGB32_Premultiplied);
     int r1 = rect.top();

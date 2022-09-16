@@ -22,17 +22,16 @@
 
 #include "dbadapter.h"
 
-#include <QObject>
 #include <QDir>
+#include <QObject>
 
 #include <notification.h>
 
-class Collection : public QObject
-{
+class Collection : public QObject {
     Q_OBJECT
 public:
-    explicit Collection(QObject *parent = 0);
-    Q_INVOKABLE bool isFirstRun(){return m_firstRun;}
+    explicit Collection(QObject* parent = 0);
+    Q_INVOKABLE bool isFirstRun() { return m_firstRun; }
     ~Collection();
 
 signals:
@@ -50,8 +49,8 @@ private slots:
 private:
     bool m_firstRun;
     QStringList aviableDirs();
-    QThread *m_rescanThread;
-    Notification *m_rescanNotification;
+    QThread* m_rescanThread;
+    Notification* m_rescanNotification;
 };
 
 #endif // COLLECTION_H

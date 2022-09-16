@@ -18,36 +18,35 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include <QtQml>
-#include <QtGlobal>
 #include <QQmlEngine>
 #include <QQmlExtensionPlugin>
+#include <QtGlobal>
+#include <QtQml>
 
 #include "blurredimage.h"
-#include "wavewidget.h"
 #include "playlistmodel.h"
+#include "wavewidget.h"
 
-class Q_DECL_EXPORT GlacierMusicPlugin : public QQmlExtensionPlugin
-{
+class Q_DECL_EXPORT GlacierMusicPlugin : public QQmlExtensionPlugin {
     Q_OBJECT
     Q_PLUGIN_METADATA(IID "org.glacier.music")
 public:
     virtual ~GlacierMusicPlugin() { }
 
-    void initializeEngine(QQmlEngine *, const char *uri)
+    void initializeEngine(QQmlEngine*, const char* uri)
     {
         Q_ASSERT(uri == QLatin1String("org.glacier.music"));
         qmlRegisterModule(uri, 1, 0);
     }
 
-    void registerTypes(const char *uri)
+    void registerTypes(const char* uri)
     {
         Q_ASSERT(uri == QLatin1String("org.glacier.music"));
         // @uri org.glacier.music
-        qmlRegisterType<WaveWidget>(uri ,1,0,"WaveWidget");
-        qmlRegisterType<BlurredImage>(uri,1,0,"BlurredImage");
+        qmlRegisterType<WaveWidget>(uri, 1, 0, "WaveWidget");
+        qmlRegisterType<BlurredImage>(uri, 1, 0, "BlurredImage");
 
-        qmlRegisterType<PlayListModel>(uri,1,0,"PlaylistModel");
+        qmlRegisterType<PlayListModel>(uri, 1, 0, "PlaylistModel");
     }
 };
 

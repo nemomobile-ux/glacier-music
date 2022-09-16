@@ -61,10 +61,10 @@ Item{
 
         MouseArea{
             anchors.fill: parent
-            onClicked: playPrev()
+            onClicked: player.playPrev();
         }
 
-        source: "image://theme/backward"
+        source: player.hasBack ? "image://theme/backward?"+Theme.textColor : "image://theme/backward?"+Theme.fillDarkColor
     }
 
     Image{
@@ -95,11 +95,10 @@ Item{
             verticalCenter: playPauseBtn.verticalCenter
         }
 
-        source: "image://theme/forward"
-
+        source: player.hasForward ? "image://theme/forward?"+Theme.textColor : "image://theme/forward?"+Theme.fillDarkColor
         MouseArea{
             anchors.fill: parent
-            onClicked: playNext()
+            onClicked: player.playForward();
         }
     }
 

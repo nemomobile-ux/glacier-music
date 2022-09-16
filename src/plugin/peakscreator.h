@@ -1,16 +1,15 @@
 #ifndef PEAKSCREATOR_H
 #define PEAKSCREATOR_H
 
-#include <QObject>
-#include <QtQuick>
-#include <QtQml>
 #include <QAudioDecoder>
+#include <QObject>
+#include <QtQml>
+#include <QtQuick>
 
-class PeaksCreator : public QObject
-{
+class PeaksCreator : public QObject {
     Q_OBJECT
 public:
-    explicit PeaksCreator(QObject *parent = 0);
+    explicit PeaksCreator(QObject* parent = 0);
     void setFileName(QString path);
     void getPeaks();
 
@@ -26,9 +25,9 @@ private:
     void mLoadPeaksFromFile();
     void mSavePeaksToFile();
 
-    qreal mGetPeakValue(const QAudioFormat &format);
+    qreal mGetPeakValue(const QAudioFormat& format);
 
-    QAudioDecoder *m_decoder;
+    QAudioDecoder* m_decoder;
     QAudioBuffer m_buffer;
     QVector<double> m_samples;
 

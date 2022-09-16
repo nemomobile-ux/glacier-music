@@ -1,37 +1,32 @@
 #include "audiofile.h"
 
+#include <taglib/attachedpictureframe.h>
 #include <taglib/fileref.h>
-#include <taglib/tag.h>
-#include <taglib/mpegfile.h>
-#include <taglib/id3v2tag.h>
 #include <taglib/id3v2frame.h>
 #include <taglib/id3v2header.h>
-#include <taglib/attachedpictureframe.h>
+#include <taglib/id3v2tag.h>
+#include <taglib/mpegfile.h>
+#include <taglib/tag.h>
 
+#include <QDebug>
 #include <QFileInfo>
 #include <QIODevice>
-#include <QDebug>
 
-AudioFile::AudioFile(QString audiofile, QObject *parent) : QObject(parent),
-fileuri(audiofile)
+AudioFile::AudioFile(QString audiofile, QObject* parent)
+    : QObject(parent)
+    , fileuri(audiofile)
 {
     mediaFile = new QFile(fileuri);
     isValid = false;
-    if(!mediaFile->exists())
-    {
+    if (!mediaFile->exists()) {
         isValid = false;
         qDebug() << "FNF:" << fileuri;
         emit fileNotFound();
-    }
-    else
-    {
-        if(mediaFile->open(QIODevice::ReadOnly))
-        {
+    } else {
+        if (mediaFile->open(QIODevice::ReadOnly)) {
             isValid = true;
             loadTags();
-        }
-        else
-        {
+        } else {
             qDebug() << "Cant open file:" << fileuri;
             isValid = false;
         }
@@ -42,15 +37,13 @@ fileuri(audiofile)
 
 void AudioFile::loadTags()
 {
-    if(!isValid)
-    {
+    if (!isValid) {
         return;
     }
 
     QScopedPointer<TagLib::FileRef> tagFile(new TagLib::FileRef(fileuri.toUtf8()));
 
-    if(tagFile->isNull())
-    {
+    if (tagFile->isNull()) {
         return;
     }
 
@@ -61,7 +54,7 @@ void AudioFile::loadTags()
     TagLib::String t_genre = tagFile->tag()->genre();
     TagLib::uint t_track = tagFile->tag()->track();
     TagLib::uint t_year = tagFile->tag()->year();
-    TagLib::uint t_length  = tagFile->audioProperties()->length();
+    TagLib::uint t_length = tagFile->audioProperties()->length();
 
     artist = QString::fromStdWString(t_artist.toCWString());
     album = QString::fromStdWString(t_album.toCWString());
@@ -73,28 +66,24 @@ void AudioFile::loadTags()
     year = t_year;
     length = t_length;
 
-    if(artist.length() < 1)
-    {
+    if (artist.length() < 1) {
         artist = tr("Unknown Artist");
     }
 
-    if(title.length() < 1)
-    {
+    if (title.length() < 1) {
         title = tr("Unknown Track");
     }
 }
 
 bool AudioFile::sync()
 {
-    if(!isValid)
-    {
+    if (!isValid) {
         return false;
     }
 
     QScopedPointer<TagLib::FileRef> tagFile(new TagLib::FileRef(fileuri.toUtf8()));
 
-    if(tagFile->isNull())
-    {
+    if (tagFile->isNull()) {
         return false;
     }
 
@@ -106,7 +95,7 @@ bool AudioFile::sync()
     tagFile->tag()->setTrack(track);
     tagFile->tag()->setYear(year);
 
-    qDebug() << "Saving tags " << fileuri << " " << artist << " " << title << " "<< album;
+    qDebug() << "Saving tags " << fileuri << " " << artist << " " << title << " " << album;
     return tagFile->save();
 }
 
@@ -114,17 +103,16 @@ QImage AudioFile::coverImg()
 {
     TagLib::MPEG::File file(fileuri.toUtf8());
 
-    TagLib::ID3v2::Tag *m_tag = file.ID3v2Tag(true);
+    TagLib::ID3v2::Tag* m_tag = file.ID3v2Tag(true);
     TagLib::ID3v2::FrameList frameList = m_tag->frameList("APIC");
-    if(frameList.isEmpty())
-    {
+    if (frameList.isEmpty()) {
         qDebug() << "Cover image from file empty";
         return QImage();
     }
 
-    TagLib::ID3v2::AttachedPictureFrame *coverImg = static_cast<TagLib::ID3v2::AttachedPictureFrame *>(frameList.front());
+    TagLib::ID3v2::AttachedPictureFrame* coverImg = static_cast<TagLib::ID3v2::AttachedPictureFrame*>(frameList.front());
     QImage coverQImg;
-    coverQImg.loadFromData((const uchar *) coverImg->picture().data(), coverImg->picture().size());
+    coverQImg.loadFromData((const uchar*)coverImg->picture().data(), coverImg->picture().size());
 
     return coverQImg;
 }

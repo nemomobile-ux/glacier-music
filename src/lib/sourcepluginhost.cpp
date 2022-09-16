@@ -1,12 +1,12 @@
 #include "sourcepluginhost.h"
 
-SourcePluginHost::SourcePluginHost(const QString &fileName, QObject *parent)
+SourcePluginHost::SourcePluginHost(const QString& fileName, QObject* parent)
 {
     QPluginLoader pluginLoader(fileName);
-    QObject *plugin = pluginLoader.instance();
-    if(plugin) {
-        m_plugin =  qobject_cast<MusicSourcePlugin*>(plugin);
-        if(!m_plugin) {
+    QObject* plugin = pluginLoader.instance();
+    if (plugin) {
+        m_plugin = qobject_cast<MusicSourcePlugin*>(plugin);
+        if (!m_plugin) {
             qWarning("Can't cast plugin");
             pluginLoader.unload();
         } else {
@@ -17,9 +17,9 @@ SourcePluginHost::SourcePluginHost(const QString &fileName, QObject *parent)
     }
 }
 
-MusicSourcePlugin *SourcePluginHost::get()
+MusicSourcePlugin* SourcePluginHost::get()
 {
-    if(!m_plugin) {
+    if (!m_plugin) {
         return nullptr;
     }
     return m_plugin;
@@ -27,7 +27,7 @@ MusicSourcePlugin *SourcePluginHost::get()
 
 bool SourcePluginHost::enabled()
 {
-    if(!m_plugin) {
+    if (!m_plugin) {
         return false;
     }
     return m_plugin->enabled();

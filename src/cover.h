@@ -20,14 +20,13 @@
 #ifndef COVER_H
 #define COVER_H
 
-#include <QObject>
 #include "track.h"
+#include <QObject>
 
-class Cover : public QObject
-{
+class Cover : public QObject {
     Q_OBJECT
 public:
-    explicit Cover(QObject *parent = 0);
+    explicit Cover(QObject* parent = 0);
 
 signals:
     void coverReady(QString coverFile);
@@ -35,15 +34,15 @@ signals:
 
 public slots:
     void getCoverByTrack(const QString artist,
-                         const QString title,
-                         const QString album);
+        const QString title,
+        const QString album);
 
 private slots:
     void m_coverReady(QString coverFile);
 
 private:
     QString m_coverDir;
-    Track *m_track;
+    Track* m_track;
 };
 
 #endif // COVER_H

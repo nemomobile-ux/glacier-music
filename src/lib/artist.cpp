@@ -19,14 +19,15 @@
 
 #include "artist.h"
 
-Artist::Artist(QString title, QObject *parent) : QObject(parent)
-  , m_title("")
+Artist::Artist(QString title, QObject* parent)
+    : QObject(parent)
+    , m_title("")
 {
 }
 
 void Artist::setTitle(QString title)
 {
-    if(title != m_title) {
+    if (title != m_title) {
         m_title = title;
         emit titleChanged();
     }

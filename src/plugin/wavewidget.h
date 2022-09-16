@@ -21,11 +21,10 @@
 #define WAVEWIDGET_H
 
 #include <QObject>
-#include <QtQuick>
 #include <QtQml>
+#include <QtQuick>
 
-class WaveWidget : public QQuickPaintedItem
-{
+class WaveWidget : public QQuickPaintedItem {
     Q_OBJECT
     Q_PROPERTY(QString fileName READ fileName WRITE setFileName NOTIFY fileNameChanged)
     Q_PROPERTY(QString accentColor READ accentColor WRITE setAccentColor NOTIFY accentColorChanged)
@@ -33,10 +32,10 @@ class WaveWidget : public QQuickPaintedItem
     Q_PROPERTY(float progress READ progress WRITE setProgress NOTIFY progressChanged)
 
 public:
-    explicit WaveWidget(QQuickItem *parent = 0);
-    void paint(QPainter *painter);
+    explicit WaveWidget(QQuickItem* parent = 0);
+    void paint(QPainter* painter);
 
-    QString fileName() {return m_fileName;}
+    QString fileName() { return m_fileName; }
     void setFileName(QString path);
 
     QString accentColor();
@@ -44,7 +43,7 @@ public:
     QString fillColor();
     void setFillColor(QString color);
 
-    float progress() {return m_progress;}
+    float progress() { return m_progress; }
     void setProgress(float progress);
 
 signals:

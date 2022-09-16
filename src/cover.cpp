@@ -21,29 +21,30 @@
 #include "audiofile.h"
 #include "musicbrainzconnect.h"
 
-Cover::Cover(QObject *parent) : QObject(parent)
-  ,m_coverDir(QStandardPaths::writableLocation(QStandardPaths::CacheLocation)+"/covers")
+Cover::Cover(QObject* parent)
+    : QObject(parent)
+    , m_coverDir(QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/covers")
 {
     QDir coverDir(m_coverDir);
-    if(!coverDir.exists()) {
+    if (!coverDir.exists()) {
         coverDir.mkpath(m_coverDir);
     }
 }
 
 void Cover::getCoverByTrack(const QString artist,
-                            const QString title,
-                            const QString album)
+    const QString title,
+    const QString album)
 {
-    int trackId = 0; //Fix me
+    int trackId = 0; // Fix me
     /*Search cover to tags*/
     AudioFile file(m_track->getFileName());
     QImage coverImgFromTags = file.coverImg();
 
-    if(!coverImgFromTags.isNull()) {
-        QString hash = QString(QCryptographicHash::hash((QString(QString::number(trackId)+"_"+artist+"_"+title).toUtf8()),QCryptographicHash::Md5).toHex());
-        QString coverPath = m_coverDir+"/"+hash+".jpg";
-        coverImgFromTags.save(coverPath,"jpg",100);
-        qDebug() << "We have cover in tag. Save to " << coverPath ;
+    if (!coverImgFromTags.isNull()) {
+        QString hash = QString(QCryptographicHash::hash((QString(QString::number(trackId) + "_" + artist + "_" + title).toUtf8()), QCryptographicHash::Md5).toHex());
+        QString coverPath = m_coverDir + "/" + hash + ".jpg";
+        coverImgFromTags.save(coverPath, "jpg", 100);
+        qDebug() << "We have cover in tag. Save to " << coverPath;
         m_coverReady(coverPath);
         return;
     }
@@ -51,24 +52,23 @@ void Cover::getCoverByTrack(const QString artist,
     /*Search cover image in file folder*/
     QFileInfo musicFileInfo(m_track->getFileName());
     QString musicFileDir = musicFileInfo.absoluteDir().absolutePath();
-    QFile localCover(musicFileDir+"/cover.jpg");
-    if(localCover.exists())
-    {
-        m_coverReady(musicFileDir+"/cover.jpg");
+    QFile localCover(musicFileDir + "/cover.jpg");
+    if (localCover.exists()) {
+        m_coverReady(musicFileDir + "/cover.jpg");
         return;
     }
 
     /*Trying get cover from musicbrainz*/
-    MusicBrainzConnect *mbConnect = new MusicBrainzConnect();
-    mbConnect->getData(artist,title);
-    connect(mbConnect,SIGNAL(coverReady(QString)),this,SLOT(m_coverReady(QString)));
-    connect(mbConnect,SIGNAL(downloadCover()),this,SIGNAL(coverLoaing()));
+    MusicBrainzConnect* mbConnect = new MusicBrainzConnect();
+    mbConnect->getData(artist, title);
+    connect(mbConnect, SIGNAL(coverReady(QString)), this, SLOT(m_coverReady(QString)));
+    connect(mbConnect, SIGNAL(downloadCover()), this, SIGNAL(coverLoaing()));
 }
 
 void Cover::m_coverReady(QString coverFile)
 {
     QFile cf(coverFile);
-    if(cf.exists()) {
+    if (cf.exists()) {
         m_track->setCover(coverFile);
         emit coverReady(coverFile);
     } else {

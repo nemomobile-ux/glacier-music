@@ -18,24 +18,28 @@
  */
 
 #include "glaciermusicplayer.h"
-#include "sourcepluginmanager.h"
 
-GlacierMusicPlayer::GlacierMusicPlayer(QObject *parent)
+GlacierMusicPlayer::GlacierMusicPlayer(QObject* parent)
     : QMediaPlayer(parent)
     , m_settings(new QSettings)
     , m_coverAdapter(new Cover)
+    , m_plugin(nullptr)
 {
-    SourcePluginManager *sources = new SourcePluginManager();
-    if(sources->getPlugins().empty()) {
+    SourcePluginManager* sources = new SourcePluginManager();
+    if (sources->getPlugins().empty()) {
         qWarning() << "dont have sources plugin";
-    } else {
-
+        return;
     }
+    //@todo: Fixup loading plugin
+    m_plugin = sources->getPlugins().first();
 
     setVolume(m_settings->value("volume").toInt());
 
     connect(m_coverAdapter, &Cover::coverLoaing, this, &GlacierMusicPlayer::setDefaultCover);
-    delete(sources);
+    connect(m_plugin, &MusicSourcePlugin::hasBackChanged, this, &GlacierMusicPlayer::hasBackChanged);
+    connect(m_plugin, &MusicSourcePlugin::hasForwardChanged, this, &GlacierMusicPlayer::hasForwardChanged);
+
+    delete (sources);
 }
 
 GlacierMusicPlayer::~GlacierMusicPlayer()
@@ -52,10 +56,36 @@ QString GlacierMusicPlayer::cover()
     return cover;
 }
 
+bool GlacierMusicPlayer::hasBack()
+{
+    if (m_plugin != nullptr) {
+        return m_plugin->hasBack();
+    }
+    return false;
+}
+
+bool GlacierMusicPlayer::hasForward()
+{
+    if (m_plugin != nullptr) {
+        return m_plugin->hasForward();
+    }
+    return false;
+}
+
+void GlacierMusicPlayer::playPrev()
+{
+    //@todo
+}
+
+void GlacierMusicPlayer::playForward()
+{
+    //@todo
+}
+
 void GlacierMusicPlayer::setDefaultCover()
 {
     QString cover = "/usr/share/glacier-music/images/cover.png";
-    if(cover != m_coverPath) {
+    if (cover != m_coverPath) {
         m_coverPath = cover;
         emit coverChanged();
     }

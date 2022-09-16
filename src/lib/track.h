@@ -25,8 +25,7 @@
 
 class Artist;
 
-class Track : public QObject
-{
+class Track : public QObject {
     Q_OBJECT
     Q_PROPERTY(QString artist READ artist WRITE setArtist NOTIFY artistChanged)
     Q_PROPERTY(QString title READ title WRITE setTitle NOTIFY titleChanged)
@@ -39,19 +38,19 @@ class Track : public QObject
     Q_PROPERTY(QString cover READ cover WRITE setCover NOTIFY coverChanged)
 
 public:
-    explicit Track(const QString file = "", QObject *parent = nullptr);
+    explicit Track(const QString file = "", QObject* parent = nullptr);
 
-    QString artist() {return m_artist;}
-    QString title() {return m_title;}
-    QString album() {return m_album;}
-    QString genre() {return m_genre;}
-    int num() {return m_number;}
-    int year() {return m_year;}
-    int length() {return m_length;}
-    QString comment() {return m_comment;}
-    QString cover() {return m_cover;}
+    QString artist() { return m_artist; }
+    QString title() { return m_title; }
+    QString album() { return m_album; }
+    QString genre() { return m_genre; }
+    int num() { return m_number; }
+    int year() { return m_year; }
+    int length() { return m_length; }
+    QString comment() { return m_comment; }
+    QString cover() { return m_cover; }
 
-    QString getFileName(){return m_fileName;}
+    QString getFileName() { return m_fileName; }
 
     void setArtist(const QString artist);
     void setTitle(const QString title);

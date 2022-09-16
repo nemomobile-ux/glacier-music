@@ -5,11 +5,10 @@
 #include <QMap>
 #include <QObject>
 
-class MusicBrainzConnect : public QObject
-{
+class MusicBrainzConnect : public QObject {
     Q_OBJECT
 public:
-    explicit MusicBrainzConnect(QObject *parent = 0);
+    explicit MusicBrainzConnect(QObject* parent = 0);
 
 signals:
     void answerNotCorrect();
@@ -18,7 +17,7 @@ signals:
     void downloadCoverProgress(float process);
 
 public slots:
-    void getData(const QString artist,const QString title);
+    void getData(const QString artist, const QString title);
     void loadCover(QString releaseId);
 
 private slots:
@@ -28,8 +27,8 @@ private slots:
 
 private:
     QString m_covers_dir;
-    QMap<QString,QString> m_song;
-    QFile *m_coverFile;
+    QMap<QString, QString> m_song;
+    QFile* m_coverFile;
 
     bool m_redirect;
 

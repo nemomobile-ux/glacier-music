@@ -1,13 +1,14 @@
 #include "dbadapter.h"
 
-#include <QtSql>
-#include <QSqlQueryModel>
-#include <QDir>
 #include <QDebug>
+#include <QDir>
+#include <QSqlQueryModel>
+#include <QtSql>
 
-static dbAdapter *dbAdapterInstance = 0;
+static dbAdapter* dbAdapterInstance = 0;
 
-dbAdapter::dbAdapter(QObject *parent) : QObject(parent)
+dbAdapter::dbAdapter(QObject* parent)
+    : QObject(parent)
 {
     QMutexLocker locker(&lock);
     m_db = getDatabase();
@@ -18,10 +19,11 @@ dbAdapter::~dbAdapter()
     m_db.close();
 }
 
-dbAdapter& dbAdapter::instance(){
+dbAdapter& dbAdapter::instance()
+{
     static QMutex mutex;
     QMutexLocker locker(&mutex);
-    if(!dbAdapterInstance) {
+    if (!dbAdapterInstance) {
         dbAdapterInstance = new dbAdapter();
     }
     return *dbAdapterInstance;
@@ -65,20 +67,20 @@ QSqlDatabase dbAdapter::getDatabase()
         qDebug() << "Creating new database connection for thread" << threadAddress;
         db = QSqlDatabase::addDatabase(QLatin1String("QSQLITE"), threadAddress);
     }
-    db.setDatabaseName(QStandardPaths::writableLocation(QStandardPaths::CacheLocation)+"/db.sql");
+    db.setDatabaseName(QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/db.sql");
 
-    if(!db.open()) {
+    if (!db.open()) {
         qDebug() << db.lastError().text();
     }
 
-    qDebug() << "Load DB from " << QStandardPaths::writableLocation(QStandardPaths::CacheLocation)+"/db.sql";
+    qDebug() << "Load DB from " << QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/db.sql";
 
-    if(QFile(QStandardPaths::writableLocation(QStandardPaths::CacheLocation)+"/db.sql").size() == 0)  {
+    if (QFile(QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/db.sql").size() == 0) {
         qDebug() << "Init db";
         initDB();
     }
 
-    if(!db.isValid()) {
+    if (!db.isValid()) {
         qFatal("Can't load DB");
     }
 
