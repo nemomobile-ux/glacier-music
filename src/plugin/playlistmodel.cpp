@@ -49,10 +49,8 @@ int PlayListModel::rowCount(const QModelIndex &parent) const
     return m_playList.count();
 }
 
-
 QVariant PlayListModel::data(const QModelIndex &index, int role) const
 {
-    Q_UNUSED(role);
     if (!index.isValid())
         return QVariant();
 
@@ -101,8 +99,7 @@ bool PlayListModel::insertRows(int position, int rows, Track *item, const QModel
 bool PlayListModel::removeRows(int position, int rows, const QModelIndex &index)
 {
     Q_UNUSED(index);
-    if((position+rows) > m_playList.count())
-    {
+    if((position+rows) > m_playList.count()) {
         return false;
     }
 
@@ -132,8 +129,7 @@ void PlayListModel::setRepeatMode(PlayListModel::RepeatMode mode)
 
 QVariant PlayListModel::get(int idx)
 {
-    if(idx >= m_playList.size())
-    {
+    if(idx >= m_playList.size()) {
         return QVariant();
     }
 
