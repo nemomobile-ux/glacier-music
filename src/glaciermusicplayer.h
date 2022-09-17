@@ -35,6 +35,10 @@ class GlacierMusicPlayer : public QMediaPlayer {
     Q_PROPERTY(bool hasBack READ hasBack NOTIFY hasBackChanged)
     Q_PROPERTY(bool hasForward READ hasForward NOTIFY hasForwardChanged)
 
+    Q_PROPERTY(QString source READ source WRITE setSource NOTIFY sourceChanged)
+
+    Q_PROPERTY(QAbstractListModel* trackModel READ trackModel NOTIFY trackModelChanged)
+
 public:
     explicit GlacierMusicPlayer(QObject* parent = nullptr);
     ~GlacierMusicPlayer();
@@ -42,11 +46,17 @@ public:
 
     QString cover();
 
-    bool hasBack();
-    bool hasForward();
+    bool hasBack() { return m_hasBack; }
+    bool hasForward() { return m_hasForward; }
 
     Q_INVOKABLE void playPrev();
     Q_INVOKABLE void playForward();
+
+    QString source() { return m_source; }
+    void setSource(QString source);
+
+    Q_INVOKABLE QAbstractListModel* trackModel();
+    Q_INVOKABLE QString getCover(QString artist, QString track, QString album);
 
 signals:
     void noMusicFiles();
@@ -56,8 +66,14 @@ signals:
     void hasBackChanged();
     void hasForwardChanged();
 
+    void sourceChanged();
+
+    void trackModelChanged();
+
 private slots:
     void setDefaultCover();
+    void onHasBackChanged();
+    void onHasForwardChanged();
 
 private:
     QSettings* m_settings;
@@ -65,7 +81,13 @@ private:
 
     QString m_coverPath;
 
-    MusicSourcePlugin* m_plugin;
+    MusicSourcePlugin* m_sourcePlugin;
+
+    bool m_hasBack;
+    bool m_hasForward;
+
+    QString m_source;
+    QAbstractListModel* m_trackModel;
 };
 
 #endif // GLACIERMUSICPLAYER_H

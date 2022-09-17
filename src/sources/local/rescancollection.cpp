@@ -17,10 +17,8 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include <QAudioFormat>
-
-#include "dbadapter.h"
 #include "rescancollection.h"
+#include "dbadapter.h"
 #include "track.h"
 
 RescanCollection::RescanCollection(QObject* parent)
@@ -71,7 +69,6 @@ void RescanCollection::scan()
         while (it.hasNext()) {
             QString file = it.next();
             if (!filesInDb.contains(file)) {
-                qDebug() << "Found new file" << file;
                 newFiles << file;
             }
         }
@@ -92,6 +89,7 @@ void RescanCollection::scan()
             double prc = m_scannedFiles / m_aviableFiles;
             emit scanProcess(QVariant(prc));
         }
+        emit scanProcess(1);
     }
 }
 
@@ -107,6 +105,7 @@ QStringList RescanCollection::aviableDirs()
         qDebug() << aviableDirs.last();
     }
     // Find sdcard
+    // @todo need add removiable media not hardcoded
     QDir mountDir("/media/sdcard/");
     mountDir.setFilter(QDir::Dirs | QDir::NoSymLinks | QDir::NoDot | QDir::NoDotDot);
     for (int i = 0; i < mountDir.entryList().count(); i++) {

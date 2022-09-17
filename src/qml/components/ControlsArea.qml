@@ -96,9 +96,14 @@ Item{
         }
 
         source: player.hasForward ? "image://theme/forward?"+Theme.textColor : "image://theme/forward?"+Theme.fillDarkColor
+
         MouseArea{
             anchors.fill: parent
-            onClicked: player.playForward();
+            onClicked: {
+                if(player.hasForward) {
+                    player.playForward();
+                }
+            }
         }
     }
 

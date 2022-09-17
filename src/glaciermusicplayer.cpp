@@ -23,21 +23,28 @@ GlacierMusicPlayer::GlacierMusicPlayer(QObject* parent)
     : QMediaPlayer(parent)
     , m_settings(new QSettings)
     , m_coverAdapter(new Cover)
-    , m_plugin(nullptr)
+    , m_sourcePlugin(nullptr)
+    , m_hasBack(false)
+    , m_hasForward(false)
+    , m_trackModel(nullptr)
 {
     SourcePluginManager* sources = new SourcePluginManager();
     if (sources->getPlugins().empty()) {
         qWarning() << "dont have sources plugin";
         return;
     }
+
+    setAudioRole(QAudio::MusicRole);
+
     //@todo: Fixup loading plugin
-    m_plugin = sources->getPlugins().first();
+    m_sourcePlugin = sources->getPlugins().first();
+    m_trackModel = m_sourcePlugin->tracksModel();
 
     setVolume(m_settings->value("volume").toInt());
 
     connect(m_coverAdapter, &Cover::coverLoaing, this, &GlacierMusicPlayer::setDefaultCover);
-    connect(m_plugin, &MusicSourcePlugin::hasBackChanged, this, &GlacierMusicPlayer::hasBackChanged);
-    connect(m_plugin, &MusicSourcePlugin::hasForwardChanged, this, &GlacierMusicPlayer::hasForwardChanged);
+    connect(m_sourcePlugin, &MusicSourcePlugin::hasBackChanged, this, &GlacierMusicPlayer::onHasBackChanged);
+    connect(m_sourcePlugin, &MusicSourcePlugin::hasForwardChanged, this, &GlacierMusicPlayer::onHasForwardChanged);
 
     delete (sources);
 }
@@ -56,22 +63,6 @@ QString GlacierMusicPlayer::cover()
     return cover;
 }
 
-bool GlacierMusicPlayer::hasBack()
-{
-    if (m_plugin != nullptr) {
-        return m_plugin->hasBack();
-    }
-    return false;
-}
-
-bool GlacierMusicPlayer::hasForward()
-{
-    if (m_plugin != nullptr) {
-        return m_plugin->hasForward();
-    }
-    return false;
-}
-
 void GlacierMusicPlayer::playPrev()
 {
     //@todo
@@ -82,11 +73,46 @@ void GlacierMusicPlayer::playForward()
     //@todo
 }
 
+void GlacierMusicPlayer::setSource(QString source)
+{
+    if (source != m_source) {
+        m_source = source;
+        setMedia(QUrl(m_source));
+    }
+}
+
+QAbstractListModel* GlacierMusicPlayer::trackModel()
+{
+    return m_trackModel;
+}
+
+QString GlacierMusicPlayer::getCover(QString artist, QString track, QString album)
+{
+    //@todo
+    return "";
+}
+
 void GlacierMusicPlayer::setDefaultCover()
 {
     QString cover = "/usr/share/glacier-music/images/cover.png";
     if (cover != m_coverPath) {
         m_coverPath = cover;
         emit coverChanged();
+    }
+}
+
+void GlacierMusicPlayer::onHasBackChanged()
+{
+    if (m_hasBack != m_sourcePlugin->hasBack()) {
+        m_hasBack = m_sourcePlugin->hasBack();
+        emit hasBackChanged();
+    }
+}
+
+void GlacierMusicPlayer::onHasForwardChanged()
+{
+    if (m_hasForward != m_sourcePlugin->hasForward()) {
+        m_hasForward = m_sourcePlugin->hasForward();
+        emit hasForwardChanged();
     }
 }

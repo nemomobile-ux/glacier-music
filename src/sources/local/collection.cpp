@@ -46,7 +46,7 @@ Collection::Collection(QObject* parent)
     }
 
     dbAdapter* dba = new dbAdapter();
-    connect(dba, SIGNAL(baseCreate()), this, SLOT(rescanCollection()));
+    connect(dba, &dbAdapter::baseCreate, this, &Collection::rescanCollection);
 }
 
 Collection::~Collection()
@@ -59,9 +59,9 @@ void Collection::rescanCollection()
     RescanCollection* rCollection = new RescanCollection();
 
     m_rescanThread = new QThread;
-    connect(m_rescanThread, SIGNAL(started()), rCollection, SLOT(scan()));
-    connect(rCollection, SIGNAL(scanProcess(QVariant)), this, SLOT(m_rescanCollectionProgress(QVariant)));
-    connect(rCollection, SIGNAL(noMusicFiles()), this, SIGNAL(noMusicFiles()));
+    connect(m_rescanThread, &QThread::started, rCollection, &RescanCollection::scan);
+    connect(rCollection, &RescanCollection::scanProcess, this, &Collection::m_rescanCollectionProgress);
+    connect(rCollection, &RescanCollection::noMusicFiles, m_rescanNotification, &Notification::close);
     rCollection->moveToThread(m_rescanThread);
     m_rescanThread->start();
     m_rescanNotification->publish();

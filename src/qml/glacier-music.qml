@@ -46,15 +46,6 @@ ApplicationWindow {
         id: settings;
     }
 
-/*    Collection{
-        id: collection
-    }*/
-
-    PlaylistModel{
-        id: nextTrackModel
-        playMode: PlaylistModel.DirectoryShuffle
-    }
-
 /*    Cover{
         id: coverLoader
     }*/

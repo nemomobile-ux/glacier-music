@@ -35,10 +35,9 @@ class Track : public QObject {
     Q_PROPERTY(int year READ year WRITE setYear NOTIFY yearChanged)
     Q_PROPERTY(int length READ length CONSTANT)
     Q_PROPERTY(QString comment READ comment WRITE setComment NOTIFY commentChanged)
-    Q_PROPERTY(QString cover READ cover WRITE setCover NOTIFY coverChanged)
 
 public:
-    explicit Track(const QString file = "", QObject* parent = nullptr);
+    explicit Track(const QString file = "");
 
     QString artist() { return m_artist; }
     QString title() { return m_title; }
@@ -48,7 +47,6 @@ public:
     int year() { return m_year; }
     int length() { return m_length; }
     QString comment() { return m_comment; }
-    QString cover() { return m_cover; }
 
     QString getFileName() { return m_fileName; }
 
@@ -60,7 +58,6 @@ public:
     void setYear(const int year);
     void setComment(const QString comment);
     void setArtistName(const QString name);
-    void setCover(const QString coverFile);
 
 signals:
     void trackFileNotFound();
@@ -73,14 +70,12 @@ signals:
     void lengthChanged();
     void commentChanged();
     void artistNameChanged();
-    void coverChanged();
 
 private:
     QString m_artist;
     QString m_title;
     QString m_album;
     QString m_genre;
-    QString m_cover;
     int m_number;
     int m_year;
     QString m_comment;

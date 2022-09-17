@@ -24,7 +24,7 @@ Page {
              ToolButton {
                  iconSource: "file:///usr/share/glacier-music/images/erasier.svg"
                  onClicked: {
-                     nextTrackModel.clearPlaylist();
+                     player.trackModel.clearPlaylist();
                  }
              }
 
@@ -35,14 +35,14 @@ Page {
         id: nextTrack
         anchors.fill: parent
 
-        model: nextTrackModel
+        model: player.trackModel
         delegate: PlaylistItem{
             width: nextTrack.width
         }
-        currentIndex: nextTrackModel.currentIndex
+        currentIndex: player.trackModel.currentIndex
 
         onCurrentIndexChanged: {
-            nextTrackModel.currentIndex = currentIndex
+            player.trackModel.currentIndex = currentIndex
         }
     }
 

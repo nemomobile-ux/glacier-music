@@ -84,36 +84,23 @@ Page {
     }
 
     Connections{
-        target: nextTrackModel
+        target: player.trackModel
         function onCurrentIndexChanged(currentIndex) {
-            playNextConnection.enabled = false;
-            rootAudio.stop();
-            var track = nextTrackModel.get(currentIndex);
+            player.stop();
+            var track = player.trackModel.get(currentIndex);
             if(!track) {
+                console.log("Wrong track")
                 return;
             }
 
             trackLabelArea.trackName = track.title
             trackLabelArea.artistsName = track.artist;
 
-            rootAudio.source = "file://" + track.fileName
-            // Set seek of first playing song and play only if old state is playing
-            if(currentIndex === 0 && settings.value("currentTrack") === track.trackId) {
-                rootAudio.seek(settings.value("seek"))
-                if(settings.value("playbackState") === 1) {
-                    rootAudio.play();
-                }
-            } else {
-                rootAudio.play();
-            }
-            playNextConnection.enabled = true;
+            player.source = "file://"+track.fileName
+            player.play();
 
             mprisPlayer.artist = track.artist
             mprisPlayer.song = track.title
-            // Update current song in config file
-            if(settings.value("currentTrack") !== track.trackId) {
-                settings.setValue("currentTrack", track.trackId);
-            }
         }
     }
 
@@ -127,15 +114,6 @@ Page {
     }
 
 
-    Connections{
-        target: collection
-        function onrescanCollectionFinished(prc) {
-            if(nextTrackModel.rowCount() < 5) {
-                nextTrackModel.updatePlayList();
-            }
-        }
-    }
-
     function playPause() {
         if(rootAudio.playbackState == MediaPlayer.PlayingState) {
             rootAudio.pause();
@@ -143,7 +121,6 @@ Page {
             if(rootAudio.source == "") {
                 playNext()
             }
-
             rootAudio.play()
         }
     }

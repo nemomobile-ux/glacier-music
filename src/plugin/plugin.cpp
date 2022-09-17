@@ -24,7 +24,6 @@
 #include <QtQml>
 
 #include "blurredimage.h"
-#include "playlistmodel.h"
 #include "wavewidget.h"
 
 class Q_DECL_EXPORT GlacierMusicPlugin : public QQmlExtensionPlugin {
@@ -45,8 +44,6 @@ public:
         // @uri org.glacier.music
         qmlRegisterType<WaveWidget>(uri, 1, 0, "WaveWidget");
         qmlRegisterType<BlurredImage>(uri, 1, 0, "BlurredImage");
-
-        qmlRegisterType<PlayListModel>(uri, 1, 0, "PlaylistModel");
     }
 };
 

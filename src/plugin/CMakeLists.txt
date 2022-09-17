@@ -18,8 +18,6 @@ set(SRC
     blurredimage.h
     peakscreator.cpp
     peakscreator.h
-    playlistmodel.cpp
-    playlistmodel.h
     wavewidget.cpp
     wavewidget.h)
 

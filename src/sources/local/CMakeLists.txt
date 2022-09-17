@@ -1,7 +1,15 @@
 SET(PLUGINNAME localsource)
 
-SET(SRC ${PLUGINNAME}plugin.cpp)
-SET(HEADERS ${PLUGINNAME}plugin.h)
+SET(SRC ${PLUGINNAME}plugin.cpp
+        collection.cpp
+        dbadapter.cpp
+        rescancollection.cpp
+        tracksmodel.cpp)
+SET(HEADERS ${PLUGINNAME}plugin.h
+    collection.h
+    dbadapter.h
+    rescancollection.h
+    tracksmodel.h)
 
 set(CMAKE_AUTOMOC ON)
 add_definitions(-DQT_PLUGIN)
@@ -13,7 +21,9 @@ target_link_libraries(${PLUGINNAME} PUBLIC
     Qt5::Gui
     Qt5::Qml
     Qt5::DBus
-    Glacier::Music)
+    Qt5::Sql
+    Glacier::Music
+    PkgConfig::NEMONOTIFICATIONS)
 
 install(TARGETS ${PLUGINNAME}
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}/glacier-music/plugin/sources)
+    LIBRARY DESTINATION /usr/lib/glacier-music/plugin/sources)

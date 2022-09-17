@@ -1,6 +1,8 @@
 #ifndef LOCALSOURCEPLUGIN_H
 #define LOCALSOURCEPLUGIN_H
 
+#include "tracksmodel.h"
+
 #include <musicsourceplugin.h>
 
 class LocalSourcePlugin : public MusicSourcePlugin {
@@ -18,8 +20,16 @@ public:
     bool hasForward();
     void setHasForward(bool hasForward);
 
-    QList<Track*> tracks();
-    void setTracks(QList<Track*> tracks);
+    QAbstractListModel* tracksModel();
+
+private slots:
+    void calcButtonStatus();
+
+private:
+    TracksModel* m_tracksModel;
+
+    bool m_hasBack;
+    bool m_hasForward;
 };
 
 #endif // LOCALSOURCEPLUGIN_H

@@ -69,7 +69,6 @@ void Cover::m_coverReady(QString coverFile)
 {
     QFile cf(coverFile);
     if (cf.exists()) {
-        m_track->setCover(coverFile);
         emit coverReady(coverFile);
     } else {
         qWarning() << "Cover file" << coverFile << "not exist";

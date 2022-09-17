@@ -20,13 +20,11 @@
 #include "track.h"
 #include "audiofile.h"
 
-Track::Track(const QString file, QObject* parent)
-    : QObject(parent)
-    , m_artist("")
+Track::Track(const QString file)
+    : m_artist("")
     , m_title("")
     , m_album("")
     , m_genre("")
-    , m_cover("")
     , m_number(0)
     , m_year(0)
     , m_comment("")
@@ -120,13 +118,5 @@ void Track::setComment(const QString comment)
     if (comment != m_comment) {
         m_comment = comment;
         emit commentChanged();
-    }
-}
-
-void Track::setCover(const QString coverFile)
-{
-    if (coverFile != m_cover) {
-        m_cover = coverFile;
-        emit coverChanged();
     }
 }
