@@ -10,8 +10,11 @@ SourcePluginManager::SourcePluginManager()
         SourcePluginHost* sph = new SourcePluginHost(pluginsDir.absoluteFilePath(file), this);
         if (sph) {
             if (sph->valid()) {
-                m_pluginList.push_back(sph->get());
-                connect(sph->get(), &MusicSourcePlugin::pluginChanged, this, &SourcePluginManager::pluginDataChanged);
+                MusicSourcePlugin* plugin = sph->get();
+                if (plugin != nullptr) {
+                    m_pluginList.push_back(plugin);
+                    connect(sph->get(), &MusicSourcePlugin::pluginChanged, this, &SourcePluginManager::pluginDataChanged);
+                }
             } else {
                 qDebug() << "Loading" << pluginsDir.absoluteFilePath(file) << " fail";
             }

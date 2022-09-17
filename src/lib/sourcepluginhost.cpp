@@ -6,7 +6,7 @@ SourcePluginHost::SourcePluginHost(const QString& fileName, QObject* parent)
     QObject* plugin = pluginLoader.instance();
     if (plugin) {
         m_plugin = qobject_cast<MusicSourcePlugin*>(plugin);
-        if (!m_plugin) {
+        if (m_plugin == nullptr) {
             qWarning("Can't cast plugin");
             pluginLoader.unload();
         } else {

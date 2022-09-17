@@ -2,7 +2,6 @@
 #define MUSICSOURCEPLUGIN_H
 
 #include "glaciermusic_global.h"
-#include "track.h"
 
 #include <QAbstractListModel>
 #include <QObject>
