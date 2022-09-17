@@ -24,7 +24,6 @@
 #include <QObject>
 #include <QSettings>
 
-#include "cover.h"
 #include "sourcepluginmanager.h"
 
 class GlacierMusicPlayer : public QMediaPlayer {
@@ -77,7 +76,6 @@ private slots:
 
 private:
     QSettings* m_settings;
-    Cover* m_coverAdapter;
 
     QString m_coverPath;
 

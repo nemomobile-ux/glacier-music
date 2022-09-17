@@ -22,7 +22,6 @@
 GlacierMusicPlayer::GlacierMusicPlayer(QObject* parent)
     : QMediaPlayer(parent)
     , m_settings(new QSettings)
-    , m_coverAdapter(new Cover)
     , m_sourcePlugin(nullptr)
     , m_hasBack(false)
     , m_hasForward(false)
@@ -42,7 +41,6 @@ GlacierMusicPlayer::GlacierMusicPlayer(QObject* parent)
 
     setVolume(m_settings->value("volume").toInt());
 
-    connect(m_coverAdapter, &Cover::coverLoaing, this, &GlacierMusicPlayer::setDefaultCover);
     connect(m_sourcePlugin, &MusicSourcePlugin::hasBackChanged, this, &GlacierMusicPlayer::onHasBackChanged);
     connect(m_sourcePlugin, &MusicSourcePlugin::hasForwardChanged, this, &GlacierMusicPlayer::onHasForwardChanged);
 

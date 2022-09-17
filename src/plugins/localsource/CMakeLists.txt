@@ -6,10 +6,10 @@ SET(SRC ${PLUGINNAME}plugin.cpp
         rescancollection.cpp
         tracksmodel.cpp)
 SET(HEADERS ${PLUGINNAME}plugin.h
-    collection.h
-    dbadapter.h
-    rescancollection.h
-    tracksmodel.h)
+        collection.h
+        dbadapter.h
+        rescancollection.h
+        tracksmodel.h)
 
 set(CMAKE_AUTOMOC ON)
 add_definitions(-DQT_PLUGIN)
@@ -18,8 +18,6 @@ add_library(${PLUGINNAME} MODULE ${SRC} ${HEADERS})
 include_directories("../../lib")
 
 target_link_libraries(${PLUGINNAME} PUBLIC
-    Qt5::Gui
-    Qt5::Qml
     Qt5::DBus
     Qt5::Sql
     Glacier::Music
