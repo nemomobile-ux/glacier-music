@@ -9,7 +9,6 @@ class GLACIERMUSIC_EXPORT SourcePluginManager : public QObject {
     Q_OBJECT
 public:
     SourcePluginManager();
-    ~SourcePluginManager();
     QList<MusicSourcePlugin*> getPlugins() { return m_pluginList; }
 
 signals:

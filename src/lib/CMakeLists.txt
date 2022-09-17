@@ -2,11 +2,9 @@ set(SRC artist.cpp
     audiofile.cpp
     downloader.cpp
     sourcepluginmanager.cpp
-    sourcepluginhost.cpp
     track.cpp)
 
-set(HEADERS sourcepluginmanager.h
-    sourcepluginhost.h)
+set(HEADERS sourcepluginmanager.h)
 
 set(PUBLIC_HEADERS artist.h
     audiofile.h

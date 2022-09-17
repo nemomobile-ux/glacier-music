@@ -1,30 +1,20 @@
 #include "sourcepluginmanager.h"
-#include "sourcepluginhost.h"
 
 #include <QDir>
+#include <QPluginLoader>
 
 SourcePluginManager::SourcePluginManager()
 {
     QDir pluginsDir("/usr/lib/glacier-music/plugin/sources");
     for (const QString& file : pluginsDir.entryList(QDir::Files)) {
-        SourcePluginHost* sph = new SourcePluginHost(pluginsDir.absoluteFilePath(file), this);
-        if (sph) {
-            if (sph->valid()) {
-                MusicSourcePlugin* plugin = sph->get();
-                if (plugin != nullptr) {
-                    m_pluginList.push_back(plugin);
-                    connect(sph->get(), &MusicSourcePlugin::pluginChanged, this, &SourcePluginManager::pluginDataChanged);
-                }
-            } else {
-                qDebug() << "Loading" << pluginsDir.absoluteFilePath(file) << " fail";
+        QPluginLoader pluginLoader("/usr/lib/glacier-music/plugin/sources/" + file);
+        QObject* plugin = pluginLoader.instance();
+        if (plugin) {
+            MusicSourcePlugin* sourcePlugin = qobject_cast<MusicSourcePlugin*>(plugin);
+            if (sourcePlugin != nullptr) {
+                m_pluginList.push_back(sourcePlugin);
+                connect(sourcePlugin, &MusicSourcePlugin::pluginChanged, this, &SourcePluginManager::pluginDataChanged);
             }
-        } else {
-            qWarning() << "can't load" << pluginsDir.absoluteFilePath(file);
         }
-        delete (sph);
     }
-}
-
-SourcePluginManager::~SourcePluginManager()
-{
 }
