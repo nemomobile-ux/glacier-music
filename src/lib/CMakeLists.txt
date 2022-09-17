@@ -11,6 +11,7 @@ set(HEADERS sourcepluginmanager.h
 set(PUBLIC_HEADERS artist.h
     audiofile.h
     downloader.h
+    coversourceplugin.h
     musicsourceplugin.h
     track.h)
 
