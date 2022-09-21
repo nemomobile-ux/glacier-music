@@ -20,6 +20,7 @@
 #ifndef TRACK_H
 #define TRACK_H
 
+#include <QImage>
 #include <QtCore>
 #include <artist.h>
 
@@ -35,6 +36,7 @@ class Track : public QObject {
     Q_PROPERTY(int year READ year WRITE setYear NOTIFY yearChanged)
     Q_PROPERTY(int length READ length CONSTANT)
     Q_PROPERTY(QString comment READ comment WRITE setComment NOTIFY commentChanged)
+    Q_PROPERTY(QImage cover READ cover WRITE setCover NOTIFY coverChanged)
 
 public:
     explicit Track(const QString file = "");
@@ -47,6 +49,7 @@ public:
     int year() { return m_year; }
     int length() { return m_length; }
     QString comment() { return m_comment; }
+    QImage cover() { return m_cover; }
 
     QString getFileName() { return m_fileName; }
 
@@ -58,6 +61,7 @@ public:
     void setYear(const int year);
     void setComment(const QString comment);
     void setArtistName(const QString name);
+    void setCover(const QImage cover);
 
 signals:
     void trackFileNotFound();
@@ -70,6 +74,7 @@ signals:
     void lengthChanged();
     void commentChanged();
     void artistNameChanged();
+    void coverChanged(QImage cover);
 
 private:
     QString m_artist;
@@ -79,6 +84,7 @@ private:
     int m_number;
     int m_year;
     QString m_comment;
+    QImage m_cover;
     QString m_fileName;
     int m_length;
 

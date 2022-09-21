@@ -120,3 +120,11 @@ void Track::setComment(const QString comment)
         emit commentChanged();
     }
 }
+
+void Track::setCover(const QImage cover)
+{
+    if (!cover.isNull() && cover != m_cover) {
+        m_cover = cover;
+        emit coverChanged(m_cover);
+    }
+}
