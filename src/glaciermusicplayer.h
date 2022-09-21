@@ -31,7 +31,7 @@
 class GlacierMusicPlayer : public QMediaPlayer {
     Q_OBJECT
     Q_PROPERTY(bool firstRun READ firstRun CONSTANT)
-    Q_PROPERTY(QString cover READ cover NOTIFY coverChanged)
+    Q_PROPERTY(QImage cover READ cover NOTIFY coverChanged)
 
     Q_PROPERTY(bool hasBack READ hasBack NOTIFY hasBackChanged)
     Q_PROPERTY(bool hasForward READ hasForward NOTIFY hasForwardChanged)
@@ -45,7 +45,7 @@ public:
     ~GlacierMusicPlayer();
     bool firstRun() { return false; }
 
-    QString cover();
+    QImage cover();
 
     bool hasBack() { return m_hasBack; }
     bool hasForward() { return m_hasForward; }
@@ -71,7 +71,6 @@ signals:
     void trackModelChanged(int currentIndex);
 
 private slots:
-    void setDefaultCover();
     void onHasBackChanged();
     void onHasForwardChanged();
     void onCurrectTrackChanged(int currentIndex);
@@ -79,7 +78,7 @@ private slots:
 private:
     QSettings* m_settings;
 
-    QString m_coverPath;
+    QImage m_cover;
 
     MusicSourcePlugin* m_sourcePlugin;
     CoverPluginManager* m_coverPlugin;

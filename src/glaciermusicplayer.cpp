@@ -23,6 +23,7 @@
 GlacierMusicPlayer::GlacierMusicPlayer(QObject* parent)
     : QMediaPlayer(parent)
     , m_settings(new QSettings)
+    , m_cover(QImage("/usr/share/glacier-music/images/cover.png"))
     , m_sourcePlugin(nullptr)
     , m_hasBack(false)
     , m_hasForward(false)
@@ -62,10 +63,9 @@ GlacierMusicPlayer::~GlacierMusicPlayer()
     m_settings->sync();
 }
 
-QString GlacierMusicPlayer::cover()
+QImage GlacierMusicPlayer::cover()
 {
-    QString cover = "/usr/share/glacier-music/images/cover.png";
-    return cover;
+    return m_cover;
 }
 
 void GlacierMusicPlayer::playPrev()
@@ -91,15 +91,6 @@ QAbstractListModel* GlacierMusicPlayer::trackModel()
     return m_trackModel;
 }
 
-void GlacierMusicPlayer::setDefaultCover()
-{
-    QString cover = "/usr/share/glacier-music/images/cover.png";
-    if (cover != m_coverPath) {
-        m_coverPath = cover;
-        emit coverChanged();
-    }
-}
-
 void GlacierMusicPlayer::onHasBackChanged()
 {
     if (m_hasBack != m_sourcePlugin->hasBack()) {
@@ -122,6 +113,12 @@ void GlacierMusicPlayer::onCurrectTrackChanged(int currentIndex)
     Track* currentTrack = m_trackModel->getTrack(currentIndex);
     foreach (MusicCoverPlugin* plugin, m_coverPlugin->getPlugins()) {
         plugin->getCover(currentTrack);
-        qDebug() << plugin->name();
+
+        connect(
+            plugin, &MusicCoverPlugin::coverChanged,
+            [=](const QImage& cover) {
+                m_cover = cover;
+                emit coverChanged();
+            });
     }
 }

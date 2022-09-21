@@ -18,7 +18,7 @@ public:
     virtual void getCover(Track* track) = 0;
 
 signals:
-    void coverChanged();
+    void coverChanged(QImage cover);
 };
 
 Q_DECLARE_INTERFACE(MusicCoverPlugin, "GlacierMusic.CoverPlugin")

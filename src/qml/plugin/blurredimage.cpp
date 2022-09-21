@@ -60,6 +60,7 @@ void BlurredImage::setImage(QImage image)
         m_image = image;
         emit imageChanged();
         emit sourceChanged();
+        update();
     }
 }
 

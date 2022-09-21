@@ -6,7 +6,6 @@ FromDirectoryCoverPlugin::FromDirectoryCoverPlugin()
 
 void FromDirectoryCoverPlugin::getCover(Track* track)
 {
-    qDebug() << Q_FUNC_INFO;
     /*Search cover image in file folder*/
     QFileInfo musicFileInfo(track->getFileName());
     QString musicFileDir = musicFileInfo.absoluteDir().absolutePath();
@@ -15,7 +14,7 @@ void FromDirectoryCoverPlugin::getCover(Track* track)
         QImage coverImage = QImage(musicFileDir + "/cover.jpg");
         if (!coverImage.isNull()) {
             m_coverImage = coverImage;
-            emit coverChanged();
+            emit coverChanged(m_coverImage);
         }
     } else {
         qDebug() << "Cover not found";

@@ -47,6 +47,7 @@ Page {
     BlurredImage{
         id: blurredImage
         anchors.fill: parent
+        image: player.cover
     }
 
     Column {
@@ -60,10 +61,6 @@ Page {
             id: coverArea
             width: parent.width
             height: parent.height-trackLabelArea.height-progressItem.height-controsArea.height-Theme.itemSpacingSmall*4
-
-            onCoverChanged: {
-                blurredImage.source = cover
-            }
         }
 
         TrackLabelArea{
