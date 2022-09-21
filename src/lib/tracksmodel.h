@@ -23,7 +23,10 @@ signals:
 
 public slots:
     void loadPlaylistFromDB();
+    void addTrack(Track* track);
+    void reset();
     QVariant get(const int idx);
+    Track* getTrack(const int idx);
 
 private:
     QHash<int, QByteArray> m_hash;

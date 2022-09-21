@@ -1,5 +1,4 @@
 #include "tracksmodel.h"
-#include "dbadapter.h"
 
 TracksModel::TracksModel(QObject* parent)
     : m_currentIndex(-1)
@@ -76,22 +75,21 @@ void TracksModel::loadPlaylistFromDB()
     m_tracks.clear();
     m_currentIndex = -1;
 
-    QSqlDatabase db = dbAdapter::instance().getDatabase();
-    QSqlQuery query(db);
+    endResetModel();
+}
 
-    QString queryString = "SELECT filename FROM tracks \
-                           ORDER BY RANDOM() \
-                           LIMIT 10";
+void TracksModel::addTrack(Track* track)
+{
+    beginInsertRows(QModelIndex(), rowCount() - 1, rowCount());
+    m_tracks.push_back(track);
+    endInsertRows();
+}
 
-    bool ok = query.exec(queryString);
-    if (!ok) {
-        qDebug() << query.lastQuery() << query.lastError().text();
-    } else {
-        while (query.next()) {
-            Track* track = new Track(query.value(0).toString());
-            m_tracks.push_back(track);
-        }
-    }
+void TracksModel::reset()
+{
+    beginResetModel();
+    m_tracks.clear();
+    m_currentIndex = -1;
     endResetModel();
 }
 
@@ -115,4 +113,12 @@ QVariant TracksModel::get(const int idx)
     itemData.insert("track", item->title());
 
     return QVariant(itemData);
+}
+
+Track* TracksModel::getTrack(const int idx)
+{
+    if (idx >= m_tracks.size()) {
+        return nullptr;
+    }
+    return m_tracks.at(idx);
 }

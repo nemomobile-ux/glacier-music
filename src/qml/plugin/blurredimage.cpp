@@ -4,7 +4,7 @@
 
 BlurredImage::BlurredImage(QQuickItem* parent)
     : QQuickPaintedItem(parent)
-    , m_imagePath("/usr/share/glacier-music/images/cover.png")
+    , m_source("/usr/share/glacier-music/images/cover.png")
     , m_radius(50)
     , m_opacity(0.5)
 {
@@ -14,8 +14,7 @@ void BlurredImage::paint(QPainter* painter)
 {
     QSizeF itemSize = size();
     QRectF target(0, 0, itemSize.width(), itemSize.height());
-    QImage source(m_imagePath);
-    QImage blurr = makeBlurred(source, source.rect(), m_radius);
+    QImage blurr = makeBlurred(m_image, m_image.rect(), m_radius);
 
     painter->drawImage(target, blurr);
 
@@ -24,22 +23,43 @@ void BlurredImage::paint(QPainter* painter)
     painter->drawRect(target);
 }
 
-void BlurredImage::setImagePath(QString qml_path)
+void BlurredImage::setSource(QString source)
 {
-    if (qml_path == m_imagePath) {
+    if (source == m_source) {
         return;
     }
 
-    QUrl path = qml_path;
+    QUrl path = source;
     QFile imgFile(path.toLocalFile());
     if (!imgFile.exists()) {
         qWarning() << "Not exists!!!" << path;
         return;
     }
 
-    m_imagePath = path.toLocalFile();
-    emit imagePathChanged();
-    update();
+    QImage image(source.remove("file://"));
+    if (image.isNull()) {
+        qWarning() << "Wrong image path" << path;
+        return;
+    }
+
+    if (image != m_image) {
+        m_image = image;
+        emit imageChanged();
+
+        m_source = path.toLocalFile();
+        emit sourceChanged();
+        update();
+    }
+}
+
+void BlurredImage::setImage(QImage image)
+{
+    if (image != m_image) {
+        m_source = "";
+        m_image = image;
+        emit imageChanged();
+        emit sourceChanged();
+    }
 }
 
 void BlurredImage::setRadius(int radius)
