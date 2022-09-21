@@ -16,6 +16,8 @@ set(SRC
     plugin.cpp
     blurredimage.cpp
     blurredimage.h
+    glacierimage.cpp
+    glacierimage.h
     peakscreator.cpp
     peakscreator.h
     wavewidget.cpp
