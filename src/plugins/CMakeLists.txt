@@ -1,2 +1,4 @@
+add_subdirectory(fromdirectorycover)
+add_subdirectory(fromtagscover)
 add_subdirectory(localsource)
 add_subdirectory(musicbrainzcover)

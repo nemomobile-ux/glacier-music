@@ -1,17 +1,21 @@
 set(SRC artist.cpp
     audiofile.cpp
+    coverpluginmanager.cpp
     downloader.cpp
     sourcepluginmanager.cpp
-    track.cpp)
+    track.cpp
+    tracksmodel.cpp)
 
-set(HEADERS sourcepluginmanager.h)
+set(HEADERS coverpluginmanager.h
+    sourcepluginmanager.h)
 
 set(PUBLIC_HEADERS artist.h
     audiofile.h
     downloader.h
     coversourceplugin.h
     musicsourceplugin.h
-    track.h)
+    track.h
+    tracksmodel.h)
 
 add_library(glaciermusic SHARED ${SRC} ${HEADERS} ${PUBLIC_HEADERS})
 add_library(Glacier::Music ALIAS glaciermusic)

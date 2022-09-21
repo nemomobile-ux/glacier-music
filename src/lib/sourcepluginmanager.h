@@ -3,7 +3,6 @@
 
 #include "glaciermusic_global.h"
 #include "musicsourceplugin.h"
-#include <QObject>
 
 class GLACIERMUSIC_EXPORT SourcePluginManager : public QObject {
     Q_OBJECT

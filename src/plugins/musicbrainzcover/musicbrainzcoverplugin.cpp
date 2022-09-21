@@ -4,11 +4,7 @@ MusicBrainzCoverPlugin::MusicBrainzCoverPlugin()
 {
 }
 
-QString MusicBrainzCoverPlugin::cover()
+void MusicBrainzCoverPlugin::getCover(Track* track)
 {
-    return "";
-}
-
-void MusicBrainzCoverPlugin::getCover(QVariant data)
-{
+    qDebug() << Q_FUNC_INFO;
 }

@@ -13,7 +13,7 @@ LocalSourcePlugin::LocalSourcePlugin(QObject* parent)
     Collection* collection = new Collection();
     collection->rescanCollection();
 
-    connect(collection, &Collection::rescanCollectionFinished, m_tracksModel, &TracksModel::loadPlaylistFromDB);
+    connect(collection, &Collection::rescanCollectionFinished, this, &LocalSourcePlugin::loadPlaylistFromDB);
     connect(m_tracksModel, &TracksModel::modelReset, this, &LocalSourcePlugin::calcButtonStatus);
 }
 
@@ -35,7 +35,7 @@ void LocalSourcePlugin::setHasForward(bool hasForward)
 {
 }
 
-QAbstractListModel* LocalSourcePlugin::tracksModel()
+TracksModel* LocalSourcePlugin::tracksModel()
 {
     return m_tracksModel;
 }
@@ -53,5 +53,26 @@ void LocalSourcePlugin::calcButtonStatus()
     if (hasForward != m_hasForward) {
         m_hasForward = hasForward;
         emit hasForwardChanged();
+    }
+}
+
+void LocalSourcePlugin::loadPlaylistFromDB()
+{
+    m_tracksModel->reset();
+    QSqlDatabase db = dbAdapter::instance().getDatabase();
+    QSqlQuery query(db);
+
+    QString queryString = "SELECT filename FROM tracks \
+                           ORDER BY RANDOM() \
+                           LIMIT 10";
+
+    bool ok = query.exec(queryString);
+    if (!ok) {
+        qDebug() << query.lastQuery() << query.lastError().text();
+    } else {
+        while (query.next()) {
+            Track* track = new Track(query.value(0).toString());
+            m_tracksModel->addTrack(track);
+        }
     }
 }

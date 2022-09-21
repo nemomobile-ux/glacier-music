@@ -20,10 +20,11 @@ public:
     bool hasForward();
     void setHasForward(bool hasForward);
 
-    QAbstractListModel* tracksModel();
+    TracksModel* tracksModel();
 
 private slots:
     void calcButtonStatus();
+    void loadPlaylistFromDB();
 
 private:
     TracksModel* m_tracksModel;

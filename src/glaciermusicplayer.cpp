@@ -18,6 +18,7 @@
  */
 
 #include "glaciermusicplayer.h"
+#include "coversourceplugin.h"
 
 GlacierMusicPlayer::GlacierMusicPlayer(QObject* parent)
     : QMediaPlayer(parent)
@@ -33,6 +34,11 @@ GlacierMusicPlayer::GlacierMusicPlayer(QObject* parent)
         return;
     }
 
+    m_coverPlugin = new CoverPluginManager();
+    if (m_coverPlugin->getPlugins().empty()) {
+        qWarning() << "Can`t load covers plugin";
+    }
+
     setAudioRole(QAudio::MusicRole);
 
     //@todo: Fixup loading plugin
@@ -43,6 +49,7 @@ GlacierMusicPlayer::GlacierMusicPlayer(QObject* parent)
 
     connect(m_sourcePlugin, &MusicSourcePlugin::hasBackChanged, this, &GlacierMusicPlayer::onHasBackChanged);
     connect(m_sourcePlugin, &MusicSourcePlugin::hasForwardChanged, this, &GlacierMusicPlayer::onHasForwardChanged);
+    connect(m_trackModel, &TracksModel::currentIndexChanged, this, &GlacierMusicPlayer::onCurrectTrackChanged);
 
     delete (sources);
 }
@@ -84,12 +91,6 @@ QAbstractListModel* GlacierMusicPlayer::trackModel()
     return m_trackModel;
 }
 
-QString GlacierMusicPlayer::getCover(QString artist, QString track, QString album)
-{
-    //@todo
-    return "";
-}
-
 void GlacierMusicPlayer::setDefaultCover()
 {
     QString cover = "/usr/share/glacier-music/images/cover.png";
@@ -112,5 +113,15 @@ void GlacierMusicPlayer::onHasForwardChanged()
     if (m_hasForward != m_sourcePlugin->hasForward()) {
         m_hasForward = m_sourcePlugin->hasForward();
         emit hasForwardChanged();
+    }
+}
+
+void GlacierMusicPlayer::onCurrectTrackChanged(int currentIndex)
+{
+    qDebug() << Q_FUNC_INFO << m_coverPlugin->getPlugins().count();
+    Track* currentTrack = m_trackModel->getTrack(currentIndex);
+    foreach (MusicCoverPlugin* plugin, m_coverPlugin->getPlugins()) {
+        plugin->getCover(currentTrack);
+        qDebug() << plugin->name();
     }
 }

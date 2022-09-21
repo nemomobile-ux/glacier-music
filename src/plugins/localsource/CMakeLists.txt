@@ -3,13 +3,12 @@ SET(PLUGINNAME localsource)
 SET(SRC ${PLUGINNAME}plugin.cpp
         collection.cpp
         dbadapter.cpp
-        rescancollection.cpp
-        tracksmodel.cpp)
+        rescancollection.cpp)
+
 SET(HEADERS ${PLUGINNAME}plugin.h
         collection.h
         dbadapter.h
-        rescancollection.h
-        tracksmodel.h)
+        rescancollection.h)
 
 set(CMAKE_AUTOMOC ON)
 add_definitions(-DQT_PLUGIN)

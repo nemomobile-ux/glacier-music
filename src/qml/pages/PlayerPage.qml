@@ -63,7 +63,7 @@ Page {
             height: parent.height-trackLabelArea.height-progressItem.height-controsArea.height-Theme.itemSpacingSmall*4
 
             onCoverChanged: {
-                blurredImage.imagePath = cover
+                blurredImage.source = cover
             }
         }
 

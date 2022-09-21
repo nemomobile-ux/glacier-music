@@ -4,9 +4,9 @@
 #include <QVariant>
 #include <coversourceplugin.h>
 
-class MusicBrainzCoverPlugin : public CoverSourcePlugin {
+class MusicBrainzCoverPlugin : public MusicCoverPlugin {
     Q_OBJECT
-    Q_INTERFACES(CoverSourcePlugin)
+    Q_INTERFACES(MusicCoverPlugin)
     Q_PLUGIN_METADATA(IID "GlacierMusic.CoverPlugin")
 
 public:
@@ -14,8 +14,11 @@ public:
     bool enabled() { return true; }
     QString name() { return tr("MusicBrainz cover loader"); }
 
-    QString cover();
-    void getCover(QVariant data);
+    QImage cover() { return m_coverImage; }
+    void getCover(Track* track);
+
+private:
+    QImage m_coverImage = QImage("image://theme/music");
 };
 
 #endif // MUSICBRAINZCOVERPLUGIN_H

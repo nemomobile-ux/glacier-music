@@ -41,7 +41,7 @@ void Cover::getCoverByTrack(const QString artist,
     QImage coverImgFromTags = file.coverImg();
 
     if (!coverImgFromTags.isNull()) {
-        QString hash = QString(QCryptographicHash::hash((QString(QString::number(trackId) + "_" + artist + "_" + title).toUtf8()), QCryptographicHash::Md5).toHex());
+        QString hash = QString(QCryptographicHash::hash((QString(artist + "_" + title + "_" + album).toUtf8()), QCryptographicHash::Md5).toHex());
         QString coverPath = m_coverDir + "/" + hash + ".jpg";
         coverImgFromTags.save(coverPath, "jpg", 100);
         qDebug() << "We have cover in tag. Save to " << coverPath;

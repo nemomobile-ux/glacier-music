@@ -8,7 +8,7 @@ ListViewItemWithActions{
     id: playListItem
     height: Theme.itemHeightHuge
 
-    property string cover: player.getCover(artist, title, album)
+    property string cover: "image://theme/music"
 
     iconColorized: false
 

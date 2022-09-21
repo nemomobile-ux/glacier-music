@@ -24,7 +24,9 @@
 #include <QObject>
 #include <QSettings>
 
+#include "coverpluginmanager.h"
 #include "sourcepluginmanager.h"
+#include "tracksmodel.h"
 
 class GlacierMusicPlayer : public QMediaPlayer {
     Q_OBJECT
@@ -55,7 +57,6 @@ public:
     void setSource(QString source);
 
     Q_INVOKABLE QAbstractListModel* trackModel();
-    Q_INVOKABLE QString getCover(QString artist, QString track, QString album);
 
 signals:
     void noMusicFiles();
@@ -67,12 +68,13 @@ signals:
 
     void sourceChanged();
 
-    void trackModelChanged();
+    void trackModelChanged(int currentIndex);
 
 private slots:
     void setDefaultCover();
     void onHasBackChanged();
     void onHasForwardChanged();
+    void onCurrectTrackChanged(int currentIndex);
 
 private:
     QSettings* m_settings;
@@ -80,12 +82,13 @@ private:
     QString m_coverPath;
 
     MusicSourcePlugin* m_sourcePlugin;
+    CoverPluginManager* m_coverPlugin;
 
     bool m_hasBack;
     bool m_hasForward;
 
     QString m_source;
-    QAbstractListModel* m_trackModel;
+    TracksModel* m_trackModel;
 };
 
 #endif // GLACIERMUSICPLAYER_H

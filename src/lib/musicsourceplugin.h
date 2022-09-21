@@ -2,6 +2,7 @@
 #define MUSICSOURCEPLUGIN_H
 
 #include "glaciermusic_global.h"
+#include "tracksmodel.h"
 
 #include <QAbstractListModel>
 #include <QObject>
@@ -21,7 +22,7 @@ public:
     virtual bool hasForward() = 0;
     virtual void setHasForward(bool hasForward) = 0;
 
-    virtual QAbstractListModel* tracksModel() = 0;
+    virtual TracksModel* tracksModel() = 0;
 
 signals:
     void pluginChanged(QString id);
