@@ -117,8 +117,9 @@ QVariant TracksModel::get(const int idx)
 
 Track* TracksModel::getTrack(const int idx)
 {
-    if (idx >= m_tracks.size()) {
+    if (idx >= m_tracks.size() || idx < 0) {
         return nullptr;
     }
+
     return m_tracks.at(idx);
 }
