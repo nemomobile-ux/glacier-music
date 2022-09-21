@@ -74,6 +74,7 @@ private slots:
     void onHasBackChanged();
     void onHasForwardChanged();
     void onCurrectTrackChanged(int currentIndex);
+    void onTrackAddedToPlayList(const QModelIndex& parent, int first, int last);
 
 private:
     QSettings* m_settings;

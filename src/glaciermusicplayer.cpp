@@ -51,6 +51,7 @@ GlacierMusicPlayer::GlacierMusicPlayer(QObject* parent)
     connect(m_sourcePlugin, &MusicSourcePlugin::hasBackChanged, this, &GlacierMusicPlayer::onHasBackChanged);
     connect(m_sourcePlugin, &MusicSourcePlugin::hasForwardChanged, this, &GlacierMusicPlayer::onHasForwardChanged);
     connect(m_trackModel, &TracksModel::currentIndexChanged, this, &GlacierMusicPlayer::onCurrectTrackChanged);
+    connect(m_trackModel, &TracksModel::rowsInserted, this, &GlacierMusicPlayer::onTrackAddedToPlayList);
 
     delete (sources);
 }
@@ -109,16 +110,24 @@ void GlacierMusicPlayer::onHasForwardChanged()
 
 void GlacierMusicPlayer::onCurrectTrackChanged(int currentIndex)
 {
-    qDebug() << Q_FUNC_INFO << m_coverPlugin->getPlugins().count();
     Track* currentTrack = m_trackModel->getTrack(currentIndex);
-    foreach (MusicCoverPlugin* plugin, m_coverPlugin->getPlugins()) {
-        plugin->getCover(currentTrack);
+    m_cover = currentTrack->cover();
+    emit coverChanged();
+}
 
-        connect(
-            plugin, &MusicCoverPlugin::coverChanged,
-            [=](const QImage& cover) {
-                m_cover = cover;
-                emit coverChanged();
-            });
+void GlacierMusicPlayer::onTrackAddedToPlayList(const QModelIndex& parent, int first, int last)
+{
+    if (first < 0) {
+        first = 0;
+    }
+
+    for (int i = first; i <= last; i++) {
+        Track* addedTrack = m_trackModel->getTrack(i);
+        if (addedTrack != nullptr) {
+            foreach (MusicCoverPlugin* plugin, m_coverPlugin->getPlugins()) {
+                plugin->getCover(addedTrack);
+                connect(plugin, &MusicCoverPlugin::coverChanged, addedTrack, &Track::setCover);
+            }
+        }
     }
 }
