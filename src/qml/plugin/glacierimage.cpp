@@ -19,6 +19,9 @@ void GlacierImage::setImage(QImage image)
     if (image != m_image && !image.isNull()) {
         m_image = image;
         emit imageChanged(m_image);
-        update();
+    } else {
+        m_image = QImage("/usr/share/glacier-music/images/cover.png");
+        emit imageChanged(m_image);
     }
+    update();
 }

@@ -4,7 +4,6 @@
 
 BlurredImage::BlurredImage(QQuickItem* parent)
     : QQuickPaintedItem(parent)
-    , m_source("/usr/share/glacier-music/images/cover.png")
     , m_image(QImage())
     , m_radius(50)
     , m_opacity(0.5)
@@ -24,44 +23,15 @@ void BlurredImage::paint(QPainter* painter)
     painter->drawRect(target);
 }
 
-void BlurredImage::setSource(QString source)
-{
-    if (source == m_source) {
-        return;
-    }
-
-    QUrl path = source;
-    QFile imgFile(path.toLocalFile());
-    if (!imgFile.exists()) {
-        qWarning() << "Not exists!!!" << path;
-        return;
-    }
-
-    QImage image(source.remove("file://"));
-    if (image.isNull()) {
-        qWarning() << "Wrong image path" << path;
-        return;
-    }
-
-    if (image != m_image) {
-        m_image = image;
-        emit imageChanged();
-
-        m_source = path.toLocalFile();
-        emit sourceChanged();
-        update();
-    }
-}
-
 void BlurredImage::setImage(QImage image)
 {
-    if (image != m_image) {
-        m_source = "";
+    if (image != m_image && !image.isNull()) {
         m_image = image;
-        emit imageChanged();
-        emit sourceChanged();
-        update();
+    } else {
+        m_image = QImage("/usr/share/glacier-music/images/cover.png");
     }
+    emit imageChanged();
+    update();
 }
 
 void BlurredImage::setRadius(int radius)
