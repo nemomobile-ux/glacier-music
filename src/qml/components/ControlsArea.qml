@@ -74,7 +74,7 @@ Item{
 
         anchors.centerIn: parent;
 
-        source: (player.playbackState == player.PlayingState) ?
+        source: (player.state == 1) ?
                     "image://theme/pause" :
                     "image://theme/play"
 

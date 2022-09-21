@@ -18,7 +18,6 @@
  */
 
 import QtQuick 2.6
-import QtMultimedia 5.5
 import QtGraphicalEffects 1.0
 
 import QtQuick.Controls 1.0
@@ -106,22 +105,26 @@ Page {
 
     Connections{
         target: mprisPlayer
-        function onNextRequested() { playNext() }
-        function onPreviousRequested() { playPrev() }
-        function onPlayRequested() { rootAudio.play() }
-        function onPauseRequested() { rootAudio.pause() }
+        function onNextRequested() { player.trackModel.currentIndex++ }
+        function onPreviousRequested() { player.trackModel.currentIndex-- }
+        function onPlayRequested() { playMe() }
+        function onPauseRequested() { player.pause() }
         function onPlayPauseRequested() { playPause() }
     }
 
 
     function playPause() {
-        if(rootAudio.playbackState == MediaPlayer.PlayingState) {
-            rootAudio.pause();
+        if(player.state == 1) {
+            player.pause();
         } else {
-            if(rootAudio.source == "") {
-                playNext()
-            }
-            rootAudio.play()
+            playMe()
         }
+    }
+
+    function playMe() {
+        if(player.source == "") {
+            player.trackModel.currentIndex++
+        }
+        player.play()
     }
 }

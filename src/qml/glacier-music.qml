@@ -81,11 +81,11 @@ ApplicationWindow {
 
         canGoNext: true
         canGoPrevious: true
-        canPause: player.playbackState == player.PlayingState
-        canPlay: player.playbackState != player.PlayingState
+        canPause: player.state == 1
+        canPlay: player.state != 1
         canSeek: false
 
-        playbackStatus: (player.playbackState == player.PlayingState) ? Mpris.Playing : Mpris.Paused
+        playbackStatus: (player.state == 1) ? Mpris.Playing : Mpris.Paused
 
         onArtistChanged: {
             var metadata = mprisPlayer.metadata
