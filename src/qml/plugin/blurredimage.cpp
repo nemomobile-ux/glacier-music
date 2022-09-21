@@ -5,6 +5,7 @@
 BlurredImage::BlurredImage(QQuickItem* parent)
     : QQuickPaintedItem(parent)
     , m_source("/usr/share/glacier-music/images/cover.png")
+    , m_image(QImage())
     , m_radius(50)
     , m_opacity(0.5)
 {
