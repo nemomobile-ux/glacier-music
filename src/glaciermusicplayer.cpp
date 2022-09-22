@@ -71,12 +71,12 @@ QImage GlacierMusicPlayer::cover()
 
 void GlacierMusicPlayer::playPrev()
 {
-    //@todo
+    m_trackModel->setCurrentIndex(m_trackModel->currentIndex() - 1);
 }
 
 void GlacierMusicPlayer::playForward()
 {
-    //@todo
+    m_trackModel->setCurrentIndex(m_trackModel->currentIndex() + 1);
 }
 
 void GlacierMusicPlayer::setSource(QString source)
