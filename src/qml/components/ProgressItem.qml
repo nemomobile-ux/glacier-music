@@ -62,7 +62,7 @@ Row {
             anchors.fill: parent
 
             onClicked: {
-                if(player.isSeekable) {
+                if(player.seekable) {
                     var current_poz = (mouseX-x)/width
                     player.setPosition(player.duration*current_poz)
                 }
