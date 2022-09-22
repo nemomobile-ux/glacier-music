@@ -17,6 +17,12 @@ public:
     QImage cover() { return m_coverImage; }
     void getCover(Track* track);
 
+signals:
+    void coverLoaing();
+
+private slots:
+    void onCoverReady(QString coverFilePath);
+
 private:
     QImage m_coverImage = QImage("image://theme/music");
 };
