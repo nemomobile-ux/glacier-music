@@ -4,15 +4,18 @@ import QtQuick.Controls 1.0
 import QtQuick.Controls.Nemo 1.0
 import QtQuick.Controls.Styles.Nemo 1.0
 
+import org.glacier.music 1.0
+
 ListViewItemWithActions{
     id: playListItem
     height: Theme.itemHeightHuge
 
-    property string cover: "image://theme/music"
-
     iconColorized: false
 
-    icon: cover !== "" ?  (String(cover).startsWith("/")  ? "file://"+cover : cover ) : "image://theme/music"
+    iconDelegate: GlacierImage{
+        image: cover
+    }
+
     label: title
     description: artist
     showNext: false
