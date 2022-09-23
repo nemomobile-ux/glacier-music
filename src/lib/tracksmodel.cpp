@@ -12,6 +12,7 @@ TracksModel::TracksModel(QObject* parent)
     m_hash.insert(Qt::UserRole + 6, QByteArray("year"));
     m_hash.insert(Qt::UserRole + 7, QByteArray("length"));
     m_hash.insert(Qt::UserRole + 8, QByteArray("track"));
+    m_hash.insert(Qt::UserRole + 9, QByteArray("cover"));
 }
 
 int TracksModel::rowCount(const QModelIndex& parent) const
@@ -48,6 +49,8 @@ QVariant TracksModel::data(const QModelIndex& index, int role) const
         return item->length();
     } else if (role == Qt::UserRole + 8) {
         return item->title();
+    } else if (role == Qt::UserRole + 9) {
+        return item->cover();
     }
 
     return QVariant();

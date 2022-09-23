@@ -25,6 +25,7 @@ private slots:
 
 private:
     QImage m_coverImage = QImage("image://theme/music");
+    Track* m_track;
 };
 
 #endif // MUSICBRAINZCOVERPLUGIN_H

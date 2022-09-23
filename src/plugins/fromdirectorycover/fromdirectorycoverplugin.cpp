@@ -14,7 +14,7 @@ void FromDirectoryCoverPlugin::getCover(Track* track)
         QImage coverImage = QImage(musicFileDir + "/cover.jpg");
         if (!coverImage.isNull()) {
             m_coverImage = coverImage;
-            emit coverChanged(m_coverImage);
+            track->setCover(m_coverImage);
         }
     } else {
         qDebug() << "Cover not found";

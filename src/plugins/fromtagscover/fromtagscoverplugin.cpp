@@ -11,7 +11,7 @@ void FromTagsCoverPlugin::getCover(Track* track)
     QImage coverImgFromTags = file.coverImg();
     if (!coverImgFromTags.isNull()) {
         m_coverImage = coverImgFromTags;
-        emit coverChanged(m_coverImage);
+        track->setCover(m_coverImage);
     } else {
         qDebug() << "Cover not found";
     }

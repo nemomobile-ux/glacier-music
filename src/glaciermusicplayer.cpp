@@ -126,7 +126,6 @@ void GlacierMusicPlayer::onTrackAddedToPlayList(const QModelIndex& parent, int f
         if (addedTrack != nullptr) {
             foreach (MusicCoverPlugin* plugin, m_coverPlugin->getPlugins()) {
                 plugin->getCover(addedTrack);
-                connect(plugin, &MusicCoverPlugin::coverChanged, addedTrack, &Track::setCover);
             }
         }
     }

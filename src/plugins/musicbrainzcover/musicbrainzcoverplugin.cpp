@@ -2,12 +2,22 @@
 #include "musicbrainzconnect.h"
 
 MusicBrainzCoverPlugin::MusicBrainzCoverPlugin()
+    : m_track(nullptr)
 {
 }
 
 void MusicBrainzCoverPlugin::getCover(Track* track)
 {
-    qDebug() << Q_FUNC_INFO;
+    if (track == m_track || track == nullptr) {
+        return;
+    }
+
+    if (track->artist().isEmpty() || track->title().isEmpty()) {
+        return;
+    }
+
+    m_track = track;
+
     /*Trying get cover from musicbrainz*/
     MusicBrainzConnect* mbConnect = new MusicBrainzConnect();
     mbConnect->getData(track->artist(), track->title());
@@ -18,7 +28,7 @@ void MusicBrainzCoverPlugin::getCover(Track* track)
 void MusicBrainzCoverPlugin::onCoverReady(QString coverFilePath)
 {
     QImage cover(coverFilePath);
-    if (!cover.isNull()) {
-        emit coverChanged(cover);
+    if (!cover.isNull() && m_track != nullptr) {
+        m_track->setCover(cover);
     }
 }
