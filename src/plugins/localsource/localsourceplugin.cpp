@@ -15,6 +15,7 @@ LocalSourcePlugin::LocalSourcePlugin(QObject* parent)
 
     connect(m_tracksModel, &TracksModel::modelReset, this, &LocalSourcePlugin::calcButtonStatus);
     connect(m_tracksModel, &TracksModel::currentIndexChanged, this, &LocalSourcePlugin::makeTrackPlayed);
+    connect(collection, &Collection::rescanCollectionFinished, this, &LocalSourcePlugin::loadRandomPlayList);
 }
 
 bool LocalSourcePlugin::hasBack()
@@ -75,8 +76,6 @@ void LocalSourcePlugin::calcButtonStatus()
 
 void LocalSourcePlugin::loadRandomPlayList()
 {
-    qDebug() << Q_FUNC_INFO;
-
     QSqlDatabase db = dbAdapter::instance().getDatabase();
     QSqlQuery query(db);
 
