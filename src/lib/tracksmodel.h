@@ -22,7 +22,6 @@ signals:
     void currentIndexChanged(int currentIndex);
 
 public slots:
-    void loadPlaylistFromDB();
     void addTrack(Track* track);
     void reset();
     QVariant get(const int idx);

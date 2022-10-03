@@ -72,15 +72,6 @@ void TracksModel::setCurrentIndex(int index)
     }
 }
 
-void TracksModel::loadPlaylistFromDB()
-{
-    beginResetModel();
-    m_tracks.clear();
-    m_currentIndex = -1;
-
-    endResetModel();
-}
-
 void TracksModel::addTrack(Track* track)
 {
     beginInsertRows(QModelIndex(), rowCount() - 1, rowCount());

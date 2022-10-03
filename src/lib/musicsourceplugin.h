@@ -39,8 +39,7 @@ public:
     virtual void clearPlaylist() = 0;
 
 signals:
-    void
-    pluginChanged(QString id);
+    void pluginChanged(QString id);
 
     void hasBackChanged();
     void hasForwardChanged();

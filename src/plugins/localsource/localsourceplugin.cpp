@@ -13,7 +13,6 @@ LocalSourcePlugin::LocalSourcePlugin(QObject* parent)
     Collection* collection = new Collection();
     collection->rescanCollection();
 
-    //    connect(collection, &Collection::rescanCollectionFinished, this, &LocalSourcePlugin::loadPlaylistFromDB);
     connect(m_tracksModel, &TracksModel::modelReset, this, &LocalSourcePlugin::calcButtonStatus);
     connect(m_tracksModel, &TracksModel::currentIndexChanged, this, &LocalSourcePlugin::makeTrackPlayed);
 }
