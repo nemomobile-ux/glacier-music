@@ -66,7 +66,7 @@ void TracksModel::clearPlaylist()
 
 void TracksModel::setCurrentIndex(int index)
 {
-    if (index != m_currentIndex) {
+    if (index != m_currentIndex && index < rowCount()) {
         m_currentIndex = index;
         emit currentIndexChanged(m_currentIndex);
     }
