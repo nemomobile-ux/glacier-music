@@ -21,10 +21,13 @@ public:
     void setHasForward(bool hasForward);
 
     TracksModel* tracksModel();
+    void loadPlaylist(PlayMode mode, QString param);
+    void clearPlaylist();
 
 private slots:
     void calcButtonStatus();
-    void loadPlaylistFromDB();
+    void loadRandomPlayList();
+    void makeTrackPlayed(int id);
 
 private:
     TracksModel* m_tracksModel;

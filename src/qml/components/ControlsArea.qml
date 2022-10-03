@@ -80,7 +80,7 @@ Item{
 
         MouseArea{
             anchors.fill: parent
-            onClicked: playPause();
+            onClicked: player.playPause();
         }
     }
 

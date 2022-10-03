@@ -27,6 +27,7 @@ GlacierMusicPlayer::GlacierMusicPlayer(QObject* parent)
     , m_sourcePlugin(nullptr)
     , m_hasBack(false)
     , m_hasForward(false)
+    , m_playing(false)
     , m_trackModel(nullptr)
 {
     SourcePluginManager* sources = new SourcePluginManager();
@@ -52,6 +53,7 @@ GlacierMusicPlayer::GlacierMusicPlayer(QObject* parent)
     connect(m_sourcePlugin, &MusicSourcePlugin::hasForwardChanged, this, &GlacierMusicPlayer::onHasForwardChanged);
     connect(m_trackModel, &TracksModel::currentIndexChanged, this, &GlacierMusicPlayer::onCurrectTrackChanged);
     connect(m_trackModel, &TracksModel::rowsInserted, this, &GlacierMusicPlayer::onTrackAddedToPlayList);
+    connect(this, &QMediaPlayer::mediaStatusChanged, this, &GlacierMusicPlayer::onMediaStatusChanged);
 
     delete (sources);
 }
@@ -77,6 +79,22 @@ void GlacierMusicPlayer::playPrev()
 void GlacierMusicPlayer::playForward()
 {
     m_trackModel->setCurrentIndex(m_trackModel->currentIndex() + 1);
+}
+
+void GlacierMusicPlayer::playPause()
+{
+    if (state() == State::PlayingState) {
+        pause();
+        m_playing = false;
+    } else {
+        if (m_trackModel->rowCount() == 0) {
+            m_sourcePlugin->loadPlaylist(MusicSourcePlugin::PlayMode::Random);
+            m_trackModel->setCurrentIndex(m_trackModel->currentIndex() + 1);
+        } else {
+            m_playing = true;
+            play();
+        }
+    }
 }
 
 void GlacierMusicPlayer::setSource(QString source)
@@ -111,8 +129,11 @@ void GlacierMusicPlayer::onHasForwardChanged()
 void GlacierMusicPlayer::onCurrectTrackChanged(int currentIndex)
 {
     Track* currentTrack = m_trackModel->getTrack(currentIndex);
-    m_cover = currentTrack->cover();
-    emit coverChanged();
+    if (currentTrack != nullptr) {
+        m_cover = currentTrack->cover();
+        emit coverChanged();
+        play();
+    }
 }
 
 void GlacierMusicPlayer::onTrackAddedToPlayList(const QModelIndex& parent, int first, int last)
@@ -128,5 +149,12 @@ void GlacierMusicPlayer::onTrackAddedToPlayList(const QModelIndex& parent, int f
                 plugin->getCover(addedTrack);
             }
         }
+    }
+}
+
+void GlacierMusicPlayer::onMediaStatusChanged(MediaStatus status)
+{
+    if (m_playing && status == MediaStatus::EndOfMedia) {
+        playForward();
     }
 }

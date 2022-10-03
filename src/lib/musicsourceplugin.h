@@ -13,6 +13,18 @@ class GLACIERMUSIC_EXPORT MusicSourcePlugin : public QObject {
     Q_PROPERTY(bool hasForward READ hasForward WRITE setHasForward NOTIFY hasForwardChanged)
 
 public:
+    enum PlayMode {
+        Random,
+        Artist,
+        ArtistShuffle,
+        Album,
+        AlbumShuffle,
+        Directory,
+        DirectoryShuffle,
+        Smart
+    };
+    Q_ENUMS(PlayMode)
+
     virtual bool enabled() = 0;
     virtual QString name() = 0;
 
@@ -23,9 +35,12 @@ public:
     virtual void setHasForward(bool hasForward) = 0;
 
     virtual TracksModel* tracksModel() = 0;
+    virtual void loadPlaylist(PlayMode mode, QString param = "") = 0;
+    virtual void clearPlaylist() = 0;
 
 signals:
-    void pluginChanged(QString id);
+    void
+    pluginChanged(QString id);
 
     void hasBackChanged();
     void hasForwardChanged();

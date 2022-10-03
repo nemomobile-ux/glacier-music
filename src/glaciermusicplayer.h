@@ -52,6 +52,7 @@ public:
 
     Q_INVOKABLE void playPrev();
     Q_INVOKABLE void playForward();
+    Q_INVOKABLE void playPause();
 
     QString source() { return m_source; }
     void setSource(QString source);
@@ -75,6 +76,7 @@ private slots:
     void onHasForwardChanged();
     void onCurrectTrackChanged(int currentIndex);
     void onTrackAddedToPlayList(const QModelIndex& parent, int first, int last);
+    void onMediaStatusChanged(QMediaPlayer::MediaStatus status);
 
 private:
     QSettings* m_settings;
@@ -86,6 +88,7 @@ private:
 
     bool m_hasBack;
     bool m_hasForward;
+    bool m_playing;
 
     QString m_source;
     TracksModel* m_trackModel;

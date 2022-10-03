@@ -93,7 +93,7 @@ Page {
             trackLabelArea.artistsName = track.artist;
 
             player.source = "file://"+track.fileName
-            player.play();
+            player.playPause();
 
             mprisPlayer.artist = track.artist
             mprisPlayer.song = track.title
@@ -104,24 +104,8 @@ Page {
         target: mprisPlayer
         function onNextRequested() { player.trackModel.currentIndex++ }
         function onPreviousRequested() { player.trackModel.currentIndex-- }
-        function onPlayRequested() { playMe() }
+        function onPlayRequested() { player.playPause() }
         function onPauseRequested() { player.pause() }
-        function onPlayPauseRequested() { playPause() }
-    }
-
-
-    function playPause() {
-        if(player.state == 1) {
-            player.pause();
-        } else {
-            playMe()
-        }
-    }
-
-    function playMe() {
-        if(player.source == "") {
-            player.trackModel.currentIndex++
-        }
-        player.play()
+        function onPlayPauseRequested() { player.playPause() }
     }
 }
