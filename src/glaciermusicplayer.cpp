@@ -138,6 +138,8 @@ void GlacierMusicPlayer::onCurrectTrackChanged(int currentIndex)
         if (m_playing) {
             play();
         }
+    } else {
+        qWarning() << "Wrong track!";
     }
 }
 
@@ -153,6 +155,9 @@ void GlacierMusicPlayer::onTrackAddedToPlayList(const QModelIndex& parent, int f
             foreach (MusicCoverPlugin* plugin, m_coverPlugin->getPlugins()) {
                 plugin->getCover(addedTrack);
             }
+        }
+        if (first == 0) {
+            m_trackModel->setCurrentIndex(0);
         }
     }
 }
