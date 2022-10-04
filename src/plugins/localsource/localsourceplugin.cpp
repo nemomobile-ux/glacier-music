@@ -15,7 +15,7 @@ LocalSourcePlugin::LocalSourcePlugin(QObject* parent)
 
     connect(m_tracksModel, &TracksModel::modelReset, this, &LocalSourcePlugin::calcButtonStatus);
     connect(m_tracksModel, &TracksModel::currentIndexChanged, this, &LocalSourcePlugin::makeTrackPlayed);
-    connect(collection, &Collection::rescanCollectionFinished, this, &LocalSourcePlugin::loadRandomPlayList);
+    connect(collection, &Collection::rescanCollectionFinished, this, &LocalSourcePlugin::complementPlayList);
 }
 
 bool LocalSourcePlugin::hasBack()
@@ -43,17 +43,15 @@ TracksModel* LocalSourcePlugin::tracksModel()
 
 void LocalSourcePlugin::loadPlaylist(PlayMode mode, QString param)
 {
-    if (mode != PlayMode::Random) {
-        qWarning() << "Support only random playlist now";
-    }
-    loadRandomPlayList();
+    loadCurrentPlayList();
+    calcButtonStatus();
 }
 
 void LocalSourcePlugin::clearPlaylist()
 {
     QSqlDatabase db = dbAdapter::instance().getDatabase();
     QSqlQuery query(db);
-    if (query.exec("DELETE FROM playlist")) {
+    if (query.exec("DELETE FROM playlist WHERE time = 0")) {
         m_tracksModel->reset();
     }
 }
@@ -74,7 +72,7 @@ void LocalSourcePlugin::calcButtonStatus()
     }
 }
 
-void LocalSourcePlugin::loadRandomPlayList()
+void LocalSourcePlugin::loadCurrentPlayList()
 {
     QSqlDatabase db = dbAdapter::instance().getDatabase();
     QSqlQuery query(db);
@@ -97,9 +95,47 @@ void LocalSourcePlugin::loadRandomPlayList()
     }
 }
 
+void LocalSourcePlugin::complementPlayList()
+{
+    if (m_tracksModel->rowCount() < 20) {
+        QString queryString;
+        QString fileName = "";
+
+        QSqlDatabase db = dbAdapter::instance().getDatabase();
+        QSqlQuery query(db);
+
+        int limit = 20 - m_tracksModel->rowCount();
+
+        Track* currentTrack = m_tracksModel->getTrack(m_tracksModel->currentIndex());
+        if (currentTrack != nullptr) {
+            fileName = currentTrack->getFileName();
+        }
+
+        queryString = "SELECT fileName FROM tracks \
+                WHERE filename <> '"
+            + fileName + "' \
+                ORDER BY RANDOM() \
+                LIMIT "
+            + QString::number(limit);
+
+        bool ok = query.exec(queryString);
+        if (!ok) {
+            qDebug() << query.lastQuery() << query.lastError().text();
+        } else {
+            while (query.next()) {
+                Track* track = new Track(query.value(0).toString());
+                m_tracksModel->addTrack(track);
+            }
+        }
+    }
+}
+
 void LocalSourcePlugin::makeTrackPlayed(int id)
 {
     Track* currentTrack = m_tracksModel->getTrack(id);
+    if (currentTrack == nullptr) {
+        return;
+    }
     QString currentTrackFileName = currentTrack->getFileName();
 
     QSqlDatabase db = dbAdapter::instance().getDatabase();
@@ -116,4 +152,6 @@ void LocalSourcePlugin::makeTrackPlayed(int id)
     if (!ok) {
         qDebug() << query.lastQuery() << query.lastError().text();
     }
+
+    calcButtonStatus();
 }

@@ -26,7 +26,8 @@ public:
 
 private slots:
     void calcButtonStatus();
-    void loadRandomPlayList();
+    void loadCurrentPlayList();
+    void complementPlayList();
     void makeTrackPlayed(int id);
 
 private:
