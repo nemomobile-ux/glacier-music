@@ -38,7 +38,7 @@ Page {
             ToolButton {
                 iconSource: "image://theme/gear"
                 onClicked: {
-                    pageStack.push(Qt.resolvedUrl("../pages/SettingsPage.qml"));
+                    pageStack.push(Qt.resolvedUrl("SettingsPage.qml"));
                 }
             }
         ]

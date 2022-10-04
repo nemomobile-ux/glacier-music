@@ -13,5 +13,6 @@
         <file>pages/LibraryPage.qml</file>
         <file>glacier-music.qml</file>
         <file>components/TrackLabelArea.qml</file>
+        <file>pages/SettingsPluginPage.qml</file>
     </qresource>
 </RCC>
