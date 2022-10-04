@@ -82,7 +82,6 @@ Page {
     Connections{
         target: player.trackModel
         function onCurrentIndexChanged(currentIndex) {
-            player.stop();
             var track = player.trackModel.get(currentIndex);
             if(!track) {
                 console.log("Wrong track")
@@ -91,9 +90,6 @@ Page {
 
             trackLabelArea.trackName = track.title
             trackLabelArea.artistsName = track.artist;
-
-            player.source = "file://"+track.fileName
-            player.playPause();
 
             mprisPlayer.artist = track.artist
             mprisPlayer.song = track.title

@@ -89,11 +89,13 @@ void GlacierMusicPlayer::playPause()
     } else {
         if (m_trackModel->rowCount() == 0) {
             m_sourcePlugin->loadPlaylist(MusicSourcePlugin::PlayMode::Random);
-            m_trackModel->setCurrentIndex(m_trackModel->currentIndex() + 1);
-        } else {
-            m_playing = true;
-            play();
+            playForward();
+        } else if (m_trackModel->currentIndex() == -1) {
+            playForward();
         }
+
+        m_playing = true;
+        play();
     }
 }
 
@@ -132,7 +134,10 @@ void GlacierMusicPlayer::onCurrectTrackChanged(int currentIndex)
     if (currentTrack != nullptr) {
         m_cover = currentTrack->cover();
         emit coverChanged();
-        play();
+        setSource("file://" + currentTrack->getFileName());
+        if (m_playing) {
+            play();
+        }
     }
 }
 
