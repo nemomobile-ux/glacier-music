@@ -28,6 +28,7 @@ class GLACIERMUSIC_EXPORT SourcePluginManager : public QObject {
 public:
     SourcePluginManager();
     QList<MusicSourcePlugin*> getPlugins() { return m_pluginList; }
+    MusicSourcePlugin* getPluginById(const QString id);
 
 signals:
     void pluginDataChanged(QString pluginId);

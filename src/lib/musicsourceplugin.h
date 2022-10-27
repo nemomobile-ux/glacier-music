@@ -27,6 +27,7 @@ public:
 
     virtual bool enabled() = 0;
     virtual QString name() = 0;
+    virtual QString id() = 0;
 
     virtual bool hasBack() = 0;
     virtual void setHasBack(bool hasBack) = 0;

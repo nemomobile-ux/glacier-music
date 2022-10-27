@@ -25,7 +25,9 @@
 SourcePluginManager::SourcePluginManager()
 {
     QDir pluginsDir("/usr/lib/glacier-music/plugin/sources");
-    for (const QString& file : pluginsDir.entryList(QDir::Files)) {
+    QList<QString> pluginsLibList = pluginsDir.entryList(QDir::Files);
+
+    for (const QString& file : qAsConst(pluginsLibList)) {
         QPluginLoader pluginLoader("/usr/lib/glacier-music/plugin/sources/" + file);
         QObject* plugin = pluginLoader.instance();
         if (plugin) {
@@ -36,4 +38,19 @@ SourcePluginManager::SourcePluginManager()
             }
         }
     }
+}
+
+MusicSourcePlugin *SourcePluginManager::getPluginById(const QString id)
+{
+    if(m_pluginList.empty()) {
+        return nullptr;
+    }
+
+    for (MusicSourcePlugin* plugin : qAsConst(m_pluginList)) {
+        if(plugin->id() == id) {
+            return plugin;
+        }
+    }
+
+    return nullptr;
 }

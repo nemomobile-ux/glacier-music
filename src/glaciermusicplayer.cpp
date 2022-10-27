@@ -44,7 +44,7 @@ GlacierMusicPlayer::GlacierMusicPlayer(QObject* parent)
     setAudioRole(QAudio::MusicRole);
 
     //@todo: Fixup loading plugin
-    m_sourcePlugin = sources->getPlugins().first();
+    m_sourcePlugin = sources->getPluginById("localsource");
     m_trackModel = m_sourcePlugin->tracksModel();
 
     setVolume(m_settings->value("volume").toInt());

@@ -32,6 +32,7 @@ public:
     LocalSourcePlugin(QObject* parent = nullptr);
     bool enabled() { return true; }
     QString name() { return tr("Local music database"); }
+    QString id() { return "localsource"; }
 
     bool hasBack();
     void setHasBack(bool hasBack);
