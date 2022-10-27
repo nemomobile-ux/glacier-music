@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Chupligin Sergey <neochapay@gmail.com>
+ * Copyright (C) 2022 Chupligin Sergey <neochapay@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -17,25 +17,13 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef ARTIST_H
-#define ARTIST_H
+#ifndef GLACIERMUSIC_GLOBAL_H
+#define GLACIERMUSIC_GLOBAL_H
 
-#include <QObject>
+#if defined(GLACIERMUSIC_LIBRARY)
+#define GLACIERMUSIC_EXPORT Q_DECL_EXPORT
+#else
+#define GLACIERMUSIC_EXPORT Q_DECL_IMPORT
+#endif
 
-class Artist : public QObject {
-    Q_OBJECT
-    Q_PROPERTY(QString title READ title WRITE setTitle NOTIFY titleChanged)
-
-public:
-    explicit Artist(QString title, QObject* parent = nullptr);
-
-    QString title() { return m_title; }
-    void setTitle(QString title);
-
-signals:
-    void titleChanged();
-
-private:
-    QString m_title;
-};
-#endif // ARTIST_H
+#endif // GLACIERMUSIC_GLOBAL_H

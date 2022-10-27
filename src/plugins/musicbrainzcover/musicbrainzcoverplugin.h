@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Chupligin Sergey <neochapay@gmail.com>
+ * Copyright (C) 2022 Chupligin Sergey <neochapay@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -17,25 +17,34 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef ARTIST_H
-#define ARTIST_H
+#ifndef MUSICBRAINZCOVERPLUGIN_H
+#define MUSICBRAINZCOVERPLUGIN_H
 
-#include <QObject>
+#include <QVariant>
+#include <coversourceplugin.h>
 
-class Artist : public QObject {
+class MusicBrainzCoverPlugin : public MusicCoverPlugin {
     Q_OBJECT
-    Q_PROPERTY(QString title READ title WRITE setTitle NOTIFY titleChanged)
+    Q_INTERFACES(MusicCoverPlugin)
+    Q_PLUGIN_METADATA(IID "GlacierMusic.CoverPlugin")
 
 public:
-    explicit Artist(QString title, QObject* parent = nullptr);
+    MusicBrainzCoverPlugin();
+    bool enabled() { return true; }
+    QString name() { return tr("MusicBrainz cover loader"); }
 
-    QString title() { return m_title; }
-    void setTitle(QString title);
+    QImage cover() { return m_coverImage; }
+    void getCover(Track* track);
 
 signals:
-    void titleChanged();
+    void coverLoaing();
+
+private slots:
+    void onCoverReady(QString coverFilePath);
 
 private:
-    QString m_title;
+    QImage m_coverImage = QImage("image://theme/music");
+    Track* m_track;
 };
-#endif // ARTIST_H
+
+#endif // MUSICBRAINZCOVERPLUGIN_H

@@ -18,7 +18,6 @@
  */
 
 import QtQuick 2.6
-import QtMultimedia 5.5
 
 import QtQuick.Controls 1.0 //needed for the Stack attached property
 import QtQuick.Controls.Nemo 1.0
@@ -62,10 +61,10 @@ Item{
 
         MouseArea{
             anchors.fill: parent
-            onClicked: playPrev()
+            onClicked: player.playPrev();
         }
 
-        source: "image://theme/backward"
+        source: player.hasBack ? "image://theme/backward?"+Theme.textColor : "image://theme/backward?"+Theme.fillDarkColor
     }
 
     Image{
@@ -75,13 +74,13 @@ Item{
 
         anchors.centerIn: parent;
 
-        source: (rootAudio.playbackState == MediaPlayer.PlayingState) ?
+        source: (player.state == 1) ?
                     "image://theme/pause" :
                     "image://theme/play"
 
         MouseArea{
             anchors.fill: parent
-            onClicked: playPause();
+            onClicked: player.playPause();
         }
     }
 
@@ -96,11 +95,15 @@ Item{
             verticalCenter: playPauseBtn.verticalCenter
         }
 
-        source: "image://theme/forward"
+        source: player.hasForward ? "image://theme/forward?"+Theme.textColor : "image://theme/forward?"+Theme.fillDarkColor
 
         MouseArea{
             anchors.fill: parent
-            onClicked: playNext()
+            onClicked: {
+                if(player.hasForward) {
+                    player.playForward();
+                }
+            }
         }
     }
 
@@ -147,13 +150,13 @@ Item{
             anchors.centerIn: parent
 
             minimumValue: 0
-            maximumValue: 1
-            stepSize: 0.05
-            value: rootAudio.volume
+            maximumValue: 100
+            stepSize: 1
+            value: player.volume
 
             onValueChanged:{
                 removeVolumeTimer.restart()
-                rootAudio.volume = value
+                player.volume = value
             }
         }
     }

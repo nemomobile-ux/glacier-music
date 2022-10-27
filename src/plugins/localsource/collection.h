@@ -17,25 +17,39 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef ARTIST_H
-#define ARTIST_H
+#ifndef COLLECTION_H
+#define COLLECTION_H
 
+#include "dbadapter.h"
+
+#include <QDir>
 #include <QObject>
 
-class Artist : public QObject {
+#include <notification.h>
+
+class Collection : public QObject {
     Q_OBJECT
-    Q_PROPERTY(QString title READ title WRITE setTitle NOTIFY titleChanged)
-
 public:
-    explicit Artist(QString title, QObject* parent = nullptr);
-
-    QString title() { return m_title; }
-    void setTitle(QString title);
+    explicit Collection(QObject* parent = 0);
+    Q_INVOKABLE bool isFirstRun() { return m_firstRun; }
+    ~Collection();
 
 signals:
-    void titleChanged();
+    void newFile(QString path);
+    void updateRescanProgress(QVariant prc);
+    void rescanCollectionFinished();
+
+public slots:
+    void rescanCollection();
+
+private slots:
+    void m_rescanCollectionProgress(QVariant progress);
 
 private:
-    QString m_title;
+    bool m_firstRun;
+    QStringList aviableDirs();
+    QThread* m_rescanThread;
+    Notification* m_rescanNotification;
 };
-#endif // ARTIST_H
+
+#endif // COLLECTION_H

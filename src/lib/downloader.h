@@ -17,25 +17,33 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef ARTIST_H
-#define ARTIST_H
+#ifndef DOWNLOADER_H
+#define DOWNLOADER_H
 
+#include <QNetworkReply>
 #include <QObject>
 
-class Artist : public QObject {
+class Downloader : public QObject {
     Q_OBJECT
-    Q_PROPERTY(QString title READ title WRITE setTitle NOTIFY titleChanged)
-
 public:
-    explicit Artist(QString title, QObject* parent = nullptr);
-
-    QString title() { return m_title; }
-    void setTitle(QString title);
+    explicit Downloader(QString urlString, QObject* parent = 0);
 
 signals:
-    void titleChanged();
+    void stringReady(QByteArray answer);
+    void urlNotValid();
+    void downloadProgress(float progress);
+
+public slots:
+    void loadData();
+
+private slots:
+    void dataReady(QNetworkReply* reply);
+    void onDownloadProgress(qint64 bytesRead, qint64 bytesTotal);
 
 private:
-    QString m_title;
+    QNetworkReply* m_response;
+    QNetworkAccessManager* m_manager;
+    QUrl m_url;
 };
-#endif // ARTIST_H
+
+#endif // DOWNLOADER_H

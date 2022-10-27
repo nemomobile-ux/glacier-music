@@ -17,25 +17,24 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef ARTIST_H
-#define ARTIST_H
+#ifndef SOURCEPLUGINMANAGER_H
+#define SOURCEPLUGINMANAGER_H
 
-#include <QObject>
+#include "glaciermusic_global.h"
+#include "musicsourceplugin.h"
 
-class Artist : public QObject {
+class GLACIERMUSIC_EXPORT SourcePluginManager : public QObject {
     Q_OBJECT
-    Q_PROPERTY(QString title READ title WRITE setTitle NOTIFY titleChanged)
-
 public:
-    explicit Artist(QString title, QObject* parent = nullptr);
-
-    QString title() { return m_title; }
-    void setTitle(QString title);
+    SourcePluginManager();
+    QList<MusicSourcePlugin*> getPlugins() { return m_pluginList; }
+    MusicSourcePlugin* getPluginById(const QString id);
 
 signals:
-    void titleChanged();
+    void pluginDataChanged(QString pluginId);
 
 private:
-    QString m_title;
+    QList<MusicSourcePlugin*> m_pluginList;
 };
-#endif // ARTIST_H
+
+#endif // SOURCEPLUGINMANAGER_H

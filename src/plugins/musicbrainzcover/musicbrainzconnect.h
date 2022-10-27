@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Chupligin Sergey <neochapay@gmail.com>
+ * Copyright (C) 2022 Chupligin Sergey <neochapay@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -17,25 +17,41 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef ARTIST_H
-#define ARTIST_H
+#ifndef MUSICBRAINZCONNECT_H
+#define MUSICBRAINZCONNECT_H
 
+#include <QFile>
+#include <QMap>
 #include <QObject>
 
-class Artist : public QObject {
+class MusicBrainzConnect : public QObject {
     Q_OBJECT
-    Q_PROPERTY(QString title READ title WRITE setTitle NOTIFY titleChanged)
-
 public:
-    explicit Artist(QString title, QObject* parent = nullptr);
-
-    QString title() { return m_title; }
-    void setTitle(QString title);
+    explicit MusicBrainzConnect(QObject* parent = 0);
 
 signals:
-    void titleChanged();
+    void answerNotCorrect();
+    void downloadCover();
+    void coverReady(QString fileName);
+    void downloadCoverProgress(float process);
+
+public slots:
+    void getData(const QString artist, const QString title);
+    void loadCover(QString releaseId);
+
+private slots:
+    void dataReady(QByteArray answer);
+    void coverNetworkData(QByteArray answer);
+    void onFinishedDownloadCover(QByteArray answer);
 
 private:
-    QString m_title;
+    QString m_covers_dir;
+    QMap<QString, QString> m_song;
+    QFile* m_coverFile;
+
+    bool m_redirect;
+
+    void downloadCoverImage(QString coverURL);
 };
-#endif // ARTIST_H
+
+#endif // MUSICBRAINZCONNECT_H

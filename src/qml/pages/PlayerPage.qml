@@ -18,7 +18,6 @@
  */
 
 import QtQuick 2.6
-import QtMultimedia 5.5
 import QtGraphicalEffects 1.0
 
 import QtQuick.Controls 1.0
@@ -39,7 +38,7 @@ Page {
             ToolButton {
                 iconSource: "image://theme/gear"
                 onClicked: {
-                    pageStack.push(Qt.resolvedUrl("../pages/SettingsPage.qml"));
+                    pageStack.push(Qt.resolvedUrl("SettingsPage.qml"));
                 }
             }
         ]
@@ -48,6 +47,7 @@ Page {
     BlurredImage{
         id: blurredImage
         anchors.fill: parent
+        image: player.cover
     }
 
     Column {
@@ -61,10 +61,6 @@ Page {
             id: coverArea
             width: parent.width
             height: parent.height-trackLabelArea.height-progressItem.height-controsArea.height-Theme.itemSpacingSmall*4
-
-            onCoverChanged: {
-                blurredImage.imagePath = cover
-            }
         }
 
         TrackLabelArea{
@@ -84,110 +80,28 @@ Page {
     }
 
     Connections{
-        id: playNextConnection
-        target: rootAudio
-        function onStopped() { playNext() }
-    }
-
-    Connections{
-        target: nextTrackModel
+        target: player.trackModel
         function onCurrentIndexChanged(currentIndex) {
-            playNextConnection.enabled = false;
-            rootAudio.stop();
-            var track = nextTrackModel.get(currentIndex);
+            var track = player.trackModel.get(currentIndex);
             if(!track) {
+                console.log("Wrong track")
                 return;
             }
 
             trackLabelArea.trackName = track.title
             trackLabelArea.artistsName = track.artist;
 
-            rootAudio.source = "file://" + track.fileName
-            // Set seek of first playing song and play only if old state is playing
-            if(currentIndex === 0 && settings.value("currentTrack") === track.trackId) {
-                rootAudio.seek(settings.value("seek"))
-                if(settings.value("playbackState") === 1) {
-                    rootAudio.play();
-                }
-            } else {
-                rootAudio.play();
-            }
-            playNextConnection.enabled = true;
-
             mprisPlayer.artist = track.artist
             mprisPlayer.song = track.title
-            // Update current song in config file
-            if(settings.value("currentTrack") !== track.trackId) {
-                settings.setValue("currentTrack", track.trackId);
-            }
-            // Change cover
-            var cover = track.cover;
-            if (cover !== "") {
-                cover = String(cover).startsWith("/") ? "file://" + cover : cover;
-                coverArea.cover = cover;
-            } else {
-                coverArea.cover = "file:///usr/share/glacier-music/images/cover.png";
-                coverLoader.getCoverByTrackId(track.trackId)
-            }
-        }
-    }
-
-    Connections{
-        target: coverLoader
-        function onCoverReady(coverFile) {
-            coverArea.cover = "file://" + coverFile
-        }
-        function onCoverLoaing() {
-            /*FIXME add loader*/
-            coverArea.cover = "file:///usr/share/glacier-music/images/cover.png";
         }
     }
 
     Connections{
         target: mprisPlayer
-        function onNextRequested() { playNext() }
-        function onPreviousRequested() { playPrev() }
-        function onPlayRequested() { rootAudio.play() }
-        function onPauseRequested() { rootAudio.pause() }
-        function onPlayPauseRequested() { playPause() }
-    }
-
-
-    Connections{
-        target: collection
-        function onrescanCollectionFinished(prc) {
-            if(nextTrackModel.rowCount() < 5) {
-                nextTrackModel.updatePlayList();
-            }
-        }
-    }
-
-    function playNext() {
-        if(nextTrackModel.rowCount() == 0) {
-            nextTrackModel.updatePlayList();
-        }
-
-        if(nextTrackModel.currentIndex >= nextTrackModel.rowCount()-1) {
-            nextTrackModel.updatePlayList();
-        }
-        ++nextTrackModel.currentIndex
-    }
-
-    function playPrev() {
-        if(nextTrackModel.currentIndex !== 0){
-            --nextTrackModel.currentIndex
-        }
-    }
-
-    function playPause() {
-        if(rootAudio.playbackState == MediaPlayer.PlayingState) {
-            rootAudio.pause();
-        } else {
-            if(rootAudio.source == "") {
-                playNext()
-            }
-
-            rootAudio.play()
-        }
+        function onNextRequested() { player.trackModel.currentIndex++ }
+        function onPreviousRequested() { player.trackModel.currentIndex-- }
+        function onPlayRequested() { player.playPause() }
+        function onPauseRequested() { player.pause() }
+        function onPlayPauseRequested() { player.playPause() }
     }
 }

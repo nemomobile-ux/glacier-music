@@ -1,22 +1,30 @@
 set(SRC artist.cpp
     audiofile.cpp
-    dbadapter.cpp
-    track.cpp)
+    coverpluginmanager.cpp
+    downloader.cpp
+    sourcepluginmanager.cpp
+    track.cpp
+    tracksmodel.cpp)
 
-set(HEADERS item.h)
+set(HEADERS coverpluginmanager.h
+    sourcepluginmanager.h)
 
 set(PUBLIC_HEADERS artist.h
     audiofile.h
-    dbadapter.h
-    track.h)
+    downloader.h
+    coversourceplugin.h
+    musicsourceplugin.h
+    track.h
+    tracksmodel.h)
 
 add_library(glaciermusic SHARED ${SRC} ${HEADERS} ${PUBLIC_HEADERS})
 add_library(Glacier::Music ALIAS glaciermusic)
 
 target_link_libraries(glaciermusic
     Qt5::Core
+    Qt5::Network
     Qt5::Gui
-    Qt5::Sql)
+    PkgConfig::TAGLIB)
 
 install(TARGETS glaciermusic
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}/)

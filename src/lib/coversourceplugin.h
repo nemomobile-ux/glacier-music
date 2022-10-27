@@ -17,25 +17,23 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef ARTIST_H
-#define ARTIST_H
+#ifndef COVERSOURCEPLUGIN_H
+#define COVERSOURCEPLUGIN_H
 
+#include "glaciermusic_global.h"
+#include "track.h"
+#include <QImage>
 #include <QObject>
 
-class Artist : public QObject {
+class GLACIERMUSIC_EXPORT MusicCoverPlugin : public QObject {
     Q_OBJECT
-    Q_PROPERTY(QString title READ title WRITE setTitle NOTIFY titleChanged)
-
 public:
-    explicit Artist(QString title, QObject* parent = nullptr);
+    virtual bool enabled() = 0;
+    virtual QString name() = 0;
 
-    QString title() { return m_title; }
-    void setTitle(QString title);
-
-signals:
-    void titleChanged();
-
-private:
-    QString m_title;
+    virtual QImage cover() = 0;
+    virtual void getCover(Track* track) = 0;
 };
-#endif // ARTIST_H
+
+Q_DECLARE_INTERFACE(MusicCoverPlugin, "GlacierMusic.CoverPlugin")
+#endif // COVERSOURCEPLUGIN_H

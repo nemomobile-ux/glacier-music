@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Chupligin Sergey <neochapay@gmail.com>
+ * Copyright (C) 2022 Chupligin Sergey <neochapay@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -17,25 +17,26 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef ARTIST_H
-#define ARTIST_H
+#ifndef FROMTAGSCOVERPLUGIN_H
+#define FROMTAGSCOVERPLUGIN_H
 
-#include <QObject>
+#include <QVariant>
+#include <coversourceplugin.h>
 
-class Artist : public QObject {
+class FromTagsCoverPlugin : public MusicCoverPlugin {
     Q_OBJECT
-    Q_PROPERTY(QString title READ title WRITE setTitle NOTIFY titleChanged)
-
+    Q_INTERFACES(MusicCoverPlugin)
+    Q_PLUGIN_METADATA(IID "GlacierMusic.CoverPlugin")
 public:
-    explicit Artist(QString title, QObject* parent = nullptr);
+    FromTagsCoverPlugin();
+    bool enabled() { return true; }
+    QString name() { return tr("Load cover from tags"); }
 
-    QString title() { return m_title; }
-    void setTitle(QString title);
-
-signals:
-    void titleChanged();
+    QImage cover() { return m_coverImage; }
+    void getCover(Track* track);
 
 private:
-    QString m_title;
+    QImage m_coverImage = QImage("image://theme/music");
 };
-#endif // ARTIST_H
+
+#endif // FROMTAGSCOVERPLUGIN_H

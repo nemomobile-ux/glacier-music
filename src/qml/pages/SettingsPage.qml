@@ -14,6 +14,13 @@ Page {
         showBackButton: true;
     }
 
+    ListModel{
+        id: fileOrganizeModel
+        ListElement { name: qsTr("Only in interal storage") }
+        ListElement { name: qsTr("Yes") }
+        ListElement { name: qsTr("No") }
+    }
+
     Column {
         id: fileSortingRow
         width: parent.width
@@ -22,11 +29,11 @@ Page {
             topMargin: Theme.itemSpacingLarge
         }
 
-        ListModel{
-            id: fileOrganizeModel
-            ListElement { name: qsTr("Only in interal storage") }
-            ListElement { name: qsTr("Yes") }
-            ListElement { name: qsTr("No") }
+        ListViewItemWithActions{
+            id: pushToPlugins
+            label: qsTr("Plugins")
+            icon: "image://theme/cubes"
+            onClicked: pageStack.push(Qt.resolvedUrl("SettingsPluginPage.qml"))
         }
 
         GlacierRoller {
@@ -49,15 +56,7 @@ Page {
                 settings.setValue("sorting",fileOrganizeModel.get(fileOrganize.currentIndex).name);
             }
         }
-    }
 
-    Column{
-        id: alwaysFromTheBeginningRow
-        width: parent.width
-        anchors{
-            top: fileSortingRow.bottom
-            margins: Theme.itemSpacingLarge
-        }
 
         CheckBox {
             text:  qsTr("Always play from the beginning")

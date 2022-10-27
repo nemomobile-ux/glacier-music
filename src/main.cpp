@@ -21,29 +21,28 @@
 #endif
 #include <QtGui/QGuiApplication>
 
-
+#include <QCoreApplication>
+#include <QScreen>
+#include <QtCore/QString>
 #include <QtQml>
 #include <QtQuick/QQuickView>
-#include <QtCore/QString>
-#include <QScreen>
-#include <QCoreApplication>
 
+#include "glaciermusicplayer.h"
 #include <glacierapp.h>
 
-#include "collection.h"
-#include "cover.h"
-
-Q_DECL_EXPORT int main(int argc, char *argv[])
+Q_DECL_EXPORT int main(int argc, char* argv[])
 {
     setenv("QT_QUICK_CONTROLS_STYLE", "Nemo", 1);
 
-    QGuiApplication *app = GlacierApp::app(argc, argv);
+    QGuiApplication* app = GlacierApp::app(argc, argv);
     app->setOrganizationName("NemoMobile");
 
-    qmlRegisterType<Collection>("org.glacier.music.collection",1,0,"Collection");
-    qmlRegisterType<Cover>("org.glacier.music.cover",1,0,"Cover");
+    QQmlApplicationEngine* engine = GlacierApp::engine(app);
 
-    QQuickWindow *window = GlacierApp::showWindow();
+    GlacierMusicPlayer player;
+    engine->rootContext()->setContextProperty("player", &player);
+
+    QQuickWindow* window = GlacierApp::showWindow();
     window->setTitle(QObject::tr("Music"));
     window->setIcon(QIcon("/usr/share/glacier-music/images/icon-app-music.png"));
 

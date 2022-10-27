@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Chupligin Sergey <neochapay@gmail.com>
+ * Copyright (C) 2022 Chupligin Sergey <neochapay@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -17,25 +17,25 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef ARTIST_H
-#define ARTIST_H
+#include "fromdirectorycoverplugin.h"
 
-#include <QObject>
+FromDirectoryCoverPlugin::FromDirectoryCoverPlugin()
+{
+}
 
-class Artist : public QObject {
-    Q_OBJECT
-    Q_PROPERTY(QString title READ title WRITE setTitle NOTIFY titleChanged)
-
-public:
-    explicit Artist(QString title, QObject* parent = nullptr);
-
-    QString title() { return m_title; }
-    void setTitle(QString title);
-
-signals:
-    void titleChanged();
-
-private:
-    QString m_title;
-};
-#endif // ARTIST_H
+void FromDirectoryCoverPlugin::getCover(Track* track)
+{
+    /*Search cover image in file folder*/
+    QFileInfo musicFileInfo(track->getFileName());
+    QString musicFileDir = musicFileInfo.absoluteDir().absolutePath();
+    QFile localCover(musicFileDir + "/cover.jpg");
+    if (localCover.exists()) {
+        QImage coverImage = QImage(musicFileDir + "/cover.jpg");
+        if (!coverImage.isNull()) {
+            m_coverImage = coverImage;
+            track->setCover(m_coverImage);
+        }
+    } else {
+        qDebug() << "Cover not found";
+    }
+}

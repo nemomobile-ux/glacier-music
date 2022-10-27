@@ -55,15 +55,17 @@ Row {
 
         accentColor: Theme.accentColor
         fillColor: Theme.fillColor
-        progress: rootAudio.position/rootAudio.duration
+        progress: player.position/player.duration
 
         MouseArea{
             id: rewindArea
             anchors.fill: parent
 
             onClicked: {
-                var current_poz = (mouseX-x)/width
-                rootAudio.seek(rootAudio.duration*current_poz)
+                if(player.seekable) {
+                    var current_poz = (mouseX-x)/width
+                    player.setPosition(player.duration*current_poz)
+                }
             }
         }
     }
@@ -78,17 +80,18 @@ Row {
     }
 
     Connections {
-        target: rootAudio
+        target: player
         function onPositionChanged() {
-            startSec.text = formatTime(rootAudio.position)
-            endSec.text = formatTime(rootAudio.duration-rootAudio.position)
+            startSec.text = formatTime(player.position)
+            endSec.text = formatTime(player.duration-player.position)
         }
     }
 
     Connections{
-        target: nextTrackModel
+        target: player.trackModel
         function onCurrentIndexChanged(currentIndex) {
-            lineOfProgress.fileName = nextTrackModel.get(currentIndex).fileName;
+            lineOfProgress.fileName = player.trackModel.get(currentIndex).fileName;
+            endSec.text = formatTime(player.duration)
         }
     }
 

@@ -17,25 +17,29 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef ARTIST_H
-#define ARTIST_H
+#ifndef RESCANCOLLECTION_H
+#define RESCANCOLLECTION_H
 
+#include "dbadapter.h"
 #include <QObject>
 
-class Artist : public QObject {
+class RescanCollection : public QObject {
     Q_OBJECT
-    Q_PROPERTY(QString title READ title WRITE setTitle NOTIFY titleChanged)
-
 public:
-    explicit Artist(QString title, QObject* parent = nullptr);
-
-    QString title() { return m_title; }
-    void setTitle(QString title);
+    explicit RescanCollection(QObject* parent = 0);
 
 signals:
-    void titleChanged();
+    void newFile(QString path);
+    void scanProcess(QVariant prc);
+    void noMusicFiles();
+
+public slots:
+    void scan();
 
 private:
-    QString m_title;
+    dbAdapter* dba;
+
+    QStringList aviableDirs();
 };
-#endif // ARTIST_H
+
+#endif // RESCANCOLLECTION_H
