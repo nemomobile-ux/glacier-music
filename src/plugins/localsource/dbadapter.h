@@ -42,7 +42,7 @@ public slots:
 private:
     QSqlQuery query;
     QMutex lock;
-    void initDB();
+    void initDB(QSqlDatabase db);
     QSqlDatabase m_db;
 };
 

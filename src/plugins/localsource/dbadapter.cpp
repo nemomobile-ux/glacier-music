@@ -48,11 +48,11 @@ dbAdapter& dbAdapter::instance()
     return *dbAdapterInstance;
 }
 
-void dbAdapter::initDB()
+void dbAdapter::initDB(QSqlDatabase db)
 {
-    m_db.exec("CREATE TABLE `artist` (`id` INTEGER PRIMARY KEY AUTOINCREMENT,`name` TEXT )");
-    m_db.exec("INSERT INTO `artist` (`id`, `name`) VALUES ('0','Unknown Artist')");
-    m_db.exec("CREATE TABLE `tracks` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, \
+    db.exec("CREATE TABLE `artist` (`id` INTEGER PRIMARY KEY AUTOINCREMENT,`name` TEXT )");
+    db.exec("INSERT INTO `artist` (`id`, `name`) VALUES ('0','Unknown Artist')");
+    db.exec("CREATE TABLE `tracks` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, \
             `artist_id` INTEGER NOT NULL, \
             `filename` TEXT NOT NULL,\
             `title` TEXT NOT NULL,\
@@ -63,12 +63,12 @@ void dbAdapter::initDB()
             `track` INTEGER,\
             `year` INTEGER,\
             `length` INTEGER)");
-    m_db.exec("CREATE TABLE `playlist` (`id`	INTEGER PRIMARY KEY AUTOINCREMENT, \
+    db.exec("CREATE TABLE `playlist` (`id`	INTEGER PRIMARY KEY AUTOINCREMENT, \
             `song_id`	INTEGER NOT NULL, \
             `time`	INTEGER NOT NULL)");
-    m_db.exec("CREATE UNIQUE INDEX artist_idx ON artist(name)");
-    m_db.exec("CREATE UNIQUE INDEX song_idx ON songs(artist_id,title,album,track,year)");
-    m_db.exec("CREATE UNIQUE INDEX plst_idx ON playlist(song_id,time)");
+    db.exec("CREATE UNIQUE INDEX artist_idx ON artist(name)");
+    db.exec("CREATE UNIQUE INDEX song_idx ON songs(artist_id,title,album,track,year)");
+    db.exec("CREATE UNIQUE INDEX plst_idx ON playlist(song_id,time)");
     emit baseCreate();
 }
 
@@ -83,7 +83,7 @@ QSqlDatabase dbAdapter::getDatabase()
     if (db.isOpen() && db.isValid()) {
         return db;
     } else {
-        qDebug() << "Creating new database connection for thread" << threadAddress;
+        qDebug() << "Creating new database connection for thread";
         db = QSqlDatabase::addDatabase(QLatin1String("QSQLITE"), threadAddress);
     }
     db.setDatabaseName(QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/db.sql");
@@ -96,7 +96,7 @@ QSqlDatabase dbAdapter::getDatabase()
 
     if (QFile(QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/db.sql").size() == 0) {
         qDebug() << "Init db";
-        initDB();
+        initDB(db);
     }
 
     if (!db.isValid()) {
