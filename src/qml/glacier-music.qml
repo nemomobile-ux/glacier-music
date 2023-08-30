@@ -17,15 +17,13 @@
  * Boston, MA 02110-1301, USA.
  */
 
-import QtQuick 2.6
+import QtQuick
+import Nemo.Controls
+import Nemo.Dialogs
+import QtQuick.Window
+import QtQuick.Layouts
 
-import QtQuick.Controls 1.0
-import QtQuick.Controls.Nemo 1.0
-import QtQuick.Controls.Styles.Nemo 1.0
-import QtQuick.Window 2.1
-import QtQuick.Layouts 1.0
-
-import QtMultimedia 5.5
+import QtMultimedia
 
 import org.nemomobile.settings 1.0
 import org.nemomobile.mpris 1.0
@@ -34,7 +32,6 @@ import org.glacier.music.collection 1.0
 import org.glacier.music 1.0
 import org.glacier.music.cover 1.0
 
-import Nemo.Dialogs 1.0
 
 import "pages"
 
@@ -81,14 +78,16 @@ ApplicationWindow {
             }
         }
 
-        onStatusChanged: {
-            console.log("rootAudio.status " + statusToStr(status) + " " + source)
-        }
+// FIXME
+//        onStatusChanged: {
+//            console.log("rootAudio.status " + statusToStr(status) + " " + source)
+//        }
 
-        onVolumeChanged: {
-            settings.setValue("volume",volume);
-            settings.sync();
-        }
+// FIXME
+//        onVolumeChanged: {
+//            settings.setValue("volume",volume);
+//            settings.sync();
+//        }
 
         onPositionChanged: {
             if(rootAudio.playbackState == MediaPlayer.PlayingState){
