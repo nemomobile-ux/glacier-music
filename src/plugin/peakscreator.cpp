@@ -59,12 +59,13 @@ void PeaksCreator::loadAudioFile()
 
     QAudioFormat desiredFormat;
     desiredFormat.setChannelCount(2);
-    desiredFormat.setCodec("audio/x-raw");
-    desiredFormat.setSampleType(QAudioFormat::UnSignedInt);
+//    desiredFormat.setCodec("audio/x-raw");
+    desiredFormat.setSampleFormat(QAudioFormat::UInt8);
+//    desiredFormat.setSampleType(QAudioFormat::UnSignedInt);
     desiredFormat.setSampleRate(48000);
-    desiredFormat.setSampleSize(64);
+//    desiredFormat.setSampleSize(64);
 
-    m_decoder->setSourceFilename(m_fileName);
+    m_decoder->setSource(m_fileName);
     m_decoder->setAudioFormat(desiredFormat);
     m_decoder->start();
 }
@@ -132,30 +133,20 @@ qreal PeaksCreator::mGetPeakValue(const QAudioFormat &format)
 {
     qreal ret(0);
     if (format.isValid()){
-        switch (format.sampleType()) {
+        switch (format.sampleFormat()) {
         case QAudioFormat::Unknown:
             break;
         case QAudioFormat::Float:
-            if (format.sampleSize() != 32) // other sample formats are not supported
-                ret = 0;
-            else
-                ret = 1.00003;
+            ret = 1.00003;
             break;
-        case QAudioFormat::SignedInt:
-            if (format.sampleSize() == 32)
-                ret = SHRT_MAX;
-            else if (format.sampleSize() == 16)
-                ret = SHRT_MAX;
-            else if (format.sampleSize() == 8)
-                ret = CHAR_MAX;
+        case QAudioFormat::UInt8:
+            ret = CHAR_MAX;
             break;
-        case QAudioFormat::UnSignedInt:
-            if (format.sampleSize() == 32)
-                ret = UINT_MAX;
-            else if (format.sampleSize() == 16)
-                ret = USHRT_MAX;
-            else if (format.sampleSize() == 8)
-                ret = UCHAR_MAX;
+        case QAudioFormat::Int16:
+            ret = SHRT_MAX;
+            break;
+        case QAudioFormat::Int32:
+            ret = SHRT_MAX;
             break;
         default:
             break;

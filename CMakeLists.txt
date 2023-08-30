@@ -15,12 +15,11 @@ include(FeatureSummary)
 include(GNUInstallDirs)
 
 set(QT_MIN_VERSION "5.11.0")
-find_package(Qt5 COMPONENTS Core Gui Qml Quick Multimedia Sql DBus LinguistTools REQUIRED)
-find_package(Glacier 0.8 COMPONENTS App REQUIRED)
-find_package(Qt5QuickCompiler)
+find_package(Qt6 COMPONENTS Core Gui Qml Quick Multimedia Sql DBus LinguistTools REQUIRED)
+find_package(Glacier 1.0 COMPONENTS App REQUIRED)
 find_package(PkgConfig REQUIRED)
 
-pkg_check_modules(NEMONOTIFICATIONS nemonotifications-qt5 REQUIRED IMPORTED_TARGET)
+pkg_check_modules(NEMONOTIFICATIONS nemonotifications-qt6 REQUIRED IMPORTED_TARGET)
 pkg_check_modules(TAGLIB taglib REQUIRED IMPORTED_TARGET)
 if(TAGLIB_FOUND)
 	set_property(GLOBAL APPEND PROPERTY PACKAGES_FOUND taglib)
@@ -40,7 +39,7 @@ feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)
 
 # Translations
 file(GLOB TS_FILES translations/*.ts)
-qt5_add_translation(QM_FILES ${TS_FILES})
+qt_add_translation(QM_FILES ${TS_FILES})
 add_custom_target(translations DEPENDS ${QM_FILES})
 add_dependencies(glacier-music translations)
 

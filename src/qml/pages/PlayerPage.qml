@@ -17,13 +17,11 @@
  * Boston, MA 02110-1301, USA.
  */
 
-import QtQuick 2.6
-import QtMultimedia 5.5
-import QtGraphicalEffects 1.0
+import QtQuick
+import QtMultimedia
+//import QtGraphicalEffects
 
-import QtQuick.Controls 1.0
-import QtQuick.Controls.Nemo 1.0
-import QtQuick.Controls.Styles.Nemo 1.0
+import Nemo.Controls
 
 import org.glacier.music 1.0
 

@@ -238,14 +238,14 @@ void PlayListModel::updatePlayList()
         break;
     case PlayMode::Artist:
         queryString = "SELECT id FROM tracks \
-                        WHERE artist_id = " + QString(currentArtistId) + " \
+                        WHERE artist_id = " + QString::number(currentArtistId) + " \
                         AND id <> "+ QString::number(currentTrackId) + " \
                         ORDER BY titile ASC \
                 LIMIT 10";
         break;
     case PlayMode::ArtistShuffle:
         queryString = "SELECT id FROM tracks \
-                        WHERE artist_id = " + QString(currentArtistId) + " \
+                        WHERE artist_id = " + QString::number(currentArtistId) + " \
                         AND id <> "+ QString::number(currentTrackId) + " \
                         ORDER BY RANDOM() \
                 LIMIT 10";

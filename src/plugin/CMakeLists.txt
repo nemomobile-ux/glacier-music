@@ -1,6 +1,6 @@
 ### Sets QT_INSTALL_QML to the directory where QML Plugins should be installed
 function(FindQtInstallQml)
-    find_program(QMAKE NAMES qmake-qt5 qmake)
+    find_program(QMAKE NAMES qmake6 qmake)
     if(NOT QMAKE)
     message(FATAL_ERROR "qmake not found")
     endif()
@@ -31,12 +31,12 @@ add_library(glaciermusicplugin SHARED ${SRC})
 include_directories("../lib")
 
 target_link_libraries(glaciermusicplugin
-    Qt5::Core
-    Qt5::Gui
-    Qt5::Qml
-    Qt5::Quick
-    Qt5::Multimedia
-    Qt5::Sql
+    Qt6::Core
+    Qt6::Gui
+    Qt6::Qml
+    Qt6::Quick
+    Qt6::Multimedia
+    Qt6::Sql
     Glacier::Music)
 
 FindQtInstallQml()

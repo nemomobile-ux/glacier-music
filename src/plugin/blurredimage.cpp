@@ -1,6 +1,7 @@
 #include "blurredimage.h"
 
 #include <QImage>
+#include <QFile>
 
 BlurredImage::BlurredImage(QQuickItem *parent)
     : QQuickPaintedItem(parent)
