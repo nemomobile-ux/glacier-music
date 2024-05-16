@@ -1,3 +1,22 @@
+/*
+ * Copyright (C) 2021-2024 Chupligin Sergey <neochapay@gmail.com>
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Library General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Library General Public License for more details.
+ *
+ * You should have received a copy of the GNU Library General Public License
+ * along with this library; see the file COPYING.LIB.  If not, write to
+ * the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
+ */
+
 #include "peakscreator.h"
 
 #include <QDir>
@@ -60,12 +79,12 @@ void PeaksCreator::loadAudioFile()
 
     QAudioFormat desiredFormat;
     desiredFormat.setChannelCount(2);
-    desiredFormat.setCodec("audio/x-raw");
-    desiredFormat.setSampleType(QAudioFormat::UnSignedInt);
+//    desiredFormat.setCodec("audio/x-raw");
+    desiredFormat.setSampleFormat(QAudioFormat::UInt8);
     desiredFormat.setSampleRate(48000);
-    desiredFormat.setSampleSize(64);
+//    desiredFormat.setSampleSize(64);
 
-    m_decoder->setSourceFilename(m_fileName);
+    m_decoder->setSource(m_fileName);
     m_decoder->setAudioFormat(desiredFormat);
     m_decoder->start();
 }
@@ -133,29 +152,20 @@ qreal PeaksCreator::mGetPeakValue(const QAudioFormat& format)
 {
     qreal ret(0);
     if (format.isValid()) {
-        switch (format.sampleType()) {
+        switch (format.sampleFormat()) {
         case QAudioFormat::Unknown:
             break;
         case QAudioFormat::Float:
-            if (format.sampleSize() != 32) // other sample formats are not supported
+            if (format.bytesPerSample() != 32) // other sample formats are not supported
                 ret = 0;
             else
                 ret = 1.00003;
             break;
-        case QAudioFormat::SignedInt:
-            if (format.sampleSize() == 32)
+        case QAudioFormat::Int32:
+        case QAudioFormat::Int16:
                 ret = SHRT_MAX;
-            else if (format.sampleSize() == 16)
-                ret = SHRT_MAX;
-            else if (format.sampleSize() == 8)
-                ret = CHAR_MAX;
             break;
-        case QAudioFormat::UnSignedInt:
-            if (format.sampleSize() == 32)
-                ret = UINT_MAX;
-            else if (format.sampleSize() == 16)
-                ret = USHRT_MAX;
-            else if (format.sampleSize() == 8)
+        case QAudioFormat::UInt8:
                 ret = UCHAR_MAX;
             break;
         default:

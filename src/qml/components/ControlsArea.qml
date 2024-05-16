@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Chupligin Sergey <neochapay@gmail.com>
+ * Copyright (C) 2021-2024 Chupligin Sergey <neochapay@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -17,12 +17,11 @@
  * Boston, MA 02110-1301, USA.
  */
 
-import QtQuick 2.6
+import QtQuick
+import QtQuick.Controls
 
-import QtQuick.Controls 1.0 //needed for the Stack attached property
-import QtQuick.Controls.Nemo 1.0
-import QtQuick.Controls.Styles.Nemo 1.0
-
+import Nemo
+import Nemo.Controls
 Item{
     id: controsArea
     height: Theme.itemHeightHuge
@@ -149,8 +148,8 @@ Item{
             width: parent.width*0.8
             anchors.centerIn: parent
 
-            minimumValue: 0
-            maximumValue: 100
+            from: 0
+            to: 100
             stepSize: 1
             value: player.volume
 

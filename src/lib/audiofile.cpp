@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Chupligin Sergey <neochapay@gmail.com>
+ * Copyright (C) 2021-2024 Chupligin Sergey <neochapay@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -71,9 +71,9 @@ void AudioFile::loadTags()
     TagLib::String t_album = tagFile->tag()->album();
     TagLib::String t_comment = tagFile->tag()->comment();
     TagLib::String t_genre = tagFile->tag()->genre();
-    TagLib::uint t_track = tagFile->tag()->track();
-    TagLib::uint t_year = tagFile->tag()->year();
-    TagLib::uint t_length = tagFile->audioProperties()->length();
+    uint t_track = tagFile->tag()->track();
+    uint t_year = tagFile->tag()->year();
+    uint t_length = tagFile->audioProperties()->lengthInSeconds();
 
     artist = QString::fromStdWString(t_artist.toCWString());
     album = QString::fromStdWString(t_album.toCWString());

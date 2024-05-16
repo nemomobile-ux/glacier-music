@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Chupligin Sergey <neochapay@gmail.com>
+ * Copyright (C) 2022-2024 Chupligin Sergey <neochapay@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -16,6 +16,8 @@
  * the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA 02110-1301, USA.
  */
+
+#include <QAudioOutput>
 
 #include "glaciermusicplayer.h"
 #include "coversourceplugin.h"
@@ -41,13 +43,13 @@ GlacierMusicPlayer::GlacierMusicPlayer(QObject* parent)
         qWarning() << "Can`t load covers plugin";
     }
 
-    setAudioRole(QAudio::MusicRole);
+//    setAudioRole(QAudio::MusicRole);
 
     //@todo: Fixup loading plugin
     m_sourcePlugin = sources->getPluginById("localsource");
     m_trackModel = m_sourcePlugin->tracksModel();
 
-    setVolume(m_settings->value("volume").toInt());
+//    audioOutput()->setVolume(m_settings->value("volume").toInt());
 
     connect(m_sourcePlugin, &MusicSourcePlugin::hasBackChanged, this, &GlacierMusicPlayer::onHasBackChanged);
     connect(m_sourcePlugin, &MusicSourcePlugin::hasForwardChanged, this, &GlacierMusicPlayer::onHasForwardChanged);
@@ -60,9 +62,9 @@ GlacierMusicPlayer::GlacierMusicPlayer(QObject* parent)
 
 GlacierMusicPlayer::~GlacierMusicPlayer()
 {
-    m_settings->setValue("volume", volume());
+    m_settings->setValue("volume", audioOutput()->volume());
     m_settings->setValue("seek", position());
-    m_settings->setValue("playbackState", state());
+    m_settings->setValue("playbackState", playbackState());
     m_settings->sync();
 }
 
@@ -83,7 +85,7 @@ void GlacierMusicPlayer::playForward()
 
 void GlacierMusicPlayer::playPause()
 {
-    if (state() == State::PlayingState) {
+    if (playbackState() == PlaybackState::PlayingState) {
         pause();
         m_playing = false;
     } else {
@@ -103,7 +105,7 @@ void GlacierMusicPlayer::setSource(QString source)
 {
     if (source != m_source) {
         m_source = source;
-        setMedia(QUrl(m_source));
+        setSource(m_source);
     }
 }
 

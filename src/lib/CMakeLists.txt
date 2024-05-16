@@ -21,9 +21,9 @@ add_library(glaciermusic SHARED ${SRC} ${HEADERS} ${PUBLIC_HEADERS})
 add_library(Glacier::Music ALIAS glaciermusic)
 
 target_link_libraries(glaciermusic
-    Qt5::Core
-    Qt5::Network
-    Qt5::Gui
+    Qt6::Core
+    Qt6::Network
+    Qt6::Gui
     PkgConfig::TAGLIB)
 
 install(TARGETS glaciermusic

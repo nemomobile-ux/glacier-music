@@ -17,8 +17,8 @@ add_library(${PLUGINNAME} MODULE ${SRC} ${HEADERS})
 include_directories("../../lib")
 
 target_link_libraries(${PLUGINNAME} PUBLIC
-    Qt5::DBus
-    Qt5::Sql
+    Qt6::DBus
+    Qt6::Sql
     Glacier::Music
     PkgConfig::NEMONOTIFICATIONS)
 
