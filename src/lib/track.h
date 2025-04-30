@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Chupligin Sergey <neochapay@gmail.com>
+ * Copyright (C) 2021-2025 Chupligin Sergey <neochapay@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -28,15 +28,15 @@ class Artist;
 
 class Track : public QObject {
     Q_OBJECT
-    Q_PROPERTY(QString artist READ artist WRITE setArtist NOTIFY artistChanged)
-    Q_PROPERTY(QString title READ title WRITE setTitle NOTIFY titleChanged)
-    Q_PROPERTY(QString album READ album WRITE setAlbum NOTIFY albumChanged)
-    Q_PROPERTY(QString genre READ genre WRITE setGenre NOTIFY genreChanged)
-    Q_PROPERTY(int num READ num WRITE setNum NOTIFY numChanged)
-    Q_PROPERTY(int year READ year WRITE setYear NOTIFY yearChanged)
+    Q_PROPERTY(QString artist READ artist WRITE setArtist NOTIFY trackChanged)
+    Q_PROPERTY(QString title READ title WRITE setTitle NOTIFY trackChanged)
+    Q_PROPERTY(QString album READ album WRITE setAlbum NOTIFY trackChanged)
+    Q_PROPERTY(QString genre READ genre WRITE setGenre NOTIFY trackChanged)
+    Q_PROPERTY(int num READ num WRITE setNum NOTIFY trackChanged)
+    Q_PROPERTY(int year READ year WRITE setYear NOTIFY trackChanged)
     Q_PROPERTY(int length READ length CONSTANT)
-    Q_PROPERTY(QString comment READ comment WRITE setComment NOTIFY commentChanged)
-    Q_PROPERTY(QImage cover READ cover WRITE setCover NOTIFY coverChanged)
+    Q_PROPERTY(QString comment READ comment WRITE setComment NOTIFY trackChanged)
+    Q_PROPERTY(QImage cover READ cover WRITE setCover NOTIFY trackChanged)
 
 public:
     explicit Track(const QString file = "");
@@ -65,16 +65,7 @@ public:
 
 signals:
     void trackFileNotFound();
-    void artistChanged();
-    void titleChanged();
-    void albumChanged();
-    void genreChanged();
-    void numChanged();
-    void yearChanged();
-    void lengthChanged();
-    void commentChanged();
-    void artistNameChanged();
-    void coverChanged(QImage cover);
+    void trackChanged();
 
 private:
     QString m_artist;

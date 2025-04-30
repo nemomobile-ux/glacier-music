@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Chupligin Sergey <neochapay@gmail.com>
+ * Copyright (C) 2021-2025 Chupligin Sergey <neochapay@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -69,7 +69,7 @@ void Track::setArtist(const QString artist)
 {
     if (artist != m_artist) {
         m_artist = artist;
-        emit artistChanged();
+        emit trackChanged();
     }
 }
 
@@ -77,7 +77,7 @@ void Track::setTitle(const QString title)
 {
     if (title != m_title) {
         m_title = title;
-        emit titleChanged();
+        emit trackChanged();
     }
 }
 
@@ -85,7 +85,7 @@ void Track::setAlbum(const QString album)
 {
     if (album != m_album) {
         m_album = album;
-        emit albumChanged();
+        emit trackChanged();
     }
 }
 
@@ -93,7 +93,7 @@ void Track::setGenre(const QString genre)
 {
     if (genre != m_genre) {
         m_genre = genre;
-        emit genreChanged();
+        emit trackChanged();
     }
 }
 
@@ -101,7 +101,7 @@ void Track::setNum(const int num)
 {
     if (num != m_number) {
         m_number = num;
-        emit numChanged();
+        emit trackChanged();
     }
 }
 
@@ -109,7 +109,7 @@ void Track::setYear(const int year)
 {
     if (year != m_year) {
         m_year = year;
-        emit yearChanged();
+        emit trackChanged();
     }
 }
 
@@ -117,7 +117,7 @@ void Track::setComment(const QString comment)
 {
     if (comment != m_comment) {
         m_comment = comment;
-        emit commentChanged();
+        emit trackChanged();
     }
 }
 
@@ -125,6 +125,6 @@ void Track::setCover(const QImage cover)
 {
     if (!cover.isNull() && cover != m_cover) {
         m_cover = cover;
-        emit coverChanged(m_cover);
+        emit trackChanged();
     }
 }
