@@ -20,7 +20,7 @@
 #ifndef RESCANCOLLECTION_H
 #define RESCANCOLLECTION_H
 
-#include "dbadapter.h"
+#include "track.h"
 #include <QObject>
 
 class RescanCollection : public QObject {
@@ -38,7 +38,7 @@ public slots:
     void scan();
 
 private:
-    dbAdapter* dba;
+    void addTrackToDB(Track* track);
 
     QStringList aviableDirs();
 };

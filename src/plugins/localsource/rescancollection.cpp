@@ -19,7 +19,6 @@
 
 #include "rescancollection.h"
 #include "dbadapter.h"
-#include "track.h"
 
 RescanCollection::RescanCollection(QObject* parent)
     : QObject(parent)
@@ -82,7 +81,7 @@ void RescanCollection::scan()
     } else {
         foreach (const QString& fileUrl, newFiles) {
             Track* track = new Track(fileUrl);
-            Q_UNUSED(track);
+            addTrackToDB(track);
             m_scannedFiles++;
             delete (track);
 
@@ -94,20 +93,39 @@ void RescanCollection::scan()
     emit scanFinished();
 }
 
+void RescanCollection::addTrackToDB(Track* track)
+{
+    QSqlDatabase db = dbAdapter::instance().getDatabase();
+    QSqlQuery query(db);
+
+    query.prepare("INSERT INTO tracks (`artist_id`, `filename`, `title`, `album`, `comment`, `genre`, `track`, `year`, `length`) \
+                  VALUES (:artistid, :filename, :title, :album, :comment, :genre, :track, :year, :length)");
+    query.bindValue(":artistid", track->artist());
+    query.bindValue(":filename", track->getFileName());
+    query.bindValue(":title", track->title());
+    query.bindValue(":album", track->album());
+    query.bindValue(":comment", track->comment());
+    query.bindValue(":genre", track->genre());
+    query.bindValue(":track", track->num());
+    query.bindValue(":year", track->year());
+    query.bindValue(":length", track->length());
+
+    bool ok = query.exec();
+    if (!ok) {
+        qDebug() << query.lastQuery() << query.lastError().text();
+    }
+}
+
 QStringList RescanCollection::aviableDirs()
 {
     QStringList aviableDirs;
     // Add download dir
     aviableDirs << QStandardPaths::standardLocations(QStandardPaths::DownloadLocation).first();
 
-    qDebug() << "DOWNLOAD" << QStandardPaths::standardLocations(QStandardPaths::DownloadLocation).first();
-
     // Add standart music path
     if (QStandardPaths::standardLocations(QStandardPaths::MusicLocation).first() != QStandardPaths::standardLocations(QStandardPaths::HomeLocation).first() && QDir(QStandardPaths::standardLocations(QStandardPaths::MusicLocation).first()).exists()) {
         aviableDirs << QStandardPaths::standardLocations(QStandardPaths::MusicLocation).first();
     }
-
-    qDebug() << "MUSIC!!!" << QStandardPaths::standardLocations(QStandardPaths::MusicLocation);
 
     // Find sdcard
     // @todo need add removiable media not hardcoded
