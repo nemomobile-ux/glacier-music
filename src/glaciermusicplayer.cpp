@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022-2024 Chupligin Sergey <neochapay@gmail.com>
+ * Copyright (C) 2022-2025 Chupligin Sergey <neochapay@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -19,8 +19,9 @@
 
 #include <QAudioOutput>
 
-#include "glaciermusicplayer.h"
 #include "coversourceplugin.h"
+#include "glaciermusicplayer.h"
+#include "sourcepluginmanager.h"
 
 GlacierMusicPlayer::GlacierMusicPlayer(QObject* parent)
     : QMediaPlayer(parent)
@@ -31,6 +32,7 @@ GlacierMusicPlayer::GlacierMusicPlayer(QObject* parent)
     , m_hasForward(false)
     , m_playing(false)
     , m_trackModel(nullptr)
+    , m_audioOutput(new QAudioOutput(this))
 {
     SourcePluginManager* sources = new SourcePluginManager();
     if (sources->getPlugins().empty()) {
@@ -43,13 +45,15 @@ GlacierMusicPlayer::GlacierMusicPlayer(QObject* parent)
         qWarning() << "Can`t load covers plugin";
     }
 
-//    setAudioRole(QAudio::MusicRole);
+    setAudioOutput(m_audioOutput);
+
+    //    setAudioRole(QAudio::MusicRole);
 
     //@todo: Fixup loading plugin
     m_sourcePlugin = sources->getPluginById("localsource");
     m_trackModel = m_sourcePlugin->tracksModel();
 
-//    audioOutput()->setVolume(m_settings->value("volume").toInt());
+    m_audioOutput->setVolume(m_settings->value("volume").toInt());
 
     connect(m_sourcePlugin, &MusicSourcePlugin::hasBackChanged, this, &GlacierMusicPlayer::onHasBackChanged);
     connect(m_sourcePlugin, &MusicSourcePlugin::hasForwardChanged, this, &GlacierMusicPlayer::onHasForwardChanged);
@@ -62,7 +66,7 @@ GlacierMusicPlayer::GlacierMusicPlayer(QObject* parent)
 
 GlacierMusicPlayer::~GlacierMusicPlayer()
 {
-    m_settings->setValue("volume", audioOutput()->volume());
+    m_settings->setValue("volume", m_audioOutput->volume());
     m_settings->setValue("seek", position());
     m_settings->setValue("playbackState", playbackState());
     m_settings->sync();

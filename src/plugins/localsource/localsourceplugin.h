@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Chupligin Sergey <neochapay@gmail.com>
+ * Copyright (C) 2022-2025 Chupligin Sergey <neochapay@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -20,6 +20,7 @@
 #ifndef LOCALSOURCEPLUGIN_H
 #define LOCALSOURCEPLUGIN_H
 
+#include "collection.h"
 #include "tracksmodel.h"
 
 #include <musicsourceplugin.h>
@@ -30,6 +31,8 @@ class LocalSourcePlugin : public MusicSourcePlugin {
     Q_PLUGIN_METADATA(IID "GlacierMusic.SourcePlugin")
 public:
     LocalSourcePlugin(QObject* parent = nullptr);
+    virtual ~LocalSourcePlugin();
+
     bool enabled() { return true; }
     QString name() { return tr("Local music database"); }
     QString id() { return "localsource"; }
@@ -52,6 +55,8 @@ private slots:
 
 private:
     TracksModel* m_tracksModel;
+    Collection* m_collection;
+    QThread* m_rescanTread;
 
     bool m_hasBack;
     bool m_hasForward;

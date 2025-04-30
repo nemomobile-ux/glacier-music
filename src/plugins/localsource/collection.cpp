@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Chupligin Sergey <neochapay@gmail.com>
+ * Copyright (C) 2021-2025 Chupligin Sergey <neochapay@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -18,7 +18,6 @@
  */
 
 #include "collection.h"
-#include "dbadapter.h"
 #include "rescancollection.h"
 
 #include <QDir>
@@ -44,27 +43,22 @@ Collection::Collection(QObject* parent)
         m_firstRun = true;
         cacheLocation.mkpath(cacheLocation.absolutePath() + "/images/");
     }
-
-    dbAdapter* dba = new dbAdapter();
-    connect(dba, &dbAdapter::baseCreate, this, &Collection::rescanCollection);
 }
 
 Collection::~Collection()
 {
-    m_rescanThread->quit();
+    m_rescanNotification->close();
 }
 
 void Collection::rescanCollection()
 {
     RescanCollection* rCollection = new RescanCollection();
 
-    m_rescanThread = new QThread;
-    connect(m_rescanThread, &QThread::started, rCollection, &RescanCollection::scan);
     connect(rCollection, &RescanCollection::scanProcess, this, &Collection::m_rescanCollectionProgress);
     connect(rCollection, &RescanCollection::noMusicFiles, m_rescanNotification, &Notification::close);
-    rCollection->moveToThread(m_rescanThread);
-    m_rescanThread->start();
+    connect(rCollection, &RescanCollection::scanFinished, m_rescanNotification, &Notification::close);
     m_rescanNotification->publish();
+    rCollection->scan();
 }
 
 void Collection::m_rescanCollectionProgress(QVariant progress)

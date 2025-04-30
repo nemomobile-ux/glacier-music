@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Chupligin Sergey <neochapay@gmail.com>
+ * Copyright (C) 2022-2025 Chupligin Sergey <neochapay@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -18,23 +18,33 @@
  */
 
 #include "localsourceplugin.h"
-#include "collection.h"
 
+#include "dbadapter.h"
 #include <QDebug>
 
 LocalSourcePlugin::LocalSourcePlugin(QObject* parent)
     : m_tracksModel(nullptr)
+    , m_collection(new Collection())
+    , m_rescanTread(new QThread)
     , m_hasBack(false)
     , m_hasForward(false)
 {
     m_tracksModel = new TracksModel();
-
-    Collection* collection = new Collection();
-    collection->rescanCollection();
+    m_collection->moveToThread(m_rescanTread);
 
     connect(m_tracksModel, &TracksModel::modelReset, this, &LocalSourcePlugin::calcButtonStatus);
     connect(m_tracksModel, &TracksModel::currentIndexChanged, this, &LocalSourcePlugin::makeTrackPlayed);
-    connect(collection, &Collection::rescanCollectionFinished, this, &LocalSourcePlugin::complementPlayList);
+    connect(m_collection, &Collection::rescanCollectionFinished, this, &LocalSourcePlugin::complementPlayList);
+    connect(m_rescanTread, &QThread::started, m_collection, &Collection::rescanCollection);
+
+    m_rescanTread->start();
+}
+
+LocalSourcePlugin::~LocalSourcePlugin()
+{
+    if (m_rescanTread->isRunning()) {
+        m_rescanTread->terminate();
+    }
 }
 
 bool LocalSourcePlugin::hasBack()

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Chupligin Sergey <neochapay@gmail.com>
+ * Copyright (C) 2021-2025 Chupligin Sergey <neochapay@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -28,9 +28,10 @@ static dbAdapter* dbAdapterInstance = 0;
 
 dbAdapter::dbAdapter(QObject* parent)
     : QObject(parent)
+    , m_isValid(false)
 {
     QMutexLocker locker(&lock);
-    m_db = getDatabase();
+    m_db = _getDatabase();
 }
 
 dbAdapter::~dbAdapter()
@@ -50,6 +51,9 @@ dbAdapter& dbAdapter::instance()
 
 void dbAdapter::initDB(QSqlDatabase db)
 {
+    if (!db.open()) {
+        qFatal() << db.lastError().text();
+    }
     db.exec("CREATE TABLE `artist` (`id` INTEGER PRIMARY KEY AUTOINCREMENT,`name` TEXT )");
     db.exec("INSERT INTO `artist` (`id`, `name`) VALUES ('0','Unknown Artist')");
     db.exec("CREATE TABLE `tracks` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, \
@@ -72,7 +76,7 @@ void dbAdapter::initDB(QSqlDatabase db)
     emit baseCreate();
 }
 
-QSqlDatabase dbAdapter::getDatabase()
+QSqlDatabase dbAdapter::_getDatabase()
 {
     // Starting with Qt 5.11, sharing the same connection between threads is not allowed.
     // We use a dedicated connection for each thread requiring access to the database,
@@ -103,5 +107,14 @@ QSqlDatabase dbAdapter::getDatabase()
         qFatal("Can't load DB");
     }
 
+    if (!m_isValid) {
+        m_isValid = true;
+        emit isValidChanged();
+    }
     return db;
+}
+
+bool dbAdapter::isValid() const
+{
+    return m_isValid;
 }

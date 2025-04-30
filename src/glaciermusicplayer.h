@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Chupligin Sergey <neochapay@gmail.com>
+ * Copyright (C) 2022-2025 Chupligin Sergey <neochapay@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -25,7 +25,7 @@
 #include <QSettings>
 
 #include "coverpluginmanager.h"
-#include "sourcepluginmanager.h"
+#include "musicsourceplugin.h"
 #include "tracksmodel.h"
 
 class GlacierMusicPlayer : public QMediaPlayer {
@@ -82,6 +82,7 @@ private:
     QSettings* m_settings;
 
     QImage m_cover;
+    QAudioOutput* m_audioOutput;
 
     MusicSourcePlugin* m_sourcePlugin;
     CoverPluginManager* m_coverPlugin;

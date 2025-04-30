@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2024 Chupligin Sergey <neochapay@gmail.com>
+ * Copyright (C) 2021-2025 Chupligin Sergey <neochapay@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -22,10 +22,9 @@ import QtQuick.Controls
 
 import Nemo
 import Nemo.Controls
+import Amber.Mpris
 
 import org.nemomobile.settings 1.0
-import org.nemomobile.mpris 1.0
-
 import org.glacier.music 1.0
 
 import Nemo.Dialogs 1.0

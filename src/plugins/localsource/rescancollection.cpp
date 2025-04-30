@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Chupligin Sergey <neochapay@gmail.com>
+ * Copyright (C) 2021-2025 Chupligin Sergey <neochapay@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -91,6 +91,7 @@ void RescanCollection::scan()
         }
         emit scanProcess(1);
     }
+    emit scanFinished();
 }
 
 QStringList RescanCollection::aviableDirs()
@@ -99,11 +100,15 @@ QStringList RescanCollection::aviableDirs()
     // Add download dir
     aviableDirs << QStandardPaths::standardLocations(QStandardPaths::DownloadLocation).first();
 
+    qDebug() << "DOWNLOAD" << QStandardPaths::standardLocations(QStandardPaths::DownloadLocation).first();
+
     // Add standart music path
-    if (QDir(QStandardPaths::standardLocations(QStandardPaths::MusicLocation).first()).exists()) {
+    if (QStandardPaths::standardLocations(QStandardPaths::MusicLocation).first() != QStandardPaths::standardLocations(QStandardPaths::HomeLocation).first() && QDir(QStandardPaths::standardLocations(QStandardPaths::MusicLocation).first()).exists()) {
         aviableDirs << QStandardPaths::standardLocations(QStandardPaths::MusicLocation).first();
-        qDebug() << aviableDirs.last();
     }
+
+    qDebug() << "MUSIC!!!" << QStandardPaths::standardLocations(QStandardPaths::MusicLocation);
+
     // Find sdcard
     // @todo need add removiable media not hardcoded
     QDir mountDir("/media/sdcard/");
@@ -112,6 +117,5 @@ QStringList RescanCollection::aviableDirs()
         aviableDirs << mountDir.absolutePath() + "/" + mountDir.entryList().at(i);
         qDebug() << aviableDirs.last();
     }
-
     return aviableDirs;
 }

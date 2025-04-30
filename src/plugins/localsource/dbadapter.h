@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Chupligin Sergey <neochapay@gmail.com>
+ * Copyright (C) 2022-2025 Chupligin Sergey <neochapay@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -26,24 +26,32 @@
 
 class dbAdapter : public QObject {
     Q_OBJECT
+    Q_PROPERTY(bool isValid READ isValid NOTIFY isValidChanged FINAL)
+
 public:
     explicit dbAdapter(QObject* parent = 0);
     ~dbAdapter();
 
     static dbAdapter& instance();
     QSqlQueryModel* getTable(QString table);
-    QSqlDatabase getDatabase();
+    QSqlDatabase getDatabase() { return m_db; }
+
+    bool isValid() const;
 
 signals:
     void baseCreate();
 
+    void isValidChanged();
+
 public slots:
 
 private:
+    QSqlDatabase _getDatabase();
     QSqlQuery query;
     QMutex lock;
     void initDB(QSqlDatabase db);
     QSqlDatabase m_db;
+    bool m_isValid;
 };
 
 #endif // DBADAPTER_H
