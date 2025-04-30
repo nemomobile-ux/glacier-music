@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2024 Chupligin Sergey <neochapay@gmail.com>
+ * Copyright (C) 2021-2025 Chupligin Sergey <neochapay@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -19,9 +19,11 @@
 
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Layouts
 
 import Nemo
 import Nemo.Controls
+
 
 import org.glacier.music 1.0
 
@@ -34,20 +36,34 @@ Page {
         showBackButton: true;
     }
 
-    TabView {
-        anchors.fill: parent
+    TabBar {
+        id: bar
+        width: parent.width
 
-        Tab {
-            title: qsTr("Artists")
-            ArtistsPage{
-                onViewTracks: {
-                    pageStack.push(Qt.resolvedUrl("../pages/TracksPage.qml"), {artistId: artist_id, artistName: artist_name});
-                }
+        TabButton {
+            text: qsTr("Artists")
+        }
+        TabButton {
+            text: qsTr("Tracks")
+        }
+    }
+
+    StackLayout {
+        width: parent.width
+        height: parent.height - bar.height
+
+        currentIndex: bar.currentIndex
+
+        anchors{
+            top: bar.bottom
+        }
+
+        ArtistsPage{
+            onViewTracks: {
+                pageStack.push(Qt.resolvedUrl("../pages/TracksPage.qml"), {artistId: artist_id, artistName: artist_name});
             }
         }
-        Tab {
-            title: qsTr("Tracks")
-            TracksPage{}
+        TracksPage{
         }
     }
 }

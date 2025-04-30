@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2024 Chupligin Sergey <neochapay@gmail.com>
+ * Copyright (C) 2021-2025 Chupligin Sergey <neochapay@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -28,15 +28,10 @@ import org.glacier.music 1.0
 Item{
     id: artistPage
 
-    ArtistModel{
-        id: artistModel
-    }
-
     signal viewTracks(int artist_id, string artist_name)
 
     ListView{
         id: artistListView
-        model: artistModel
         width: parent.width
         height: parent.height
 
