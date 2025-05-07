@@ -18,6 +18,7 @@
  */
 
 #include <QAudioOutput>
+#include <QUrl>
 
 #include "coversourceplugin.h"
 #include "glaciermusicplayer.h"
@@ -32,7 +33,7 @@ GlacierMusicPlayer::GlacierMusicPlayer(QObject* parent)
     , m_hasForward(false)
     , m_playing(false)
     , m_trackModel(nullptr)
-    , m_audioOutput(new QAudioOutput(this))
+    , m_audioOutput(new QAudioOutput)
 {
     SourcePluginManager* sources = new SourcePluginManager();
     if (sources->getPlugins().empty()) {
@@ -60,8 +61,6 @@ GlacierMusicPlayer::GlacierMusicPlayer(QObject* parent)
     connect(m_trackModel, &TracksModel::currentIndexChanged, this, &GlacierMusicPlayer::onCurrectTrackChanged);
     connect(m_trackModel, &TracksModel::rowsInserted, this, &GlacierMusicPlayer::onTrackAddedToPlayList);
     connect(this, &QMediaPlayer::mediaStatusChanged, this, &GlacierMusicPlayer::onMediaStatusChanged);
-
-    delete (sources);
 }
 
 GlacierMusicPlayer::~GlacierMusicPlayer()
@@ -98,18 +97,9 @@ void GlacierMusicPlayer::playPause()
             playForward();
         } else if (m_trackModel->currentIndex() == -1) {
             playForward();
+        } else {
+            onCurrectTrackChanged(0);
         }
-
-        m_playing = true;
-        play();
-    }
-}
-
-void GlacierMusicPlayer::setSource(QString source)
-{
-    if (source != m_source) {
-        m_source = source;
-        setSource(m_source);
     }
 }
 
@@ -140,10 +130,8 @@ void GlacierMusicPlayer::onCurrectTrackChanged(int currentIndex)
     if (currentTrack != nullptr) {
         m_cover = currentTrack->cover();
         emit coverChanged();
-        setSource("file://" + currentTrack->getFileName());
-        if (m_playing) {
-            play();
-        }
+        setSource(QUrl::fromLocalFile(currentTrack->getFileName()));
+        play();
     } else {
         qWarning() << "Wrong track!";
     }

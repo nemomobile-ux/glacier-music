@@ -36,8 +36,6 @@ class GlacierMusicPlayer : public QMediaPlayer {
     Q_PROPERTY(bool hasBack READ hasBack NOTIFY hasBackChanged)
     Q_PROPERTY(bool hasForward READ hasForward NOTIFY hasForwardChanged)
 
-    Q_PROPERTY(QString source READ source WRITE setSource NOTIFY sourceChanged)
-
     Q_PROPERTY(QAbstractListModel* trackModel READ trackModel NOTIFY trackModelChanged)
 
 public:
@@ -54,9 +52,6 @@ public:
     Q_INVOKABLE void playForward();
     Q_INVOKABLE void playPause();
 
-    QString source() { return m_source; }
-    void setSource(QString source);
-
     Q_INVOKABLE QAbstractListModel* trackModel();
 
 signals:
@@ -66,8 +61,6 @@ signals:
 
     void hasBackChanged();
     void hasForwardChanged();
-
-    void sourceChanged();
 
     void trackModelChanged(int currentIndex);
 
